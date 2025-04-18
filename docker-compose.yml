@@ -1,13 +1,15 @@
 services:
   backend:
-    build: ./backend/Survey.API
+    build: ./backend
     ports:
       - "5000:80"
     environment:
       - ConnectionStrings__Default=Host=postgres;Port=5432;Database=surveydb;Username=postgres;Password=t9LiJBEHFX
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
 
