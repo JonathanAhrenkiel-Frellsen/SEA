@@ -1,0 +1,75 @@
+# Frontend
+/frontend/node_modules
+/frontend/build
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+/frontend/coverage
+
+# Mac/IDE stuff
+/frontend/.DS_Store
+/frontend/.idea
+/frontend/.vscode
+
+# Logs
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+
+# Backend
+**/bin/
+**/obj/
+**/out/
+
+# User-specific files
+**/*.user
+**/*.rsuser
+**/*.suo
+**/*.userosscache
+**/*.sln.docstates
+
+# Visual Studio Code
+/.vscode/
+
+# EF Core secret storage (dotnet user-secrets)
+**/secrets.json
+
+# ASP.NET generated files
+**/appsettings.*.json
+
+# IDEs & OS
+/.idea/
+*.swp
+*.swo
+*.tmp
+*.bak
+*.log
+
+# Migrations (optional if you want to re-gen from scratch)
+**/Migrations/
+
+# 🐳 Docker
+**/.docker/
+**/.dockerignore
+docker-compose.override.yml
+*.container
+*.pid
+
+# Testing
+/TestResults/
+**/coverage/
+*.test.js
+*.test.ts
+*.test.tsx
+*.spec.*
+
+# Sensitive files
+.env
+.env.*
+.env.local
+.env.development.local
+.env.production.local
+
+/tmp
+/out-tsc

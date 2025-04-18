@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: "surveydb"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "t9LiJBEHFX" # TODO JAF set in GitHub secrets
+    ports:
+      - "5432:5432"
