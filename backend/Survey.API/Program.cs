@@ -22,7 +22,7 @@ Console.WriteLine("Connection string: " + connectionString);
 // dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 
 builder.Services.AddDbContext<SurveyDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseNpgsql(connectionString));
 
 var app = builder.Build();
 
