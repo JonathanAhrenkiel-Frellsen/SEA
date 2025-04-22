@@ -73,3 +73,6 @@ docker-compose.override.yml
 
 /tmp
 /out-tsc
+/.vs/SurveyPlatform/copilot-chat/3a7d28f4/sessions
+/.vs/SurveyPlatform/CopilotIndices/17.13.444.19527
+/.vs/SurveyPlatform/FileContentIndex

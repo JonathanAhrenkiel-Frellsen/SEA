@@ -12,7 +12,7 @@ public class SurveyRepository : ISurveyRepository
 
     public async Task<SurveyEntity> CreateAsync(SurveyEntity survey)
     {
-        _context.Surveys.Add(survey);
+        _context.Surveys_Ignore.Add(survey);
         await _context.SaveChangesAsync();
         return survey;
     }

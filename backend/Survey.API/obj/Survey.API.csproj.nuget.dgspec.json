@@ -1,33 +1,39 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.API\\Survey.API.csproj": {}
+    "D:\\SEA\\SEA\\backend\\Survey.API\\Survey.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.API\\Survey.API.csproj": {
+    "D:\\SEA\\SEA\\backend\\Survey.API\\Survey.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.API\\Survey.API.csproj",
+        "projectUniqueName": "D:\\SEA\\SEA\\backend\\Survey.API\\Survey.API.csproj",
         "projectName": "Survey.API",
-        "projectPath": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.API\\Survey.API.csproj",
-        "packagesPath": "C:\\Users\\jonathan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.API\\obj\\",
+        "projectPath": "D:\\SEA\\SEA\\backend\\Survey.API\\Survey.API.csproj",
+        "packagesPath": "C:\\Users\\shahr\\.nuget\\packages\\",
+        "outputPath": "D:\\SEA\\SEA\\backend\\Survey.API\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\jonathan\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\shahr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Infrastructure\\Survey.Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Infrastructure\\Survey.Infrastructure.csproj"
+              "D:\\SEA\\SEA\\backend\\Survey.Infrastructure\\Survey.Infrastructure.csproj": {
+                "projectPath": "D:\\SEA\\SEA\\backend\\Survey.Infrastructure\\Survey.Infrastructure.csproj"
               }
             }
           }
@@ -52,7 +58,29 @@
               "target": "Package",
               "version": "[8.0.4, )"
             },
+            "Microsoft.EntityFrameworkCore.Abstractions": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Analyzers": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Proxies": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
@@ -70,24 +98,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.15, 8.0.15]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[8.0.15, 8.0.15]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.15, 8.0.15]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.15, 8.0.15]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -100,30 +110,36 @@
         }
       }
     },
-    "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Application\\Survey.Application.csproj": {
+    "D:\\SEA\\SEA\\backend\\Survey.Application\\Survey.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Application\\Survey.Application.csproj",
+        "projectUniqueName": "D:\\SEA\\SEA\\backend\\Survey.Application\\Survey.Application.csproj",
         "projectName": "Survey.Application",
-        "projectPath": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Application\\Survey.Application.csproj",
-        "packagesPath": "C:\\Users\\jonathan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Application\\obj\\",
+        "projectPath": "D:\\SEA\\SEA\\backend\\Survey.Application\\Survey.Application.csproj",
+        "packagesPath": "C:\\Users\\shahr\\.nuget\\packages\\",
+        "outputPath": "D:\\SEA\\SEA\\backend\\Survey.Application\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\jonathan\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\shahr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj": {
-                "projectPath": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj"
+              "D:\\SEA\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj": {
+                "projectPath": "D:\\SEA\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj"
               }
             }
           }
@@ -147,6 +163,28 @@
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Abstractions": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Analyzers": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Proxies": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.4, )"
             }
           },
           "imports": [
@@ -160,20 +198,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.15, 8.0.15]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.15, 8.0.15]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.15, 8.0.15]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -183,22 +207,28 @@
         }
       }
     },
-    "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj": {
+    "D:\\SEA\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj",
+        "projectUniqueName": "D:\\SEA\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj",
         "projectName": "Survey.Domain",
-        "projectPath": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj",
-        "packagesPath": "C:\\Users\\jonathan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Domain\\obj\\",
+        "projectPath": "D:\\SEA\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj",
+        "packagesPath": "C:\\Users\\shahr\\.nuget\\packages\\",
+        "outputPath": "D:\\SEA\\SEA\\backend\\Survey.Domain\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\jonathan\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\shahr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -222,6 +252,30 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Abstractions": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Analyzers": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Proxies": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.4, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -233,20 +287,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.15, 8.0.15]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.15, 8.0.15]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.15, 8.0.15]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -256,33 +296,39 @@
         }
       }
     },
-    "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Infrastructure\\Survey.Infrastructure.csproj": {
+    "D:\\SEA\\SEA\\backend\\Survey.Infrastructure\\Survey.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Infrastructure\\Survey.Infrastructure.csproj",
+        "projectUniqueName": "D:\\SEA\\SEA\\backend\\Survey.Infrastructure\\Survey.Infrastructure.csproj",
         "projectName": "Survey.Infrastructure",
-        "projectPath": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Infrastructure\\Survey.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\jonathan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Infrastructure\\obj\\",
+        "projectPath": "D:\\SEA\\SEA\\backend\\Survey.Infrastructure\\Survey.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\shahr\\.nuget\\packages\\",
+        "outputPath": "D:\\SEA\\SEA\\backend\\Survey.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\jonathan\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\shahr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Application\\Survey.Application.csproj": {
-                "projectPath": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Application\\Survey.Application.csproj"
+              "D:\\SEA\\SEA\\backend\\Survey.Application\\Survey.Application.csproj": {
+                "projectPath": "D:\\SEA\\SEA\\backend\\Survey.Application\\Survey.Application.csproj"
               },
-              "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj": {
-                "projectPath": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj"
+              "D:\\SEA\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj": {
+                "projectPath": "D:\\SEA\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj"
               }
             }
           }
@@ -307,7 +353,29 @@
               "target": "Package",
               "version": "[9.0.4, )"
             },
+            "Microsoft.EntityFrameworkCore.Abstractions": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Analyzers": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Proxies": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
             "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.4, )"
             },
@@ -327,20 +395,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.15, 8.0.15]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.15, 8.0.15]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.15, 8.0.15]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
