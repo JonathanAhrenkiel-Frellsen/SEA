@@ -11,15 +11,12 @@ namespace Survey.Domain.Entities
     public class MultipleChoice
     {
         public int MultipleChoiceId { get; set; }
-        public string MultipleChoiceName { get; set; }
+        public string MultipleChoiceName { get; set; } = string.Empty;
         [ForeignKey("Questionnaire")]
         [JsonIgnore]
         public int QuestionnaireId { get; set; }
         [JsonIgnore]
-        public virtual Questionnaire Questionnaire { get; set; }
+        public virtual Questionnaire? Questionnaire { get; set; }
 
-        public MultipleChoice()
-        {
-        }
     }
 }

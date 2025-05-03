@@ -14,9 +14,9 @@ namespace Survey.Domain.Entities
     {
         [Key]
         public int UserId { get; set; }
-        public string UserName { get; set; }
-        public string UserEmail { get; set; }
-        public string UserPassword { get; set; }
+        public string UserName { get; set; } = string.Empty;
+        public string UserEmail { get; set; } = string.Empty;
+        public string UserPassword { get; set; } = string.Empty;
         [ForeignKey("UserType")]
         public int UserTypeId { get; set; }
         [JsonIgnore]
@@ -28,8 +28,8 @@ namespace Survey.Domain.Entities
 
         public User()
         {
-            Surveys = new HashSet<DesignedSurvey>();
-            SurveyCompletions = new HashSet<SurveyCompletion>();
+            Surveys = [];
+            SurveyCompletions = [];
         }
     }
 }

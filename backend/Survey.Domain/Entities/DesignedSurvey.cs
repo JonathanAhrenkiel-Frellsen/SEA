@@ -13,10 +13,14 @@ namespace Survey.Domain.Entities
     {
         [Key]
         public int SurveyId { get; set; }
-        public string SurveyTitle { get; set; }
-        public string SurveyDescription { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public string SurveyTitle { get; set; } = string.Empty;
+        public string SurveyDescription { get; set; } = string.Empty;
+        public DateTime StartDate { get; set; } = DateTime.Now;
+        public DateTime EndDate { get; set; } = DateTime.Now;
+        [ForeignKey("SurveyType")]
+        public int SurveyTypeId { get; set; }
+        public virtual SurveyType? SurveyType { get; set; }
+        public string? PrivateKey { get; set; }
         [ForeignKey("User")]
         public int UserId { get; set; } //Experimenter Id
         [JsonIgnore]
@@ -25,7 +29,7 @@ namespace Survey.Domain.Entities
 
         public DesignedSurvey()
         {
-            Questionnaires = new HashSet<Questionnaire>();
+            Questionnaires = [];
         }
     }
 }
