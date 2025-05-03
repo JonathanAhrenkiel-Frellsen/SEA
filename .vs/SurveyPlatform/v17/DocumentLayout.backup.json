@@ -3,8 +3,16 @@
   "WorkspaceRootPath": "D:\\SEA\\SEA\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7A84E7AF-1F77-4441-82BC-22F49C7E3C0A}|backend\\Survey.Application\\Survey.Application.csproj|d:\\sea\\sea\\backend\\survey.application\\designedsurveydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7A84E7AF-1F77-4441-82BC-22F49C7E3C0A}|backend\\Survey.Application\\Survey.Application.csproj|solutionrelative:backend\\survey.application\\designedsurveydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|d:\\sea\\sea\\backend\\survey.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|solutionrelative:backend\\survey.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\SEA\\SEA\\backend\\Survey.Infrastructure\\Migrations\\20250503034815_After Coding Upgrade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\Survey.Infrastructure\\Migrations\\20250503034815_After Coding Upgrade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|d:\\sea\\sea\\backend\\survey.api\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|solutionrelative:backend\\survey.api\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,15 +34,41 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "DesignedSurveyDto.cs",
-              "DocumentMoniker": "D:\\SEA\\SEA\\backend\\Survey.Application\\DesignedSurveyDto.cs",
-              "RelativeDocumentMoniker": "backend\\Survey.Application\\DesignedSurveyDto.cs",
-              "ToolTip": "D:\\SEA\\SEA\\backend\\Survey.Application\\DesignedSurveyDto.cs",
-              "RelativeToolTip": "backend\\Survey.Application\\DesignedSurveyDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "20250503034815_After Coding Upgrade.cs",
+              "DocumentMoniker": "D:\\SEA\\SEA\\backend\\Survey.Infrastructure\\Migrations\\20250503034815_After Coding Upgrade.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Infrastructure\\Migrations\\20250503034815_After Coding Upgrade.cs",
+              "ToolTip": "D:\\SEA\\SEA\\backend\\Survey.Infrastructure\\Migrations\\20250503034815_After Coding Upgrade.cs",
+              "RelativeToolTip": "backend\\Survey.Infrastructure\\Migrations\\20250503034815_After Coding Upgrade.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-03T03:29:15.699Z",
+              "WhenOpened": "2025-05-03T03:48:15.119Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\SEA\\SEA\\backend\\Survey.API\\Program.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.API\\Program.cs",
+              "ToolTip": "D:\\SEA\\SEA\\backend\\Survey.API\\Program.cs",
+              "RelativeToolTip": "backend\\Survey.API\\Program.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAAjwCMAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-03T03:38:51.645Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "D:\\SEA\\SEA\\backend\\Survey.API\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "backend\\Survey.API\\appsettings.Development.json",
+              "ToolTip": "D:\\SEA\\SEA\\backend\\Survey.API\\appsettings.Development.json",
+              "RelativeToolTip": "backend\\Survey.API\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-05-03T03:38:23.857Z",
               "EditorCaption": ""
             }
           ]
