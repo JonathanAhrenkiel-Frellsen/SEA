@@ -13,16 +13,22 @@ namespace Survey.Domain.Entities
     {
         [Key]
         public int QuestionnaireId { get; set; }
-        public string QuestionnaireTitle { get; set; }
-        public string InputType { get; set; }
-        public string Range { get; set; }
+        public string QuestionnaireTitle { get; set; } = string.Empty;
+        public string InputType { get; set; } = string.Empty;
+        public string Range { get; set; } = string.Empty;
         [ForeignKey("DesignedSurvey")]
         public int? SurveyId { get; set; }
         [JsonIgnore]
         public virtual DesignedSurvey? Survey { get; set; }
         public virtual ICollection<MultipleChoice>? MultipleChoices { get; set; }
 
+        public virtual ICollection<SurveyAnswer>? SurveyAnswers { get; set; }
+
         public Questionnaire()
-        {}
+        {
+            MultipleChoices = [];
+            SurveyAnswers = [];
+        }
+
     }
 }

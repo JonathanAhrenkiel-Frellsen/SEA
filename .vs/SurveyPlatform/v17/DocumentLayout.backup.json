@@ -1,7 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\SEA\\SEA\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7A84E7AF-1F77-4441-82BC-22F49C7E3C0A}|backend\\Survey.Application\\Survey.Application.csproj|d:\\sea\\sea\\backend\\survey.application\\designedsurveydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A84E7AF-1F77-4441-82BC-22F49C7E3C0A}|backend\\Survey.Application\\Survey.Application.csproj|solutionrelative:backend\\survey.application\\designedsurveydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +14,28 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DesignedSurveyDto.cs",
+              "DocumentMoniker": "D:\\SEA\\SEA\\backend\\Survey.Application\\DesignedSurveyDto.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Application\\DesignedSurveyDto.cs",
+              "ToolTip": "D:\\SEA\\SEA\\backend\\Survey.Application\\DesignedSurveyDto.cs",
+              "RelativeToolTip": "backend\\Survey.Application\\DesignedSurveyDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-03T03:29:15.699Z",
+              "EditorCaption": ""
             }
           ]
         }

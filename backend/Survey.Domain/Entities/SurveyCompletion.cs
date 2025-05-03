@@ -17,15 +17,21 @@ namespace Survey.Domain.Entities
         public DateTime SurveyCompletionDate { get; set; }
         [ForeignKey("DesignedSurvey")]
         public int SurveyId { get; set; }
+        [JsonIgnore]
+        public virtual DesignedSurvey? Survey { get; set; }
         [ForeignKey("User")]
-        public int UserId;
+        public int UserId { get; set; }
         [JsonIgnore]
         public virtual User? User { get; set; }
+        [ForeignKey("SurveyCompletionType")]
+        public int SurveyCompletionTypeId { get; set; }
+        [JsonIgnore]
+        public virtual SurveyCompletionType? SurveyCompletionType { get; set; }
         public virtual ICollection<SurveyAnswer> SurveyAnswers { get; set; }
 
         public SurveyCompletion()
         {
-            SurveyAnswers = new HashSet<SurveyAnswer>();
+            SurveyAnswers = [];
         }
     }
 }
