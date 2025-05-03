@@ -6,7 +6,7 @@ COPY . .
 RUN dotnet restore "Survey.API/Survey.API.csproj"
 RUN dotnet publish "Survey.API/Survey.API.csproj" -c Release -o /app/publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:9.0
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app/publish .
 

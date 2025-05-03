@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\SEA\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj": {}
+    "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj": {}
   },
   "projects": {
-    "D:\\SEA\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj": {
+    "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\SEA\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj",
         "projectName": "Survey.Domain",
-        "projectPath": "D:\\SEA\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj",
-        "packagesPath": "C:\\Users\\shahr\\.nuget\\packages\\",
-        "outputPath": "D:\\SEA\\SEA\\backend\\Survey.Domain\\obj\\",
+        "projectPath": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Domain\\Survey.Domain.csproj",
+        "packagesPath": "C:\\Users\\jonathan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\jonathan\\WebstormProjects\\SEA\\backend\\Survey.Domain\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\shahr\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\jonathan\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -43,8 +37,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.200"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -97,7 +90,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.408/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
