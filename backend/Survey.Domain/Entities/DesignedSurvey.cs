@@ -26,6 +26,8 @@ namespace Survey.Domain.Entities
         [JsonIgnore]
         public virtual User? User { get; set; } //Experimenter
         public virtual ICollection<Questionnaire> Questionnaires { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<SurveyCompletion>? SurveyCompletions { get; set; }
 
         public DesignedSurvey()
         {
