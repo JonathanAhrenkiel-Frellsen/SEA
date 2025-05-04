@@ -57,7 +57,7 @@ namespace Survey.API.Controllers
                 return BadRequest("Start date cannot be greater than end date");
             }
 
-            if (survey.SurveyId <= 0)
+            if (survey.SurveyId > 0)
             {
                 // Check if the survey already exists
                 var existingSurvey = await _context.Surveys
@@ -70,58 +70,56 @@ namespace Survey.API.Controllers
                     return NotFound($"Survey with ID {survey.SurveyId} not found");
                 }
 
-                // Update existing survey
-                existingSurvey.SurveyId = survey.SurveyId;
+                //if (existingSurvey.EndDate < DateTime.Now)
+                //{
+                //    return BadRequest("Cannot update a survey that has already ended");
+                //}
+
+                // Update survey properties
                 existingSurvey.SurveyTitle = survey.SurveyTitle;
                 existingSurvey.SurveyDescription = survey.SurveyDescription;
                 existingSurvey.StartDate = survey.StartDate;
                 existingSurvey.EndDate = survey.EndDate;
                 existingSurvey.SurveyTypeId = survey.SurveyTypeId;
                 existingSurvey.UserId = survey.UserId;
-                existingSurvey.Questionnaires.Clear(); // Clear existing questionnaires
+
+                // Update or add questionnaires
                 foreach (var questionnaire in survey.Questionnaires)
                 {
-                    questionnaire.SurveyId = existingSurvey.SurveyId; // Set the foreign key
-                    questionnaire.QuestionnaireId = questionnaire.QuestionnaireId <= 0 ? 0 : questionnaire.QuestionnaireId; // Set to 0 for new questionnaire 
-                    _context.Entry(questionnaire).State = questionnaire.QuestionnaireId <= 0 ? EntityState.Added : EntityState.Modified;
+                    var existingQuestionnaire = existingSurvey.Questionnaires
+                        .FirstOrDefault(q => q.QuestionnaireId == questionnaire.QuestionnaireId);
 
-                    if (questionnaire.MultipleChoices == null)
+                    if (existingQuestionnaire != null)
                     {
-                        questionnaire.MultipleChoices = []; // Initialize if null
-                    }
+                        // Update existing questionnaire
+                        existingQuestionnaire.QuestionnaireTitle = questionnaire.QuestionnaireTitle;
+                        existingQuestionnaire.InputType = questionnaire.InputType;
+                        existingQuestionnaire.Range = questionnaire.Range;
+
+                            // Update or add multiple choices
+                            foreach (var multipleChoice in questionnaire.MultipleChoices ?? [])
+                            {
+                                var existingMultipleChoice = existingQuestionnaire.MultipleChoices?.FirstOrDefault(mc => mc.MultipleChoiceId == multipleChoice.MultipleChoiceId);
+
+                                if (existingMultipleChoice != null)
+                                {
+                                    // Update existing multiple choice
+                                    existingMultipleChoice.MultipleChoiceName = multipleChoice.MultipleChoiceName;
+                                }
+                                else
+                                {
+                                // Add new multiple choice
+                                existingQuestionnaire.MultipleChoices ??= [];
+                                    existingQuestionnaire.MultipleChoices.Add(multipleChoice);
+                                }
+                            }
+                        }
                     else
                     {
-                        questionnaire.MultipleChoices.Clear(); // Clear existing multiple choices
+                        // Add new questionnaire
+                        existingSurvey.Questionnaires.Add(questionnaire);
                     }
-
-                    foreach (var multipleChoice in questionnaire.MultipleChoices)
-                    {
-                        multipleChoice.QuestionnaireId = questionnaire.QuestionnaireId; // Set the foreign key
-                        multipleChoice.MultipleChoiceId = multipleChoice.MultipleChoiceId <= 0 ? 0 : multipleChoice.MultipleChoiceId; // Set to 0 for new multiple choice
-                        _context.Entry(multipleChoice).State = multipleChoice.MultipleChoiceId <= 0 ? EntityState.Added : EntityState.Modified;
-                    }
-                    existingSurvey.Questionnaires.Add(questionnaire); // Add the questionnaire to the existing survey
                 }
-
-                if (existingSurvey.SurveyTypeId == 1 && survey.SurveyTypeId == 2)
-                {
-                    existingSurvey.PrivateKey = Guid.NewGuid().ToString();
-                }
-                else if (existingSurvey.SurveyTypeId == 2 && survey.SurveyTypeId == 1)
-                {
-                    existingSurvey.PrivateKey = null; // Set to null if not needed
-                }
-                else if (existingSurvey.SurveyTypeId == 2 && survey.SurveyTypeId == 2)
-                {
-                    existingSurvey.PrivateKey = existingSurvey.PrivateKey; // Keep the same private key
-                }
-                else if (existingSurvey.SurveyTypeId == 1 && survey.SurveyTypeId == 1)
-                {
-                    existingSurvey.PrivateKey = null; // Set to null if not needed
-                }
-
-                // Update the survey in the database
-                _context.Entry(existingSurvey).State = EntityState.Modified;
 
                 try
                 {
@@ -129,39 +127,27 @@ namespace Survey.API.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    return BadRequest("Error Occured while saving the survey. Please try again.");
+                    return BadRequest("Error occurred while saving the survey. Please try again.");
                 }
+
                 return Ok(existingSurvey);
             }
             else
             {
-                survey.SurveyId = 0; // Set to 0 for new survey
+                // Create a new survey
+                survey.SurveyId = 0;
 
                 foreach (var questionnaire in survey.Questionnaires)
                 {
-                    questionnaire.SurveyId = survey.SurveyId; // Set the foreign key
-                    questionnaire.QuestionnaireId = 0; // Set to 0 for new questionnaire
-                    questionnaire.MultipleChoices ??= []; // Initialize if null
-                    foreach (var multipleChoice in questionnaire.MultipleChoices)
+                    questionnaire.QuestionnaireId = 0;
+
+                    foreach (var multipleChoice in questionnaire.MultipleChoices ?? new List<MultipleChoice>())
                     {
-                        multipleChoice.QuestionnaireId = questionnaire.QuestionnaireId; // Set the foreign key
-                        multipleChoice.MultipleChoiceId = 0; // Set to 0 for new multiple choice
-                        _context.Entry(multipleChoice).State = EntityState.Added;
+                        multipleChoice.MultipleChoiceId = 0;
                     }
-                    _context.Entry(questionnaire).State = EntityState.Added;
                 }
 
-                if (survey.SurveyTypeId == 2)
-                {
-                    survey.PrivateKey = Guid.NewGuid().ToString();
-                }
-                else
-                {
-                    survey.PrivateKey = null; // Set to null if not needed
-                }
-
-                // Add the new survey to the database
-                _context.Entry(survey).State = EntityState.Added;
+                _context.Surveys.Add(survey);
 
                 try
                 {
@@ -169,13 +155,13 @@ namespace Survey.API.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    return BadRequest("Error Occured while saving the survey. Please try again.");
+                    return BadRequest("Error occurred while saving the survey. Please try again.");
                 }
 
-                // Return the created survey with its ID
                 return CreatedAtAction(nameof(SaveSurvey), new { id = survey.SurveyId }, survey);
             }
         }
+
 
         // POST: api/ExperimenterApp/LoadSurvey
         [HttpPost("LoadSurvey")]
@@ -323,13 +309,18 @@ namespace Survey.API.Controllers
 
         // POST: api/ExperimenterApp/ImportSurvey
         [HttpPost("ImportSurvey")]
-        public async Task<ActionResult<DesignedSurvey>> ImportSurvey([FromBody] string xmlData)
+        public async Task<ActionResult<DesignedSurvey>> ImportSurvey([FromForm] IFormFile file)
         {
-            if (string.IsNullOrEmpty(xmlData))
+            if (file == null || file.Length == 0)
             {
-                return BadRequest("XML data cannot be null or empty");
+                return BadRequest("No file uploaded");
             }
-            var survey = XmlHelper.DeserializeFromXml<ExportSurvey>(xmlData);
+
+            using var stream = new MemoryStream();
+            await file.CopyToAsync(stream);
+            string xmlContent = Encoding.UTF8.GetString(stream.ToArray());
+
+            var survey = XmlHelper.DeserializeFromXml<ExportSurvey>(xmlContent);
             if (survey == null)
             {
                 return BadRequest("Invalid XML data");
@@ -373,7 +364,7 @@ namespace Survey.API.Controllers
             
             if (existingSurveyResult == null)
             {
-                return NotFound($"Survey with ID {survey.SurveyId} not found");
+                return NotFound($"This survey is yet to be completed.");
             }
             
             var csvData = new StringBuilder();
@@ -421,7 +412,7 @@ namespace Survey.API.Controllers
 
             if (existingSurveyResult == null)
             {
-                return NotFound($"Survey with ID {survey.SurveyId} not found");
+                return NotFound($"This survey is yet to be filled up.");
             }
 
             var csvData = new StringBuilder();

@@ -182,14 +182,16 @@ namespace Survey.API.Controllers
             var existingData = await _context.SurveyAnswer
                 .Include(sa => sa.SurveyCompletion)
                 .FirstOrDefaultAsync(s => s.QuestionnaireId == newsurveyAnswer.QuestionnaireId.Value
-                    && s.SurveyCompletion != null // Add null check for SurveyCompletion
+                    && s.SurveyCompletion != null
                     && s.SurveyCompletion.UserId == newsurveyAnswer.UserId.Value
                     && s.SurveyCompletion.SurveyId == newsurveyAnswer.SurveyId.Value);
 
             if (existingData == null)
             {
+
                 var newData = new SurveyCompletion
                 {
+                    SurveyCompletionId = 0,
                     SurveyId = newsurveyAnswer.SurveyId.Value,
                     UserId = newsurveyAnswer.UserId.Value,
                     SurveyCompletionDate = DateTime.Now,
@@ -199,8 +201,9 @@ namespace Survey.API.Controllers
                     [
                         new SurveyAnswer
                         {
-                            QuestionnaireId = newsurveyAnswer.QuestionnaireId.Value, 
-                            Answer = newsurveyAnswer.SurveyAnswer ?? string.Empty 
+                            SurveyAnswerId = 0,
+                            QuestionnaireId = newsurveyAnswer.QuestionnaireId.Value,
+                            Answer = newsurveyAnswer.SurveyAnswer ?? string.Empty
                         }
                     ]
                 };
@@ -209,7 +212,7 @@ namespace Survey.API.Controllers
             else
             {
                 existingData.Answer = newsurveyAnswer.SurveyAnswer ?? string.Empty; 
-                _context.Entry(existingData).State = EntityState.Modified;
+                //_context.Entry(existingData).State = EntityState.Modified;
             }
 
             try

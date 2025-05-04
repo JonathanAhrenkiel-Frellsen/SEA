@@ -89,7 +89,7 @@ namespace Survey.API.Controllers
                     existingUser.UserPassword = user.UserPassword;
                 }
                 existingUser.UserTypeId = user.UserTypeId;
-                _context.Entry(existingUser).State = EntityState.Modified;
+                //_context.Entry(existingUser).State = EntityState.Modified;
 
                 try
                 { 
@@ -150,11 +150,11 @@ namespace Survey.API.Controllers
         [HttpPost("DeleteUser")]
         public async Task<IActionResult> DeleteUser([FromBody] UserDto user)
         {
-            if (user == null || user.UserEmail == null || user.UserEmail == string.Empty)
+            if (user == null || user.UserId == null)
             {
                 return BadRequest("Invalid user data.");
             }
-            var existingUser = await _context.Users.FirstOrDefaultAsync(s => s.UserEmail == user.UserEmail);
+            var existingUser = await _context.Users.FirstOrDefaultAsync(s => s.UserId == user.UserId);
             if (existingUser == null)
             {
                 return NotFound("User not found.");

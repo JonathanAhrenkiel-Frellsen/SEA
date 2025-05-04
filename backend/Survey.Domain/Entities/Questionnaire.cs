@@ -21,7 +21,7 @@ namespace Survey.Domain.Entities
         [JsonIgnore]
         public virtual DesignedSurvey? Survey { get; set; }
         public virtual ICollection<MultipleChoice>? MultipleChoices { get; set; }
-
+        [JsonIgnore]
         public virtual ICollection<SurveyAnswer>? SurveyAnswers { get; set; }
 
         public Questionnaire()
