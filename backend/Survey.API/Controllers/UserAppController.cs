@@ -48,7 +48,7 @@ namespace Survey.API.Controllers
                 return BadRequest("User name, email, user type and password are required.");
             }
 
-            if (user.UserTypeId <= 0)
+            if (user.UserId <= 0)
             {
                 var searchUser = await _context.Users.FirstOrDefaultAsync(u => u.UserEmail == user.UserEmail);
                 if (searchUser != null)
