@@ -2,29 +2,22 @@ import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { useState } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import {
-    arrayMove,
     SortableContext,
-    useSortable,
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import {GripVertical, Trash2, ChevronDown, ChevronUp, SaveIcon, PlusIcon} from 'lucide-react';
+import {Trash2, ChevronDown, ChevronUp, SaveIcon, PlusIcon} from 'lucide-react';
 import { ArrowLeft, UploadIcon } from 'lucide-react';
 import { Button } from '../components/Buttons/Button'
 import {SortableItem} from "../components/SortableItem/SortableItem";
-
-type QuestionType = 'text' | 'checkbox';
-
-// TODO replace with DTO
-interface Question {
-    id: string;
-    type: QuestionType;
-    label: string;
-    options?: string[];
-}
+import {DesignedSurveyDto, MultipleChoiceDto, QuestionnaireDto} from "../../../shared/dto/DesignedSurveyDto";
+import {handleSaveSurvey} from "../api/surveyApi";
+import {useSelector} from "react-redux";
+import {selectToken, selectUser} from "../../auth/slices/authSlice";
+import {store} from "../../../app/store";
 
 interface SurveyForm {
     title: string;
-    questions: Question[];
+    questions: QuestionnaireDto[];
 }
 
 const SurveyEditorPage = () => {
@@ -57,10 +50,12 @@ const SurveyEditorPage = () => {
 
     const handleAddQuestion = () => {
         append({
-            id: `${Date.now()}`,
-            type: 'checkbox',
-            label: '',
-            options: [''],
+            SurveyId: 1,
+            MultipleChoices: [],
+            QuestionnaireId: Date.now(),
+            QuestionnaireTitle: '',
+            InputType: 'text',
+            Range: '',
         });
         setOpenStates((prev) => [...prev, true]);
     };
@@ -74,6 +69,30 @@ const SurveyEditorPage = () => {
     const handleDelete = (index: number) => {
         remove(index);
         setOpenStates((prev) => prev.filter((_, i) => i !== index));
+    };
+
+    const onSubmit = async (data: SurveyForm) => {
+        try {
+            const user = selectUser(store.getState())
+
+            // Map SurveyForm to your DTO format if needed
+            const surveyDto: DesignedSurveyDto = {
+                SurveyId: undefined,
+                SurveyTitle: data.title,
+                SurveyDescription: '',
+                StartDate: new Date(),
+                EndDate: new Date(),
+                UserId: user.userId,
+                SurveyTypeId: 1,
+                PrivateKey: undefined,
+                Questionnaires: data.questions
+            };
+
+            await handleSaveSurvey(surveyDto);
+            alert('Survey saved!');
+        } catch (error) {
+            console.error('Failed to submit survey:', error);
+        }
     };
 
     return (
@@ -103,13 +122,13 @@ const SurveyEditorPage = () => {
                             <div className="border border-white w-full p-3 flex flex-col gap-2">
                                 <div className="flex justify-between items-center">
                                     <input
-                                        {...register(`questions.${index}.label`)}
+                                        {...register(`questions.${index}.QuestionnaireTitle`)}
                                         placeholder="Question title"
                                         className="bg-transparent text-white flex-1 outline-none"
                                     />
                                     <div className="flex items-center gap-2">
                                         <select
-                                            {...register(`questions.${index}.type`)}
+                                            {...register(`questions.${index}.InputType`)}
                                             className="bg-main p-1 appearance-none"
                                         >
                                             <option value="checkbox" className="bg-main text-white">
@@ -132,21 +151,24 @@ const SurveyEditorPage = () => {
                                     </div>
                                 </div>
 
-                                {openStates[index] && watch(`questions.${index}.type`) === 'checkbox' && (
+                                {openStates[index] && watch(`questions.${index}.InputType`) === 'checkbox' && (
                                     <Controller
                                         control={control}
-                                        name={`questions.${index}.options`}
+                                        name={`questions.${index}.MultipleChoices`}
                                         render={({ field }) => (
                                             <div className="flex flex-col gap-2 mt-2">
-                                                {field.value?.map((opt: string, optIdx: number) => (
+                                                {field.value?.map((opt: MultipleChoiceDto, optIdx: number) => (
                                                     <input
                                                         key={optIdx}
-                                                        value={opt}
+                                                        value={opt.MultipleChoiceName}
                                                         onChange={(e) => {
                                                             if (field.value === undefined) return;
 
                                                             const updated = [...(field.value)];
-                                                            updated[optIdx] = e.target.value;
+                                                            updated[optIdx] = {
+                                                                ...updated[optIdx],
+                                                                MultipleChoiceName: e.target.value,
+                                                            };
                                                             field.onChange(updated);
                                                         }}
                                                         className="bg-transparent text-white border border-white p-2 outline-none"
@@ -168,13 +190,12 @@ const SurveyEditorPage = () => {
                                     />
                                 )}
 
-                                {openStates[index] && watch(`questions.${index}.type`) === 'text' && (
+                                {openStates[index] && watch(`questions.${index}.InputType`) === 'text' && (
                                     <div className="mt-2">
                                         <p className="text-sm text-white/70">Text answer preview:</p>
                                         <textarea
                                             className="bg-transparent text-white border border-white p-2 w-full resize-none outline-none"
                                             placeholder="User will write here..."
-                                            disabled
                                         />
                                     </div>
                                 )}
@@ -191,7 +212,7 @@ const SurveyEditorPage = () => {
             <div className="mt-10 flex justify-between items-center">
                 <Button text="Delete Survey" icon={<Trash2 size={16} />} type="delete" onClick={() => window.location.href = '/surveys'} />
                 <div className="flex gap-2">
-                    <Button text={"Save Survey"} type={'primary'} icon={<SaveIcon size={16} />} onClick={() => window.location.href = '/surveys'}/>
+                    <Button text={"Save Survey"} type={'primary'} icon={<SaveIcon size={16} />} onClick={handleSubmit(onSubmit)} />
 
                     <Button text={'Export Survey'} type={'secondary'} icon={<UploadIcon size={16} />} onClick={() => window.location.href = '/surveys'}/>
                 </div>

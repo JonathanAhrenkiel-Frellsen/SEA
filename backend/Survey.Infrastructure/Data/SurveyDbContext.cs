@@ -11,6 +11,7 @@ public class SurveyDbContext : DbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<UserType> UserTypes => Set<UserType>();
     public DbSet<SurveyCompletion> SurveyCompletion => Set<SurveyCompletion>();
+    public DbSet<SurveyCompletionType> SurveyCompletionTypes { get; set; }
     public DbSet<DesignedSurvey> Surveys => Set<DesignedSurvey>();
     public DbSet<SurveyType> SurveyTypes => Set<SurveyType>();
     //public DbSet<SurveyPrivateKey> SurveyPrivateKeys => Set<SurveyPrivateKey>();    

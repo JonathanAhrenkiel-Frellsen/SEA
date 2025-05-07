@@ -1,5 +1,8 @@
-﻿using System.Text;
+﻿using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
 using System.Xml.Serialization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Survey.Application;
@@ -13,9 +16,13 @@ namespace Survey.API.Controllers
     public class ExperimenterAppController : ControllerBase
     {
         private readonly SurveyDbContext _context;
-
-        public ExperimenterAppController(SurveyDbContext context)
+        private readonly ILogger<ExperimenterAppController> _logger;
+        
+        public ExperimenterAppController(
+            ILogger<ExperimenterAppController> logger,
+            SurveyDbContext context)
         {
+            _logger = logger;
             _context = context;
         }
 
@@ -45,79 +52,80 @@ namespace Survey.API.Controllers
 
         // POST: api/ExperimenterApp/SaveSurvey
         [HttpPost("SaveSurvey")]
-        public async Task<ActionResult<DesignedSurvey>> SaveSurvey(DesignedSurvey survey)
+        public async Task<ActionResult<DesignedSurvey>> SaveSurvey([FromBody] DesignedSurveyDto surveyDto)
         {
-            if (survey == null || survey.Questionnaires == null)
+            if (surveyDto == null || surveyDto.Questionnaires == null)
             {
                 return BadRequest("Survey data or questionnaires cannot be null");
             }
 
-            if (survey.StartDate > survey.EndDate)
+            if (surveyDto.StartDate > surveyDto.EndDate)
             {
                 return BadRequest("Start date cannot be greater than end date");
             }
 
-            if (survey.SurveyId > 0)
+            if (surveyDto.SurveyId > 0)
             {
-                // Check if the survey already exists
                 var existingSurvey = await _context.Surveys
                     .Include(s => s.Questionnaires)
                         .ThenInclude(q => q.MultipleChoices)
-                    .FirstOrDefaultAsync(s => s.SurveyId == survey.SurveyId);
+                    .FirstOrDefaultAsync(s => s.SurveyId == surveyDto.SurveyId);
 
                 if (existingSurvey == null)
                 {
-                    return NotFound($"Survey with ID {survey.SurveyId} not found");
+                    return NotFound($"Survey with ID {surveyDto.SurveyId} not found");
                 }
 
-                //if (existingSurvey.EndDate < DateTime.Now)
-                //{
-                //    return BadRequest("Cannot update a survey that has already ended");
-                //}
+                existingSurvey.SurveyTitle = surveyDto.SurveyTitle;
+                existingSurvey.SurveyDescription = surveyDto.SurveyDescription;
+                existingSurvey.StartDate = surveyDto.StartDate;
+                existingSurvey.EndDate = surveyDto.EndDate;
+                existingSurvey.SurveyTypeId = surveyDto.SurveyTypeId;
+                existingSurvey.UserId = surveyDto.UserId;
 
-                // Update survey properties
-                existingSurvey.SurveyTitle = survey.SurveyTitle;
-                existingSurvey.SurveyDescription = survey.SurveyDescription;
-                existingSurvey.StartDate = survey.StartDate;
-                existingSurvey.EndDate = survey.EndDate;
-                existingSurvey.SurveyTypeId = survey.SurveyTypeId;
-                existingSurvey.UserId = survey.UserId;
-
-                // Update or add questionnaires
-                foreach (var questionnaire in survey.Questionnaires)
+                foreach (var qDto in surveyDto.Questionnaires)
                 {
                     var existingQuestionnaire = existingSurvey.Questionnaires
-                        .FirstOrDefault(q => q.QuestionnaireId == questionnaire.QuestionnaireId);
+                        .FirstOrDefault(q => q.QuestionnaireId == qDto.QuestionnaireId);
 
                     if (existingQuestionnaire != null)
                     {
-                        // Update existing questionnaire
-                        existingQuestionnaire.QuestionnaireTitle = questionnaire.QuestionnaireTitle;
-                        existingQuestionnaire.InputType = questionnaire.InputType;
-                        existingQuestionnaire.Range = questionnaire.Range;
+                        existingQuestionnaire.QuestionnaireTitle = qDto.QuestionnaireTitle;
+                        existingQuestionnaire.InputType = qDto.InputType;
+                        existingQuestionnaire.Range = qDto.Range;
 
-                            // Update or add multiple choices
-                            foreach (var multipleChoice in questionnaire.MultipleChoices ?? [])
+                        foreach (var mcDto in qDto.MultipleChoices ?? new List<MultipleChoiceDto>())
+                        {
+                            var existingMc = existingQuestionnaire.MultipleChoices?
+                                .FirstOrDefault(mc => mc.MultipleChoiceId == mcDto.MultipleChoiceId);
+
+                            if (existingMc != null)
                             {
-                                var existingMultipleChoice = existingQuestionnaire.MultipleChoices?.FirstOrDefault(mc => mc.MultipleChoiceId == multipleChoice.MultipleChoiceId);
-
-                                if (existingMultipleChoice != null)
+                                existingMc.MultipleChoiceName = mcDto.MultipleChoiceName;
+                            }
+                            else
+                            {
+                                existingQuestionnaire.MultipleChoices ??= new List<MultipleChoice>();
+                                existingQuestionnaire.MultipleChoices.Add(new MultipleChoice
                                 {
-                                    // Update existing multiple choice
-                                    existingMultipleChoice.MultipleChoiceName = multipleChoice.MultipleChoiceName;
-                                }
-                                else
-                                {
-                                // Add new multiple choice
-                                existingQuestionnaire.MultipleChoices ??= [];
-                                    existingQuestionnaire.MultipleChoices.Add(multipleChoice);
-                                }
+                                    MultipleChoiceName = mcDto.MultipleChoiceName
+                                });
                             }
                         }
+                    }
                     else
                     {
-                        // Add new questionnaire
-                        existingSurvey.Questionnaires.Add(questionnaire);
+                        existingSurvey.Questionnaires.Add(new Questionnaire
+                        {
+                            QuestionnaireTitle = qDto.QuestionnaireTitle,
+                            InputType = qDto.InputType,
+                            Range = qDto.Range,
+                            MultipleChoices = qDto.MultipleChoices?
+                                .Select(mc => new MultipleChoice
+                                {
+                                    MultipleChoiceName = mc.MultipleChoiceName
+                                }).ToList()
+                        });
                     }
                 }
 
@@ -134,20 +142,28 @@ namespace Survey.API.Controllers
             }
             else
             {
-                // Create a new survey
-                survey.SurveyId = 0;
-
-                foreach (var questionnaire in survey.Questionnaires)
+                var newSurvey = new DesignedSurvey
                 {
-                    questionnaire.QuestionnaireId = 0;
-
-                    foreach (var multipleChoice in questionnaire.MultipleChoices ?? new List<MultipleChoice>())
+                    SurveyTitle = surveyDto.SurveyTitle,
+                    SurveyDescription = surveyDto.SurveyDescription,
+                    StartDate = surveyDto.StartDate,
+                    EndDate = surveyDto.EndDate,
+                    SurveyTypeId = surveyDto.SurveyTypeId,
+                    UserId = surveyDto.UserId,
+                    PrivateKey = surveyDto.PrivateKey,
+                    Questionnaires = surveyDto.Questionnaires.Select(q => new Questionnaire
                     {
-                        multipleChoice.MultipleChoiceId = 0;
-                    }
-                }
+                        QuestionnaireTitle = q.QuestionnaireTitle,
+                        InputType = q.InputType,
+                        Range = q.Range,
+                        MultipleChoices = q.MultipleChoices?.Select(mc => new MultipleChoice
+                        {
+                            MultipleChoiceName = mc.MultipleChoiceName
+                        }).ToList()
+                    }).ToList()
+                };
 
-                _context.Surveys.Add(survey);
+                _context.Surveys.Add(newSurvey);
 
                 try
                 {
@@ -158,9 +174,10 @@ namespace Survey.API.Controllers
                     return BadRequest("Error occurred while saving the survey. Please try again.");
                 }
 
-                return CreatedAtAction(nameof(SaveSurvey), new { id = survey.SurveyId }, survey);
+                return CreatedAtAction(nameof(SaveSurvey), new { id = newSurvey.SurveyId }, newSurvey);
             }
         }
+
 
 
         // POST: api/ExperimenterApp/LoadSurvey
@@ -184,15 +201,37 @@ namespace Survey.API.Controllers
         }
 
         // GET: api/ExperimenterApp/GetPublicSurveys
+        [Authorize]
         [HttpGet("GetPublicSurveys")]
-        public async Task<ActionResult<IEnumerable<DesignedSurvey>>> GetPublicSurveys()
+        public async Task<ActionResult<IEnumerable<DesignedSurveyDto>>> GetPublicSurveys()
         {
-            var surveys = await _context.Surveys
-                .Where(s => s.SurveyTypeId == 1 && s.EndDate <= DateTime.Now)
-                .ToListAsync();
-            if (surveys == null || surveys.Count == 0)
+            var userIdClaim = User.FindFirst("UserId");
+            var isSuperUser = User.FindFirst("UserType")!.Value == "1";
+
+            if (userIdClaim == null)
             {
-                return NotFound("No public surveys found");
+                return Unauthorized("User ID claim not found in token.");
+            }
+
+            if (!int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return BadRequest("Invalid user ID in token.");
+            }
+
+            var query = _context.Surveys
+                .Where(s => s.EndDate <= DateTime.UtcNow);
+
+            if (!isSuperUser)
+            {
+                query = query.Where(s => s.UserId == userId);
+            }
+
+            var surveys = await query.ToListAsync();
+            
+
+            if (surveys.Count == 0)
+            {
+                return NotFound("No public surveys found for this user.");
             }
 
             var dto = surveys.Select(s => new DesignedSurveyDto
@@ -210,6 +249,7 @@ namespace Survey.API.Controllers
         }
 
         // GET: api/ExperimenterApp/GetPrivateSurveys
+        [Authorize]
         [HttpGet("GetPrivateSurveys")]
         public async Task<ActionResult<IEnumerable<DesignedSurvey>>> GetPrivateSurveys()
         {
@@ -309,15 +349,15 @@ namespace Survey.API.Controllers
 
         // POST: api/ExperimenterApp/ImportSurvey
         [HttpPost("ImportSurvey")]
-        public async Task<ActionResult<DesignedSurvey>> ImportSurvey([FromForm] IFormFile file)
+        public async Task<IActionResult> ImportSurvey([FromForm] ImportSurveyDto model)
         {
-            if (file == null || file.Length == 0)
+            if (model.File == null || model.File.Length == 0)
             {
                 return BadRequest("No file uploaded");
             }
 
             using var stream = new MemoryStream();
-            await file.CopyToAsync(stream);
+            await model.File.CopyToAsync(stream);
             string xmlContent = Encoding.UTF8.GetString(stream.ToArray());
 
             var survey = XmlHelper.DeserializeFromXml<ExportSurvey>(xmlContent);

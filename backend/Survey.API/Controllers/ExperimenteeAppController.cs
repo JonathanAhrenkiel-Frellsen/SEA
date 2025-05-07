@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Survey.Application;
 using Survey.Domain.Entities;
@@ -103,6 +104,7 @@ namespace Survey.API.Controllers
 
 
         // POST: api/ExperimenteeApp/LoadSurvey
+        [Authorize]
         [HttpPost("LoadSurvey")]
         public async Task<IActionResult> LoadSurvey([FromBody] ExperimenteeAppDto surveyLoadAnswer)
         {
