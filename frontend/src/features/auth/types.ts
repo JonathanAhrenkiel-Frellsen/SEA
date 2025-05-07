@@ -10,3 +10,10 @@ export interface LoginResponse {
 export interface LogoutResponse {
   message: string;
 }
+
+export interface ReduxUser {
+  UserId: number,
+  UserName: string;
+  UserEmail: string;
+  UserTypeId: number;
+}

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import {ReduxUser} from "../types";
 
 const authSlice = createSlice({
   name: 'auth',
@@ -14,8 +15,8 @@ const authSlice = createSlice({
     },
   },
   selectors: {
-    selectUser: (state): any => state.user,
-    selectToken: (state) => state.token,
+    selectUser: (state): ReduxUser | null => state.user,
+    selectToken: (state): string | null => state.token,
   }
 });
 

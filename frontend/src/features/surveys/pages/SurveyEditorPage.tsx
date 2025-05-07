@@ -1,5 +1,5 @@
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import {
     SortableContext,
@@ -10,10 +10,10 @@ import { ArrowLeft, UploadIcon } from 'lucide-react';
 import { Button } from '../components/Buttons/Button'
 import {SortableItem} from "../components/SortableItem/SortableItem";
 import {DesignedSurveyDto, MultipleChoiceDto, QuestionnaireDto} from "../../../shared/dto/DesignedSurveyDto";
-import {handleSaveSurvey} from "../api/surveyApi";
-import {useSelector} from "react-redux";
-import {selectToken, selectUser} from "../../auth/slices/authSlice";
+import {deleteSurvey, fetchSurvey, handleSaveSurvey} from "../api/surveyApi";
+import {selectUser} from "../../auth/slices/authSlice";
 import {store} from "../../../app/store";
+import {useNavigate, useParams} from "react-router-dom";
 
 interface SurveyForm {
     title: string;
@@ -21,6 +21,9 @@ interface SurveyForm {
 }
 
 const SurveyEditorPage = () => {
+    const { id } = useParams<{ id?: string }>();
+    const navigate = useNavigate();
+
     const { control, register, handleSubmit, watch, setValue } = useForm<SurveyForm>({
         defaultValues: {
             title: '',
@@ -52,7 +55,7 @@ const SurveyEditorPage = () => {
         append({
             SurveyId: 1,
             MultipleChoices: [],
-            QuestionnaireId: Date.now(),
+            QuestionnaireId: 0,
             QuestionnaireTitle: '',
             InputType: 'text',
             Range: '',
@@ -77,23 +80,53 @@ const SurveyEditorPage = () => {
 
             // Map SurveyForm to your DTO format if needed
             const surveyDto: DesignedSurveyDto = {
-                SurveyId: undefined,
+                SurveyId: id ? parseInt(id) : undefined,
                 SurveyTitle: data.title,
                 SurveyDescription: '',
                 StartDate: new Date(),
                 EndDate: new Date(),
-                UserId: user.userId,
+                UserId: user!.UserId,
                 SurveyTypeId: 1,
                 PrivateKey: undefined,
                 Questionnaires: data.questions
             };
 
             await handleSaveSurvey(surveyDto);
-            alert('Survey saved!');
+
+            navigate('/surveys')
         } catch (error) {
             console.error('Failed to submit survey:', error);
         }
     };
+
+    const onDelete = async () => {
+        await deleteSurvey(id!);
+
+        navigate('/surveys')
+    }
+
+    useEffect(() => {
+        if (!id) return;
+
+        const survey = fetchSurvey(id);
+
+        survey.then((data) => {
+            const questions = data.Questionnaires!.map((question) => ({
+                ...question,
+                QuestionnaireId: question.QuestionnaireId,
+                MultipleChoices: question.MultipleChoices.map((choice) => ({
+                    ...choice,
+                    MultipleChoiceId: choice.MultipleChoiceId,
+                })),
+            }));
+
+            setOpenStates(new Array(questions.length).fill(false));
+            setValue('questions', questions);
+            setValue('title', data.SurveyTitle || '');
+        }).catch((error) => {
+            console.error('Error fetching survey:', error);
+        });
+    }, [id]);
 
     return (
         <div className="min-h-screen bg-main text-white p-6 font-josefin">
@@ -196,6 +229,7 @@ const SurveyEditorPage = () => {
                                         <textarea
                                             className="bg-transparent text-white border border-white p-2 w-full resize-none outline-none"
                                             placeholder="User will write here..."
+                                            disabled
                                         />
                                     </div>
                                 )}
@@ -210,7 +244,7 @@ const SurveyEditorPage = () => {
             </div>
 
             <div className="mt-10 flex justify-between items-center">
-                <Button text="Delete Survey" icon={<Trash2 size={16} />} type="delete" onClick={() => window.location.href = '/surveys'} />
+                {id ? <Button text="Delete Survey" icon={<Trash2 size={16} />} type="delete" onClick={handleSubmit(onDelete)} /> : <p></p>}
                 <div className="flex gap-2">
                     <Button text={"Save Survey"} type={'primary'} icon={<SaveIcon size={16} />} onClick={handleSubmit(onSubmit)} />
 

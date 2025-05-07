@@ -51,7 +51,7 @@ namespace Survey.API.Controllers
         }
 
         // POST: api/ExperimenterApp/SaveSurvey
-        [HttpPost("SaveSurvey")]
+        [HttpPost("surveys")]
         public async Task<ActionResult<DesignedSurvey>> SaveSurvey([FromBody] DesignedSurveyDto surveyDto)
         {
             if (surveyDto == null || surveyDto.Questionnaires == null)
@@ -177,32 +177,42 @@ namespace Survey.API.Controllers
                 return CreatedAtAction(nameof(SaveSurvey), new { id = newSurvey.SurveyId }, newSurvey);
             }
         }
-
-
-
+        
         // POST: api/ExperimenterApp/LoadSurvey
-        [HttpPost("LoadSurvey")]
-        public async Task<ActionResult<DesignedSurvey>> LoadSurvey([FromBody] DesignedSurveyDto survey)
+        [Authorize]
+        [HttpGet("surveys/{id}")]
+        public async Task<ActionResult<DesignedSurvey>> LoadSurvey(int id)
         {
-            if (survey == null || survey.SurveyId <= 0)
+            var userId = User.FindFirst("UserId")!.Value;
+            var isSuperUser = User.FindFirst("UserType")!.Value == "1";
+
+            if (id <= 0)
             {
-                return BadRequest("Invalid survey data");
+                return BadRequest("Invalid survey ID");
             }
+
             var existingSurvey = await _context.Surveys
                 .Include(s => s.Questionnaires)
-                    .ThenInclude(q => q.MultipleChoices)
+                .ThenInclude(q => q.MultipleChoices)
                 .Include(s => s.SurveyType)
-                .FirstOrDefaultAsync(s => s.SurveyId == survey.SurveyId);
+                .FirstOrDefaultAsync(s => s.SurveyId == id);
+            
             if (existingSurvey == null)
             {
-                return NotFound($"Survey with ID {survey.SurveyId} not found");
+                return NotFound($"Survey with ID {id} not found");
             }
+
+            if (!isSuperUser && userId != existingSurvey.UserId.ToString())
+            {
+                return Forbid();
+            }
+
             return Ok(existingSurvey);
         }
 
         // GET: api/ExperimenterApp/GetPublicSurveys
         [Authorize]
-        [HttpGet("GetPublicSurveys")]
+        [HttpGet("surveys")]
         public async Task<ActionResult<IEnumerable<DesignedSurveyDto>>> GetPublicSurveys()
         {
             var userIdClaim = User.FindFirst("UserId");
@@ -227,39 +237,6 @@ namespace Survey.API.Controllers
             }
 
             var surveys = await query.ToListAsync();
-            
-
-            if (surveys.Count == 0)
-            {
-                return NotFound("No public surveys found for this user.");
-            }
-
-            var dto = surveys.Select(s => new DesignedSurveyDto
-            {
-                SurveyId = s.SurveyId,
-                SurveyTitle = s.SurveyTitle,
-                SurveyDescription = s.SurveyDescription,
-                StartDate = s.StartDate,
-                EndDate = s.EndDate,
-                SurveyTypeId = s.SurveyTypeId,
-                UserId = s.UserId
-            }).ToList();
-
-            return Ok(dto);
-        }
-
-        // GET: api/ExperimenterApp/GetPrivateSurveys
-        [Authorize]
-        [HttpGet("GetPrivateSurveys")]
-        public async Task<ActionResult<IEnumerable<DesignedSurvey>>> GetPrivateSurveys()
-        {
-            var surveys = await _context.Surveys
-                .Where(s => s.SurveyTypeId == 2 && s.EndDate <= DateTime.Now)
-                .ToListAsync();
-            if (surveys == null || surveys.Count == 0)
-            {
-                return NotFound("No private surveys found");
-            }
 
             var dto = surveys.Select(s => new DesignedSurveyDto
             {
@@ -276,39 +253,47 @@ namespace Survey.API.Controllers
         }
 
         // POST: api/ExperimenterApp/DeleteSurvey
-        [HttpPost("DeleteSurvey")]
-        public async Task<ActionResult<DesignedSurvey>> DeleteSurvey(DesignedSurveyDto survey)
+        [HttpDelete("surveys/{id}")]
+        public async Task<ActionResult> DeleteSurvey(int id)
         {
-            if (survey == null)
-            {
-                return BadRequest("Data cannot be null");
-            }
-
-            if (survey.SurveyId <= 0)
+            var userId = User.FindFirst("UserId")!.Value;
+            var isSuperUser = User.FindFirst("UserType")!.Value == "1";
+            
+            if (id <= 0)
             {
                 return BadRequest("Invalid survey ID");
             }
 
             var existingSurvey = await _context.Surveys
                 .Include(s => s.Questionnaires)
-                    .ThenInclude(q => q.MultipleChoices)
-                .FirstOrDefaultAsync(s => s.SurveyId == survey.SurveyId);
+                .ThenInclude(q => q.MultipleChoices)
+                .FirstOrDefaultAsync(s => s.SurveyId == id);
 
             if (existingSurvey == null)
             {
-                return NotFound($"Survey with ID {survey.SurveyId} not found");
+                return NotFound($"Survey with ID {id} not found");
+            }
+
+            if (!isSuperUser && userId != existingSurvey.UserId.ToString())
+            {
+                return Forbid();
             }
 
             _context.Surveys.Remove(existingSurvey);
             await _context.SaveChangesAsync();
+
             return Ok("Survey has been deleted.");
         }
 
         // POST: api/ExperimenterApp/ExportSurvey
-        [HttpPost("ExportSurvey")]
-        public async Task<ActionResult<ExportSurvey>> ExportSurvey(DesignedSurveyDto survey)
+        [Authorize]
+        [HttpGet("ExportSurvey/:id")]
+        public async Task<ActionResult<ExportSurvey>> ExportSurvey(int id)
         {
-            if (survey == null || survey.SurveyId <= 0)
+            var userId = User.FindFirst("UserId")!.Value;
+            var isSuperUser = User.FindFirst("UserType")!.Value == "1";
+            
+            if (id <= 0)
             {
                 return BadRequest("Invalid survey data");
             }
@@ -316,10 +301,15 @@ namespace Survey.API.Controllers
                 .Include(s => s.SurveyType)
                 .Include(s => s.Questionnaires)
                     .ThenInclude(q => q.MultipleChoices)
-                .FirstOrDefaultAsync(s => s.SurveyId == survey.SurveyId);
+                .FirstOrDefaultAsync(s => s.SurveyId == id);
             if (existingSurvey == null)
             {
-                return NotFound($"Survey with ID {survey.SurveyId} not found");
+                return NotFound($"Survey with ID {id} not found");
+            }
+
+            if (!isSuperUser && userId != existingSurvey.UserId.ToString())
+            {
+                return Forbid();
             }
 
             var exportSurvey = new ExportSurvey

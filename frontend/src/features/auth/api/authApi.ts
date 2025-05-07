@@ -23,15 +23,11 @@ authAxios.interceptors.request.use(config => {
 export const login = async (credentials: LoginDto): Promise<UserDto> => {
   try {
     const response = await axios.post(`${AUTH_API_URL}/login`, credentials);
-    const { token } = response.data;
+    const { token, user } = response.data;
 
-    // Get user data
-    const userData = await getUserByEmail(credentials.UserEmail);
+    store.dispatch(setCredentials({ user: user, token }));
 
-    // Update Redux store
-    store.dispatch(setCredentials({ user: userData, token }));
-
-    return userData;
+    return user;
   } catch (error) {
     store.dispatch(logoutAction());
     throw error;
@@ -51,7 +47,7 @@ export const logout = async (): Promise<void> => {
 
 export const register = async (user: RegisterUserDto): Promise<UserDto> => {
   try {
-    const response = await axios.post(`${USER_API_URL}/SaveUser`, user);
+    const response = await axios.post(`${USER_API_URL}/user`, user);
 
     store.dispatch(setCredentials({user: user, token: response.data.token}))
 
@@ -61,42 +57,12 @@ export const register = async (user: RegisterUserDto): Promise<UserDto> => {
   }
 };
 
-export const getUserByEmail = async (email: string | undefined): Promise<UserDto> => {
-  if (!email) {
-    throw new Error('Email is required');
-  }
-
-  try {
-    const response = await authAxios.post(`${USER_API_URL}/GetUserByEmailId`, { UserEmail: email });
-
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching user by email:', error);
-    throw error;
-  }
-};
-
 export const getUserById = async (userId: number | undefined): Promise<UserDto> => {
   if (!userId) {
     throw new Error('User ID is required');
   }
 
-  const response = await authAxios.post(`${USER_API_URL}/GetUserById`, { UserId: userId });
-  return response.data;
-};
-
-export const updateUser = async (user: UserDto): Promise<UserDto> => {
-  const response = await authAxios.post(`${USER_API_URL}/SaveUser`, user);
-
-  // If updating the current user, update Redux store
-  const currentState = store.getState().auth;
-  if (currentState.user && (currentState.user as UserDto).UserId === user.UserId) {
-    store.dispatch(setCredentials({
-      user: response.data,
-      token: currentState.token
-    }));
-  }
-
+  const response = await authAxios.get(`${USER_API_URL}/user`);
   return response.data;
 };
 
@@ -105,7 +71,7 @@ export const deleteUser = async (userId: number | undefined): Promise<void> => {
     throw new Error('User ID is required');
   }
 
-  await authAxios.post(`${USER_API_URL}/DeleteUser`, { UserId: userId });
+  await authAxios.delete(`${USER_API_URL}/user`);
 
   // If deleting current user, logout
   const currentState = store.getState().auth;
