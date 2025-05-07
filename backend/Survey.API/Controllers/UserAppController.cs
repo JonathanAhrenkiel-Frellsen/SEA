@@ -93,7 +93,10 @@ namespace Survey.API.Controllers
 
                 if (user.UserPassword != null && user.UserPassword != string.Empty && user.UserPassword != "HIDDEN")
                 {
-                    existingUser.UserPassword = user.UserPassword;
+                    var hasher = new PasswordHasher<string>();
+                    var hashedPassword = hasher.HashPassword(string.Empty, user.UserPassword);
+
+                    user.UserPassword = hashedPassword; // Hash the password before saving
                 }
                 existingUser.UserTypeId = user.UserTypeId;
                 //_context.Entry(existingUser).State = EntityState.Modified;
