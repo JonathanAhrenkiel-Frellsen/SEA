@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Survey.Application;
 using Survey.Domain.Entities;
@@ -18,7 +19,7 @@ namespace Survey.API.Controllers
         }
 
         // GET: api/UserApp/GetAllUsers
-        [HttpGet("GetAllUsers")]
+        [HttpGet("users")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _context.Users.ToListAsync();
@@ -34,9 +35,8 @@ namespace Survey.API.Controllers
             return Ok(users);
         }
 
-        // POST: api/UserApp/SaveUser
-        [HttpPost("SaveUser")]
-        public async Task<IActionResult> SaveUser([FromBody] User user)
+        [HttpPost("user")]
+        public async Task<IActionResult> RegisterUser([FromBody] User user)
         {
             if (user == null)
             {
@@ -84,7 +84,7 @@ namespace Survey.API.Controllers
                 existingUser.UserName = user.UserName;
                 existingUser.UserEmail = user.UserEmail;
 
-                if (user.UserPassword != null && user.UserPassword != string.Empty && user.UserPassword != "HIDDEN")
+                if (user.UserPassword != string.Empty && user.UserPassword != "HIDDEN")
                 {
                     existingUser.UserPassword = user.UserPassword;
                 }
@@ -103,41 +103,19 @@ namespace Survey.API.Controllers
                 existingUser.UserPassword = "HIDDEN"; // Hide password
 
                 return Ok(existingUser);
-            }
-
-            else
+            } else
             {
                 return BadRequest("Specific user ID doesn't exist");
             }
         }
 
-        // POST: api/UserApp/GetUserByEmailId
-        [HttpPost("GetUserByEmailId")]
-        public async Task<IActionResult> GetUserByEmailId([FromBody] UserDto user)
+        [Authorize]
+        [HttpGet("user")]
+        public async Task<IActionResult> GetUserById()
         {
-            if (user == null || string.IsNullOrEmpty(user.UserEmail) || user.UserEmail == null)
-            {
-                return BadRequest("Invalid user email data.");
-            }
-            var existingUser = await _context.Users.FirstOrDefaultAsync(s => s.UserEmail == user.UserEmail);
-            if (existingUser == null)
-            {
-                return NotFound("User not found.");
-            }
-            existingUser.UserPassword = "HIDDEN"; // Hide password
-
-            return Ok(existingUser);
-        }
-
-        // POST: api/UserApp/GetUserById
-        [HttpPost("GetUserById")]
-        public async Task<IActionResult> GetUserById([FromBody] UserDto user)
-        {
-            if (user == null || user.UserId <= 0)
-            {
-                return BadRequest("Invalid user data.");
-            }
-            var existingUser = await _context.Users.FirstOrDefaultAsync(s => s.UserId == user.UserId);
+            var userId = User.FindFirst("UserId")!.Value;
+            
+            var existingUser = await _context.Users.FirstOrDefaultAsync(s => s.UserId.ToString() == userId);
             if (existingUser == null)
             {
                 return NotFound("User not found.");
@@ -146,8 +124,8 @@ namespace Survey.API.Controllers
             return Ok(existingUser);
         }
 
-        // POST: api/UserApp/DeleteUser
-        [HttpPost("DeleteUser")]
+        [Authorize]
+        [HttpDelete("user")]
         public async Task<IActionResult> DeleteUser([FromBody] UserDto user)
         {
             if (user == null || user.UserId == null)

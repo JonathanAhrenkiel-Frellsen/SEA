@@ -27,11 +27,25 @@ namespace Survey.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.UserEmail == model.UserEmail && u.UserPassword == model.Password);
-            if (user == null) return Unauthorized(new { message = "Invalid credentials" });
+            var user = await _context.Users
+                .SingleOrDefaultAsync(u => u.UserEmail == model.UserEmail && u.UserPassword == model.Password);
+
+            if (user == null)
+            {
+                return Unauthorized(new { message = "Invalid credentials" });
+            }
 
             var token = GenerateJwtToken(user);
-            return Ok(new { token });
+
+            var userDto = new
+            {
+                user.UserId,
+                user.UserEmail,
+                user.UserName,
+                user.UserType
+            };
+
+            return Ok(new { token, user = userDto });
         }
 
         [HttpPost("logout")]

@@ -6,12 +6,30 @@ using Microsoft.IdentityModel.Tokens;
 using Survey.Application;
 using Survey.Infrastructure.Data;
 using SurveyDbContext = Survey.Infrastructure.Data.SurveyDbContext;
+using Survey.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-// builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+    });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -22,14 +40,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 Console.WriteLine("Connection string: " + connectionString);
 
-// Ensure the Microsoft.EntityFrameworkCore.SqlServer package is installed in your project
-// You can install it using the following command in the terminal:
-// dotnet add package Microsoft.EntityFrameworkCore.SqlServer
-
 builder.Services.AddDbContext<SurveyDbContext>(options =>
     options.UseNpgsql(connectionString));
-//builder.Services.AddDbContext<SurveyDbContext>(options =>
-// options.UseSqlServer(connectionString));
 
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
@@ -43,9 +55,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         var jwtSecret = builder.Configuration["JwtSettings:Secret"];
-        if (string.IsNullOrEmpty(jwtSecret))
+        if (jwtSecret == null) 
+            throw new InvalidOperationException("JwtSettings configuration is missing or invalid.");
+        
+        var keyBytes = Encoding.UTF8.GetBytes(jwtSecret);
+
+        if (keyBytes.Length < 32)
         {
-            throw new InvalidOperationException("JwtSettings:Secret is not configured in the application settings.");
+            throw new InvalidOperationException("JwtSettings:Secret must be at least 256 bits (32 bytes).");
         }
 
         options.TokenValidationParameters = new TokenValidationParameters
@@ -56,32 +73,30 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
             ValidAudience = builder.Configuration["JwtSettings:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
+            IssuerSigningKey = new SymmetricSecurityKey(keyBytes)
         };
     });
 
 builder.Services.AddAuthorization();
 
-
 var app = builder.Build();
 
-// if (app.Environment.IsDevelopment())
-// {
-//     app.UseSwagger();
-//     app.UseSwaggerUI();
-// }
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-app.MapGet("/test-db", async (SurveyDbContext db) =>
+using (var scope = app.Services.CreateScope())
 {
-    var count = await db.UserTypes.CountAsync();
-    return Results.Ok($"Survey table contains {count} entries.");
-});
-
-
-
+    var services = scope.ServiceProvider;
+    services.MigrateAndSeed();
+}
 
 app.Run();

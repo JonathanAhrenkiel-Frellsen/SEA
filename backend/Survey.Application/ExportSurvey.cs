@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Survey.Application
 {
@@ -23,6 +24,11 @@ namespace Survey.Application
         public string InputType { get; set; } = string.Empty;
         public string Range { get; set; } = string.Empty;
         public List<ExportMultipleChoice> Options { get; set; } = [];
+    }
+    
+    public class ImportSurveyDto
+    {
+        public IFormFile File { get; set; }
     }
 
     public class ExportMultipleChoice

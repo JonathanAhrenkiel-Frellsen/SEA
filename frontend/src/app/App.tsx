@@ -6,12 +6,13 @@ import Header from "../features/surveys/components/Header/Header";
 const App = () => {
     return (
         <>
+          <Router>
             <Header/>
             <div className={'w-full max-w-[1000px] sm:w-[90%] mx-auto mt-10'}>
-                <Router>
-                    <AppRoutes />
-                </Router>
+              <AppRoutes />
             </div>
+
+          </Router>
         </>
     );
 };
