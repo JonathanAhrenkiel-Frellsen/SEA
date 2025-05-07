@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Survey.Application;
 using Survey.Domain.Entities;
@@ -61,8 +62,14 @@ namespace Survey.API.Controllers
                     return BadRequest("User password is required.");
                 }
 
+                var hasher = new PasswordHasher<string>();
+                var hashedPassword = hasher.HashPassword(string.Empty, user.UserPassword);
+
+                user.UserPassword = hashedPassword; // Hash the password before saving
+
+                _context.Users.Add(user); // Add new user to the context
+
                 // Create new user
-                _context.Entry(user).State = EntityState.Added;
 
                 try
                 {

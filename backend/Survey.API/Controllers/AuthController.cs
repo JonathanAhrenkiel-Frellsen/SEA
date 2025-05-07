@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -27,8 +28,16 @@ namespace Survey.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.UserEmail == model.UserEmail && u.UserPassword == model.Password);
-            if (user == null) return Unauthorized(new { message = "Invalid credentials" });
+            if (model == null || model.UserEmail == null || model.Password == null)
+            {
+                return BadRequest("Invalid client request");
+            }
+
+            var hasher = new PasswordHasher<string>();
+            var hashedPassword = hasher.HashPassword(string.Empty, model.Password);
+
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.UserEmail == model.UserEmail && u.UserPassword == hashedPassword);
+            if (user == null) return Unauthorized("Invalid credentials");
 
             var token = GenerateJwtToken(user);
             return Ok(new { token });
