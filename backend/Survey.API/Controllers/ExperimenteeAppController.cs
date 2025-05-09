@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Survey.API.Attributes;
 using Survey.Application;
 using Survey.Domain.Entities;
 using SurveyDbContext = Survey.Infrastructure.Data.SurveyDbContext;
@@ -74,37 +75,9 @@ namespace Survey.API.Controllers
                 .ToListAsync();
             return Ok(surveys);
         }
-
-        // // POST: api/ExperimenteeApp/GetSurveybyPrivateKey
-        // [HttpPost("GetSurveybyPrivateKey")]
-        // public async Task<IActionResult> GetSurveybyPIN([FromBody] DesignedSurveyDto survey)
-        // {
-        //     if (survey == null || string.IsNullOrEmpty(survey.PrivateKey) || survey.UserId <= 0)
-        //     {
-        //         return NotFound("Invalid Private Key.");
-        //     }
-        //
-        //     var surveyData = await _context.Surveys
-        //         .FirstOrDefaultAsync(s => s.PrivateKey == survey.PrivateKey);
-        //
-        //     if (surveyData == null)
-        //     {
-        //         return NotFound("Invalid Private Key.");
-        //     }
-        //
-        //     var data = new ExperimenteeAppDto
-        //     {
-        //         SurveyId = surveyData.SurveyId,
-        //         UserId = survey.UserId
-        //     };
-        //
-        //     return Ok(LoadSurvey(data));
-        //
-        // }
-
-
-        // POST: api/ExperimenteeApp/LoadSurvey
+        
         [Authorize]
+        [Pincode] // needs the surveyId form the HttpGET!
         [HttpGet("LoadSurvey/{surveyId}")]
         public async Task<IActionResult> LoadSurvey(string surveyId)
         {

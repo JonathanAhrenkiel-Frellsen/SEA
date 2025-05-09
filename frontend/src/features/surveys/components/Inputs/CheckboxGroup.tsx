@@ -25,7 +25,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ name, options }) => {
                         type="checkbox"
                         checked={selectedValues.includes(option.MultipleChoiceId.toString())}
                         onChange={() => handleChange(option.MultipleChoiceId.toString())}
-                        className="w-4 h-4 border-2 border-white bg-transparent appearance-none checked:bg-white checked:border-white focus:outline-none"
+                        className="w-4 h-4 border-2 border-white bg-transparent appearance-none checked:bg-white checked:border-white focus:outline-none cursor-pointer"
                     />
                     {option.MultipleChoiceName}
                 </label>
