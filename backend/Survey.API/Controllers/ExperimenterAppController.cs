@@ -17,7 +17,7 @@ namespace Survey.API.Controllers
     {
         private readonly SurveyDbContext _context;
         private readonly ILogger<ExperimenterAppController> _logger;
-        
+
         public ExperimenterAppController(
             ILogger<ExperimenterAppController> logger,
             SurveyDbContext context)
@@ -177,7 +177,7 @@ namespace Survey.API.Controllers
                 return CreatedAtAction(nameof(SaveSurvey), new { id = newSurvey.SurveyId }, newSurvey);
             }
         }
-        
+
         // POST: api/ExperimenterApp/LoadSurvey
         [Authorize]
         [HttpGet("surveys/{id}")]
@@ -196,7 +196,7 @@ namespace Survey.API.Controllers
                 .ThenInclude(q => q.MultipleChoices)
                 .Include(s => s.SurveyType)
                 .FirstOrDefaultAsync(s => s.SurveyId == id);
-            
+
             if (existingSurvey == null)
             {
                 return NotFound($"Survey with ID {id} not found");
@@ -253,7 +253,7 @@ namespace Survey.API.Controllers
         {
             var userId = User.FindFirst("UserId")!.Value;
             var isSuperUser = User.FindFirst("UserType")!.Value == "1";
-            
+
             if (id <= 0)
             {
                 return BadRequest("Invalid survey ID");
@@ -287,7 +287,7 @@ namespace Survey.API.Controllers
         {
             var userId = User.FindFirst("UserId")!.Value;
             var isSuperUser = User.FindFirst("UserType")!.Value == "1";
-            
+
             if (id <= 0)
             {
                 return BadRequest("Invalid survey data");
@@ -386,12 +386,12 @@ namespace Survey.API.Controllers
                 .Include(a => a.SurveyAnswers)
                     .ThenInclude(q => q.Questionnaire)
                 .FirstOrDefaultAsync(s => s.SurveyId == survey.SurveyId && s.SurveyCompletionTypeId == 2);
-            
+
             if (existingSurveyResult == null)
             {
                 return NotFound($"This survey is yet to be completed.");
             }
-            
+
             var csvData = new StringBuilder();
 
             var header = "Expermintee Name, Expermintee Email, Completion Date";
@@ -402,7 +402,7 @@ namespace Survey.API.Controllers
             }
 
             csvData.AppendLine(header);
-                
+
 
             foreach (var answer in existingSurveyResult.SurveyAnswers)
             {
@@ -411,7 +411,7 @@ namespace Survey.API.Controllers
                 csvData.AppendLine(row);
             }
 
-            
+
 
             var bytes = Encoding.UTF8.GetBytes(csvData.ToString());
             var fileName = $"{existingSurveyResult.Survey?.SurveyTitle ?? "Unknown"}_Completed_Results.csv";

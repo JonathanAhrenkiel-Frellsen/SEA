@@ -49,8 +49,6 @@ export const register = async (user: RegisterUserDto): Promise<UserDto> => {
   try {
     const response = await axios.post(`${USER_API_URL}/user`, user);
 
-    console.log(response.data);
-
     store.dispatch(setCredentials({user: user, token: response.data.token}))
 
     return response.data;

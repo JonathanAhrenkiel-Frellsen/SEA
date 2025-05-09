@@ -168,7 +168,7 @@ namespace Survey.API.Controllers
         public async Task<IActionResult> SaveSurveyAnswers([FromBody] SurveySaveAnswerDto newSurveyAnswer)
         {
             var userId = User.FindFirst("UserId")!.Value;
-            
+
             if (newSurveyAnswer == null)
             {
                 return BadRequest("No survey answer data was passed");
@@ -206,7 +206,7 @@ namespace Survey.API.Controllers
             }
             else
             {
-                existingData.Answer = newSurveyAnswer.SurveyAnswer ?? string.Empty; 
+                existingData.Answer = newSurveyAnswer.SurveyAnswer ?? string.Empty;
             }
 
             try
@@ -227,7 +227,7 @@ namespace Survey.API.Controllers
         public async Task<IActionResult> CompleteSurvey([FromBody] SurveySaveAnswerDto newsurveyAnswer)
         {
             var userId = User.FindFirst("UserId")!.Value;
-            
+
             if (newsurveyAnswer == null)
             {
                 return BadRequest("No survey answer data was passed");
@@ -258,7 +258,7 @@ namespace Survey.API.Controllers
         public async Task<IActionResult> DeleteSavedSurvey(string surveyId)
         {
             var userId = User.FindFirst("UserId")!.Value;
-            
+
             var survey = await _context.Surveys
                 .FirstOrDefaultAsync(s => s.SurveyId.ToString() == surveyId);
 
