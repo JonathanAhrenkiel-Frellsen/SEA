@@ -12,10 +12,6 @@
 
 export interface SurveySaveAnswerDto {
     QuestionnaireId: number | undefined;
-    QuestionnaireTitle: string | undefined;
-    InputType: string | undefined;
-    Range: string | undefined;
     SurveyAnswer: string | undefined;
     SurveyId: number | undefined;
-    UserId: number | undefined;
 }

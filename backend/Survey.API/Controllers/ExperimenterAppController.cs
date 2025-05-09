@@ -202,11 +202,6 @@ namespace Survey.API.Controllers
                 return NotFound($"Survey with ID {id} not found");
             }
 
-            if (!isSuperUser && userId != existingSurvey.UserId.ToString())
-            {
-                return Forbid();
-            }
-
             return Ok(existingSurvey);
         }
 

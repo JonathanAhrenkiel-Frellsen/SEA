@@ -1,35 +1,111 @@
-import { useSelector, useDispatch } from 'react-redux';
 import CheckboxGroup from "../components/Inputs/CheckboxGroup";
 import TextArea from "../components/Inputs/TextArea";
 import {Button} from "../components/Buttons/Button";
 import {ArrowRight} from "lucide-react";
-import {RootState} from "../../../app/store";
-import {nextQuestion} from "../slices/surveyFlowSlice";
+import {useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {fetchSurvey, loadSurveyAnswers, saveSurveyAnswer} from "../api/surveyApi";
+import {DesignedSurveyDto, QuestionnaireDto} from "../../../shared/dto/DesignedSurveyDto";
+import {SurveySaveAnswerDto} from "../../../shared/dto/SurveySaveAnswerDto";
+import {resetSurveyAnswers, selectFieldValueById, setCheckboxValue, setTextValue} from "../slices/surveySlice";
+import {store} from "../../../app/store";
+import {useNavigate} from "react-router-dom";
+import {ExperimenteeAppDto} from "../../../shared/dto/ExperimenteeAppDto";
+import {useDispatch} from "react-redux";
 
 const QuestionPage = () => {
+    const [questions, setQuestions] = useState<QuestionnaireDto[]>([]);
+    const [title, setTitle] = useState<string>('');
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const { id } = useParams<{ id?: string }>();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { questions, currentQuestionIndex } = useSelector((state: RootState) => state.surveyFlow);
-    const currentQuestion = questions[currentQuestionIndex];
 
     const handleContinue = () => {
-        // Optional: Validate input before continuing
-        dispatch(nextQuestion());
+        const question = questions[currentQuestionIndex];
+        if (!question) return;
+
+        const answer = selectFieldValueById(store.getState().surveyForm, question.QuestionnaireId.toString());
+
+        const surveyAnswer: SurveySaveAnswerDto = {
+            SurveyId: id ? parseInt(id) : 0,
+            QuestionnaireId: question.QuestionnaireId,
+            SurveyAnswer: answer
+        };
+
+        saveSurveyAnswer(surveyAnswer).then(() => {
+            console.log('Saved answer successfully.');
+
+            if (currentQuestionIndex >= questions.length - 1) {
+                navigate(`/thank-you`);
+                return;
+            }
+
+            setCurrentQuestionIndex((prev) => prev + 1);
+        });
     };
+
+    useEffect(() => {
+        if (!id) return;
+
+        fetchSurvey(id).then((survey: DesignedSurveyDto) => {
+            if (!survey.Questionnaires) {
+                console.error("No questions found in the survey.");
+                return;
+            }
+
+            setCurrentQuestionIndex(0);
+
+            setQuestions(survey.Questionnaires);
+            setTitle(survey.SurveyTitle ?? '');
+        })
+
+        dispatch(resetSurveyAnswers())
+
+        loadSurveyAnswers(id).then((answers) => {
+            console.log(answers);
+
+            if (!answers.SurveyStoredAnwsers) {
+                console.error("No stored answers found.");
+                return;
+            }
+
+            for (const answer of answers.SurveyStoredAnwsers) {
+                if (answer.InputType === 'text') {
+                    dispatch(setTextValue({ name: answer.QuestionnaireId!.toString(), value: answer.SurveyAnswer! }));
+                }
+                else if (answer.InputType === 'checkbox') {
+                    if (!answer.SurveyAnswer) {
+                        continue;
+                    }
+
+                    const selectedValues = answer.SurveyAnswer?.split(', ') || [];
+                    dispatch(setCheckboxValue({ name: answer.QuestionnaireId!.toString(), value: selectedValues }));
+                }
+            }
+        });
+    }, [id]);
 
     return (
         <div>
-            <h1 className={'text-3xl font-bold mb-4'}>{currentQuestion.label}</h1>
-
-            {currentQuestion.type === 'checkbox' && currentQuestion.options && (
-                <CheckboxGroup
-                    name={currentQuestion.id}
-                    options={currentQuestion.options}
-                />
+            {questions[currentQuestionIndex] && (
+                <h1 className={'text-3xl font-bold mb-4'}>{title}</h1>
             )}
-            {currentQuestion.type === 'text' && (
+
+            {questions[currentQuestionIndex]?.InputType === 'checkbox' &&
+                questions[currentQuestionIndex]?.MultipleChoices && (
+                    <CheckboxGroup
+                        key={questions[currentQuestionIndex].QuestionnaireId}
+                        name={questions[currentQuestionIndex].QuestionnaireId.toString()}
+                        options={questions[currentQuestionIndex].MultipleChoices}
+                    />
+                )}
+
+            {questions[currentQuestionIndex]?.InputType === 'text' && (
                 <TextArea
-                    name={currentQuestion.id}
-                    label={currentQuestion.label}
+                    key={questions[currentQuestionIndex].QuestionnaireId}
+                    name={questions[currentQuestionIndex].QuestionnaireId.toString()}
+                    label={questions[currentQuestionIndex].QuestionnaireTitle}
                     placeholder={'Type your answer here'}
                 />
             )}

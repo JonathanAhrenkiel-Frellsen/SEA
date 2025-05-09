@@ -26,12 +26,12 @@ export interface MultipleChoiceDto {
 
 export interface DesignedSurveyDto {
     SurveyId: number | undefined;
-    SurveyTitle: string | undefined;
-    SurveyDescription: string | undefined;
-    StartDate: Date | undefined;
-    EndDate: Date | undefined;
-    SurveyTypeId: number | undefined;
+    SurveyTitle: string;
+    SurveyDescription: string;
+    StartDate: Date;
+    EndDate: Date;
+    SurveyTypeId: number;
     PrivateKey: string | undefined;
-    UserId: number | undefined;
+    UserId: number;
     Questionnaires: QuestionnaireDto[] | undefined;
 }

@@ -23,7 +23,6 @@ namespace Survey.API.Controllers
             _jwtSettings = jwtSettings;
         }
 
-
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
