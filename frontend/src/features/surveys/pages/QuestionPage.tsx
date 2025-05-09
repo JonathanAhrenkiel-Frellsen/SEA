@@ -27,15 +27,23 @@ const QuestionPage = () => {
 
         const answer = selectFieldValueById(store.getState().surveyForm, question.QuestionnaireId.toString());
 
+        const isAnswerEmpty =
+          question.InputType === 'text'
+            ? !answer || answer.trim() === ''
+            : !answer || (Array.isArray(answer) && answer.length === 0);
+
+        if (isAnswerEmpty) {
+            alert("Please answer the question before continuing.");
+            return;
+        }
+
         const surveyAnswer: SurveySaveAnswerDto = {
             SurveyId: id ? parseInt(id) : 0,
             QuestionnaireId: question.QuestionnaireId,
-            SurveyAnswer: answer
+            SurveyAnswer: Array.isArray(answer) ? answer.join(', ') : answer
         };
 
         saveSurveyAnswer(surveyAnswer).then(() => {
-            console.log('Saved answer successfully.');
-
             if (currentQuestionIndex >= questions.length - 1) {
                 navigate(`/thank-you`);
                 return;
@@ -63,8 +71,6 @@ const QuestionPage = () => {
         dispatch(resetSurveyAnswers())
 
         loadSurveyAnswers(id).then((answers) => {
-            console.log(answers);
-
             if (!answers.SurveyStoredAnwsers) {
                 console.error("No stored answers found.");
                 return;
@@ -83,6 +89,15 @@ const QuestionPage = () => {
                     dispatch(setCheckboxValue({ name: answer.QuestionnaireId!.toString(), value: selectedValues }));
                 }
             }
+
+            const questionIndex = answers.SurveyStoredAnwsers.filter(survey => survey.SurveyAnswer !== "").length;
+
+            if (questionIndex >= answers.SurveyStoredAnwsers.length - 1) {
+                navigate(`/thank-you`);
+                return;
+            }
+
+            setCurrentQuestionIndex(questionIndex)
         });
     }, [id]);
 
