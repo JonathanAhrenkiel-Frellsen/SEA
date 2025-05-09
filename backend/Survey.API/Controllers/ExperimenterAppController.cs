@@ -5,6 +5,7 @@ using System.Xml.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Survey.API.Attributes;
 using Survey.Application;
 using Survey.Domain.Entities;
 using SurveyDbContext = Survey.Infrastructure.Data.SurveyDbContext;
@@ -180,12 +181,10 @@ namespace Survey.API.Controllers
 
         // POST: api/ExperimenterApp/LoadSurvey
         [Authorize]
+        [Pincode] // needs the surveyId form the HttpGET!
         [HttpGet("surveys/{id}")]
         public async Task<ActionResult<DesignedSurvey>> LoadSurvey(int id)
         {
-            var userId = User.FindFirst("UserId")!.Value;
-            var isSuperUser = User.FindFirst("UserType")!.Value == "1";
-
             if (id <= 0)
             {
                 return BadRequest("Invalid survey ID");

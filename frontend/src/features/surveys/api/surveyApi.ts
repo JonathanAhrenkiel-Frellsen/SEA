@@ -8,12 +8,12 @@ import { ExperimenteeAppDto } from "../../../shared/dto/ExperimenteeAppDto";
 const EXPERIMENTER_API_URL = `${process.env.REACT_APP_BASE_URL}/api/ExperimenterApp`;
 const EXPERIMENTEE_API_URL = `${process.env.REACT_APP_BASE_URL}/api/ExperimenteeApp`;
 
-export const handleSaveSurvey = async (survey: DesignedSurveyDto): Promise<void> => {
+export const handleSaveSurvey = async (survey: DesignedSurveyDto): Promise<DesignedSurveyDto | undefined> => {
   try {
     const response = await axios.post(`${EXPERIMENTER_API_URL}/surveys`, survey);
 
     if (response.status === 200 || response.status === 201) {
-      console.log('Survey saved successfully:', response.data);
+      return response.data;
     } else {
       console.warn('Unexpected response:', response.status, response.data);
     }
@@ -26,7 +26,7 @@ export const handleSaveSurvey = async (survey: DesignedSurveyDto): Promise<void>
   }
 };
 
-export const fetchSurvey = async (surveyId: string): Promise<DesignedSurveyDto> => {
+export const fetchSurvey = async (surveyId: string, pinCode: string | undefined): Promise<DesignedSurveyDto> => {
   const jwt_token = selectToken(store.getState());
 
   if (!jwt_token) {
@@ -37,6 +37,7 @@ export const fetchSurvey = async (surveyId: string): Promise<DesignedSurveyDto> 
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${jwt_token}`,
+      'X-Survey-Pin': pinCode || '',
       'Content-Type': 'application/json'
     }
   });
@@ -119,7 +120,7 @@ export const saveSurveyAnswer = async (surveyAnswer: SurveySaveAnswerDto): Promi
   return;
 }
 
-export const loadSurveyAnswers = async (surveyId: string): Promise<ExperimenteeAppDto> => {
+export const loadSurveyAnswers = async (surveyId: string, pin: string | undefined): Promise<ExperimenteeAppDto> => {
   const jwt_token = selectToken(store.getState());
 
   if (!jwt_token) {
@@ -131,6 +132,7 @@ export const loadSurveyAnswers = async (surveyId: string): Promise<ExperimenteeA
     headers: {
       'Authorization': `Bearer ${jwt_token}`,
       'Content-Type': 'application/json',
+      'X-Survey-Pin': pin || '',
     },
   });
 

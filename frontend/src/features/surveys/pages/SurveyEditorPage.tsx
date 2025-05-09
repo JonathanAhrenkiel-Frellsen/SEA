@@ -1,5 +1,5 @@
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import {
     SortableContext,
@@ -14,19 +14,24 @@ import {deleteSurvey, fetchSurvey, handleSaveSurvey} from "../api/surveyApi";
 import {selectUser} from "../../auth/slices/authSlice";
 import {store} from "../../../app/store";
 import {useNavigate, useParams} from "react-router-dom";
+import CopyBox from "../components/CopyBox/CopyBox";
 
 interface SurveyForm {
     title: string;
+    isPrivate: boolean;
     questions: QuestionnaireDto[];
 }
 
 const SurveyEditorPage = () => {
     const { id } = useParams<{ id?: string }>();
     const navigate = useNavigate();
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [surveyResponse, setSurveyResponse] = useState<DesignedSurveyDto | null>(null);
 
     const { control, register, handleSubmit, watch, setValue } = useForm<SurveyForm>({
         defaultValues: {
             title: '',
+            isPrivate: false,
             questions: [],
         },
     });
@@ -87,13 +92,16 @@ const SurveyEditorPage = () => {
                 EndDate: new Date(),
                 UserId: user!.UserId,
                 SurveyTypeId: 1,
-                PrivateKey: undefined,
+                PrivateKey: data.isPrivate ? Math.floor(1000 + Math.random() * 9000).toString() : '',
                 Questionnaires: data.questions
             };
 
-            await handleSaveSurvey(surveyDto);
+            const survey: DesignedSurveyDto | undefined = await handleSaveSurvey(surveyDto);
 
-            navigate('/surveys')
+            if (survey) {
+                setShowSuccessModal(true);
+                setSurveyResponse(survey);
+            }
         } catch (error) {
             console.error('Failed to submit survey:', error);
         }
@@ -108,7 +116,7 @@ const SurveyEditorPage = () => {
     useEffect(() => {
         if (!id) return;
 
-        const survey = fetchSurvey(id);
+        const survey = fetchSurvey(id, undefined);
 
         survey.then((data) => {
             const questions = data.Questionnaires!.map((question) => ({
@@ -122,6 +130,7 @@ const SurveyEditorPage = () => {
 
             setOpenStates(new Array(questions.length).fill(false));
             setValue('questions', questions);
+            setValue('isPrivate', data.PrivateKey !== '');
             setValue('title', data.SurveyTitle || '');
         }).catch((error) => {
             console.error('Error fetching survey:', error);
@@ -140,6 +149,17 @@ const SurveyEditorPage = () => {
                 placeholder="Survey title"
                 className="bg-transparent border border-white p-2 text-lg font-semibold w-full mb-6 outline-none"
             />
+
+            <span className="flex items-center gap-2 text-white cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={watch('isPrivate')}
+                  onChange={(e) => setValue('isPrivate', e.target.checked)}
+                  className="w-4 h-4 border-2 border-white bg-transparent appearance-none checked:bg-white checked:border-white focus:outline-none cursor-pointer"
+                />
+                Is private
+            </span>
+
 
             <h2 className={'text-xl font-semibold mt-4'}>
                 Questions
@@ -239,7 +259,7 @@ const SurveyEditorPage = () => {
                 </SortableContext>
             </DndContext>
 
-            <div className={'bg-main relative w-80 flex flex-col gap-4 w-full mt-6'}>
+            <div className={'bg-main relative flex flex-col gap-4 w-full mt-6'}>
                 <Button text="Add Question" type="secondary" onClick={handleAddQuestion} icon={<PlusIcon size={16} />} />
             </div>
 
@@ -251,6 +271,23 @@ const SurveyEditorPage = () => {
                     <Button text={'Export Survey'} type={'secondary'} icon={<UploadIcon size={16} />} onClick={() => window.location.href = '/surveys'}/>
                 </div>
             </div>
+
+            {showSuccessModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                  <div className="bg-main text-white p-6 w-96 text-center">
+                      <h2 className="text-2xl font-semibold mb-4">Survey Saved!</h2>
+                      <p className="mb-6">Your survey was saved successfully. You can now return to the survey list.</p>
+                      <CopyBox value={`${window.location.origin}/${surveyResponse!.SurveyId}/questions?pinCode=${surveyResponse!.PrivateKey != null}`} />
+
+                      {surveyResponse?.PrivateKey && surveyResponse.PrivateKey !== '' && (
+                        <CopyBox label="Private Key:" value={surveyResponse.PrivateKey} />
+                      )}
+                      <div className={'float-end'}>
+                        <Button text="Go to Surveys" type="primary" onClick={() => navigate('/surveys')} />
+                      </div>
+                  </div>
+              </div>
+            )}
         </div>
     );
 };
