@@ -2,12 +2,15 @@ import {DesignedSurveyDto} from "../../../shared/dto/DesignedSurveyDto";
 import axios from "axios";
 import {selectToken} from "../../auth/slices/authSlice";
 import {store} from "../../../app/store";
+import {SurveySaveAnswerDto} from "../../../shared/dto/SurveySaveAnswerDto";
+import { ExperimenteeAppDto } from "../../../shared/dto/ExperimenteeAppDto";
 
-const AUTH_API_URL = `${process.env.REACT_APP_BASE_URL}/api/ExperimenterApp`;
+const EXPERIMENTER_API_URL = `${process.env.REACT_APP_BASE_URL}/api/ExperimenterApp`;
+const EXPERIMENTEE_API_URL = `${process.env.REACT_APP_BASE_URL}/api/ExperimenteeApp`;
 
 export const handleSaveSurvey = async (survey: DesignedSurveyDto): Promise<void> => {
   try {
-    const response = await axios.post(`${AUTH_API_URL}/surveys`, survey);
+    const response = await axios.post(`${EXPERIMENTER_API_URL}/surveys`, survey);
 
     if (response.status === 200 || response.status === 201) {
       console.log('Survey saved successfully:', response.data);
@@ -30,7 +33,7 @@ export const fetchSurvey = async (surveyId: string): Promise<DesignedSurveyDto> 
     throw new Error("JWT token not available");
   }
 
-  const response = await fetch(`${AUTH_API_URL}/surveys/${surveyId}`, {
+  const response = await fetch(`${EXPERIMENTER_API_URL}/surveys/${surveyId}`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${jwt_token}`,
@@ -54,7 +57,7 @@ export const deleteSurvey = async (surveyId: string): Promise<void> => {
     throw new Error("JWT token not available");
   }
 
-  const response = await fetch(`${AUTH_API_URL}/surveys/${surveyId}`, {
+  const response = await fetch(`${EXPERIMENTER_API_URL}/surveys/${surveyId}`, {
     method: 'DELETE',
     headers: {
       'Authorization': `Bearer ${jwt_token}`,
@@ -75,7 +78,7 @@ export const fetchSurveys = async (): Promise<DesignedSurveyDto[]> => {
     throw new Error("JWT token not available");
   }
 
-  const response = await fetch(`${AUTH_API_URL}/surveys`, {
+  const response = await fetch(`${EXPERIMENTER_API_URL}/surveys`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${jwt_token}`,
@@ -91,3 +94,50 @@ export const fetchSurveys = async (): Promise<DesignedSurveyDto[]> => {
   const data = await response.json();
   return data as DesignedSurveyDto[];
 };
+
+export const saveSurveyAnswer = async (surveyAnswer: SurveySaveAnswerDto): Promise<void> => {
+  const jwt_token = selectToken(store.getState());
+
+  if (!jwt_token) {
+    throw new Error("JWT token not available");
+  }
+
+  const response = await fetch(`${EXPERIMENTEE_API_URL}/SaveSurveyAnswer`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${jwt_token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(surveyAnswer),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to fetch surveys: ${response.status} ${errorText}`);
+  }
+
+  return;
+}
+
+export const loadSurveyAnswers = async (surveyId: string): Promise<ExperimenteeAppDto> => {
+  const jwt_token = selectToken(store.getState());
+
+  if (!jwt_token) {
+    throw new Error("JWT token not available");
+  }
+
+  const response = await fetch(`${EXPERIMENTEE_API_URL}/LoadSurvey/${surveyId}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${jwt_token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to fetch surveys: ${response.status} ${errorText}`);
+  }
+
+  return response.json();
+}

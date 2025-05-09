@@ -12,15 +12,19 @@ const surveySlice = createSlice({
     reducers: {
         setCheckboxValue: (
             state,
-            action: PayloadAction<{ name: string; value: string }>
+            action: PayloadAction<{ name: string; value: string | string[] }>
         ) => {
             const { name, value } = action.payload;
             if (!state[name]) state[name] = [];
 
-            if (state[name].includes(value)) {
-                state[name] = (state[name] as string[]).filter((v) => v !== value);
+            if (typeof value === 'string') {
+                if (state[name].includes(value)) {
+                    state[name] = (state[name] as string[]).filter((v) => v !== value);
+                } else {
+                    (state[name] as string[]).push(value);
+                }
             } else {
-                (state[name] as string[]).push(value);
+                state[name] = value;
             }
         },
         setTextValue: (
@@ -29,8 +33,19 @@ const surveySlice = createSlice({
         ) => {
             state[action.payload.name] = action.payload.value;
         },
+        resetSurveyAnswers: (state) => {
+            Object.keys(state).forEach(key => delete state[key]);
+        }
     },
 });
 
-export const { setCheckboxValue, setTextValue } = surveySlice.actions;
+export const selectFieldValueById = (state: SurveyState, id: string): string => {
+    const value = state[id];
+    if (Array.isArray(value)) {
+        return value.join(', ');
+    }
+    return value ?? '';
+};
+
+export const { setCheckboxValue, setTextValue, resetSurveyAnswers } = surveySlice.actions;
 export default surveySlice.reducer;

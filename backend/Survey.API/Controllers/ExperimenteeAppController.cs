@@ -75,48 +75,45 @@ namespace Survey.API.Controllers
             return Ok(surveys);
         }
 
-        // POST: api/ExperimenteeApp/GetSurveybyPrivateKey
-        [HttpPost("GetSurveybyPrivateKey")]
-        public async Task<IActionResult> GetSurveybyPIN([FromBody] DesignedSurveyDto survey)
-        {
-            if (survey == null || string.IsNullOrEmpty(survey.PrivateKey) || survey.UserId <= 0)
-            {
-                return NotFound("Invalid Private Key.");
-            }
-
-            var surveyData = await _context.Surveys
-                .FirstOrDefaultAsync(s => s.PrivateKey == survey.PrivateKey);
-
-            if (surveyData == null)
-            {
-                return NotFound("Invalid Private Key.");
-            }
-
-            var data = new ExperimenteeAppDto
-            {
-                SurveyId = surveyData.SurveyId,
-                UserId = survey.UserId
-            };
-
-            return Ok(LoadSurvey(data));
-
-        }
+        // // POST: api/ExperimenteeApp/GetSurveybyPrivateKey
+        // [HttpPost("GetSurveybyPrivateKey")]
+        // public async Task<IActionResult> GetSurveybyPIN([FromBody] DesignedSurveyDto survey)
+        // {
+        //     if (survey == null || string.IsNullOrEmpty(survey.PrivateKey) || survey.UserId <= 0)
+        //     {
+        //         return NotFound("Invalid Private Key.");
+        //     }
+        //
+        //     var surveyData = await _context.Surveys
+        //         .FirstOrDefaultAsync(s => s.PrivateKey == survey.PrivateKey);
+        //
+        //     if (surveyData == null)
+        //     {
+        //         return NotFound("Invalid Private Key.");
+        //     }
+        //
+        //     var data = new ExperimenteeAppDto
+        //     {
+        //         SurveyId = surveyData.SurveyId,
+        //         UserId = survey.UserId
+        //     };
+        //
+        //     return Ok(LoadSurvey(data));
+        //
+        // }
 
 
         // POST: api/ExperimenteeApp/LoadSurvey
         [Authorize]
-        [HttpPost("LoadSurvey")]
-        public async Task<IActionResult> LoadSurvey([FromBody] ExperimenteeAppDto surveyLoadAnswer)
+        [HttpGet("LoadSurvey/{surveyId}")]
+        public async Task<IActionResult> LoadSurvey(string surveyId)
         {
-            if (surveyLoadAnswer == null || surveyLoadAnswer.SurveyId <= 0 || surveyLoadAnswer.UserId <= 0)
-            {
-                return BadRequest("Invalid survey data.");
-            }
+            var userId = User.FindFirst("UserId")!.Value;
 
             var survey = await _context.Surveys
                 .Include(s => s.Questionnaires)
                     .ThenInclude(q => q.MultipleChoices)
-                .FirstOrDefaultAsync(s => s.SurveyId == surveyLoadAnswer.SurveyId);
+                .FirstOrDefaultAsync(s => s.SurveyId.ToString() == surveyId);
 
             if (survey == null)
             {
@@ -129,7 +126,7 @@ namespace Survey.API.Controllers
                 SurveyId = survey.SurveyId,
                 SurveyTitle = survey.SurveyTitle,
                 SurveyDescription = survey.SurveyDescription,
-                UserId = surveyLoadAnswer.UserId,
+                UserId = int.Parse(userId),
                 SurveyStoredAnwsers = [.. survey.Questionnaires.Select(q => new SurveyStoredAnwsersDto
                 {
                     QuestionnaireId = q.QuestionnaireId,
@@ -147,11 +144,9 @@ namespace Survey.API.Controllers
                 })]
             };
 
-
-            // Fix for CS8602: Dereference of a possibly null reference.
             var savedAnswers = await _context.SurveyAnswer
-                .Where(sa => sa.SurveyCompletion != null && sa.SurveyCompletion.UserId == surveyLoadAnswer.UserId
-                && sa.SurveyCompletion.SurveyId == surveyLoadAnswer.SurveyId)
+                .Where(sa => sa.SurveyCompletion != null && sa.SurveyCompletion.UserId.ToString() == userId
+                && sa.SurveyCompletion.SurveyId.ToString() == surveyId)
                 .ToListAsync();
 
             foreach (var answer in savedAnswers)
@@ -168,25 +163,23 @@ namespace Survey.API.Controllers
 
 
         // POST: api/ExperimenteeApp/SaveSurveyAnswer
+        [Authorize]
         [HttpPost("SaveSurveyAnswer")]
-        public async Task<IActionResult> SaveSurveyAnswers([FromBody] SurveySaveAnswerDto newsurveyAnswer)
+        public async Task<IActionResult> SaveSurveyAnswers([FromBody] SurveySaveAnswerDto newSurveyAnswer)
         {
-            if (newsurveyAnswer == null)
+            var userId = User.FindFirst("UserId")!.Value;
+
+            if (newSurveyAnswer == null)
             {
                 return BadRequest("No survey answer data was passed");
             }
 
-            if (!newsurveyAnswer.SurveyId.HasValue || !newsurveyAnswer.UserId.HasValue || !newsurveyAnswer.QuestionnaireId.HasValue)
-            {
-                return BadRequest("SurveyId, UserId, or QuestionnaireId is missing.");
-            }
-
             var existingData = await _context.SurveyAnswer
                 .Include(sa => sa.SurveyCompletion)
-                .FirstOrDefaultAsync(s => s.QuestionnaireId == newsurveyAnswer.QuestionnaireId.Value
+                .FirstOrDefaultAsync(s => s.QuestionnaireId == newSurveyAnswer.QuestionnaireId
                     && s.SurveyCompletion != null
-                    && s.SurveyCompletion.UserId == newsurveyAnswer.UserId.Value
-                    && s.SurveyCompletion.SurveyId == newsurveyAnswer.SurveyId.Value);
+                    && s.SurveyCompletion.UserId.ToString() == userId
+                    && s.SurveyCompletion.SurveyId == newSurveyAnswer.SurveyId);
 
             if (existingData == null)
             {
@@ -194,9 +187,9 @@ namespace Survey.API.Controllers
                 var newData = new SurveyCompletion
                 {
                     SurveyCompletionId = 0,
-                    SurveyId = newsurveyAnswer.SurveyId.Value,
-                    UserId = newsurveyAnswer.UserId.Value,
-                    SurveyCompletionDate = DateTime.Now,
+                    SurveyId = newSurveyAnswer.SurveyId,
+                    UserId = int.Parse(userId),
+                    SurveyCompletionDate = DateTime.UtcNow,
                     SurveyCompletionTypeId = 1, // 1 is for saved surveys
 
                     SurveyAnswers =
@@ -204,8 +197,8 @@ namespace Survey.API.Controllers
                         new SurveyAnswer
                         {
                             SurveyAnswerId = 0,
-                            QuestionnaireId = newsurveyAnswer.QuestionnaireId.Value,
-                            Answer = newsurveyAnswer.SurveyAnswer ?? string.Empty
+                            QuestionnaireId = newSurveyAnswer.QuestionnaireId,
+                            Answer = newSurveyAnswer.SurveyAnswer ?? string.Empty
                         }
                     ]
                 };
@@ -213,8 +206,7 @@ namespace Survey.API.Controllers
             }
             else
             {
-                existingData.Answer = newsurveyAnswer.SurveyAnswer ?? string.Empty; 
-                //_context.Entry(existingData).State = EntityState.Modified;
+                existingData.Answer = newSurveyAnswer.SurveyAnswer ?? string.Empty;
             }
 
             try
@@ -230,15 +222,18 @@ namespace Survey.API.Controllers
         }
 
         // POST: api/ExperimenteeApp/CompleteSurvey
+        [Authorize]
         [HttpPost("CompleteSurvey")]
         public async Task<IActionResult> CompleteSurvey([FromBody] SurveySaveAnswerDto newsurveyAnswer)
         {
+            var userId = User.FindFirst("UserId")!.Value;
+
             if (newsurveyAnswer == null)
             {
                 return BadRequest("No survey answer data was passed");
             }
             var existingData = await _context.SurveyCompletion
-                .FirstOrDefaultAsync(s => s.UserId == newsurveyAnswer.UserId
+                .FirstOrDefaultAsync(s => s.UserId.ToString() == userId
                 && s.SurveyId == newsurveyAnswer.SurveyId);
             if (existingData == null)
             {
@@ -258,16 +253,14 @@ namespace Survey.API.Controllers
         }
 
         // POST: api/ExperimenteeApp/DeleteSavedSurvey
-        [HttpPost("DeleteSavedSurvey")]
-        public async Task<IActionResult> DeleteSavedSurvey([FromBody] SurveySaveAnswerDto newsurveyAnswer)
+        [Authorize]
+        [HttpDelete("DeleteSavedSurvey{surveyId}")]
+        public async Task<IActionResult> DeleteSavedSurvey(string surveyId)
         {
-            if (newsurveyAnswer == null)
-            {
-                return BadRequest("No survey answer data was passed");
-            }
+            var userId = User.FindFirst("UserId")!.Value;
 
             var survey = await _context.Surveys
-                .FirstOrDefaultAsync(s => s.SurveyId == newsurveyAnswer.SurveyId);
+                .FirstOrDefaultAsync(s => s.SurveyId.ToString() == surveyId);
 
             if (survey != null && survey.EndDate <= DateTime.Now)
             {
@@ -276,8 +269,8 @@ namespace Survey.API.Controllers
 
             var existingData = await _context.SurveyCompletion
                 .Include(s => s.SurveyAnswers)
-                .FirstOrDefaultAsync(s => s.UserId == newsurveyAnswer.UserId
-                && s.SurveyId == newsurveyAnswer.SurveyId
+                .FirstOrDefaultAsync(s => s.UserId.ToString() == userId
+                && s.SurveyId.ToString() == surveyId
                 && s.SurveyCompletionTypeId == 1);
 
             if (existingData == null)

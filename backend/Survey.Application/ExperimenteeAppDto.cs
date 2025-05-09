@@ -28,13 +28,9 @@
 
     public class SurveySaveAnswerDto
     {
-        public int? QuestionnaireId { get; set; }
-        public string? QuestionnaireTitle { get; set; }
-        public string? InputType { get; set; }
-        public string? Range { get; set; }
+        public int QuestionnaireId { get; set; }
         public string? SurveyAnswer { get; set; }
-        public int? SurveyId { get; set; }
-        public int? UserId { get; set; }
+        public int SurveyId { get; set; }
     }
 
 }
