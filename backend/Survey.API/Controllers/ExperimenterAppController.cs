@@ -94,6 +94,7 @@ namespace Survey.API.Controllers
                         existingQuestionnaire.QuestionnaireTitle = qDto.QuestionnaireTitle;
                         existingQuestionnaire.InputType = qDto.InputType;
                         existingQuestionnaire.Range = qDto.Range;
+                        existingQuestionnaire.QuestionnairePos = qDto.QuestionnairePos;
 
                         foreach (var mcDto in qDto.MultipleChoices ?? new List<MultipleChoiceDto>())
                         {
@@ -157,6 +158,7 @@ namespace Survey.API.Controllers
                         QuestionnaireTitle = q.QuestionnaireTitle,
                         InputType = q.InputType,
                         Range = q.Range,
+                        QuestionnairePos = q.QuestionnairePos,
                         MultipleChoices = q.MultipleChoices?.Select(mc => new MultipleChoice
                         {
                             MultipleChoiceName = mc.MultipleChoiceName
@@ -191,7 +193,7 @@ namespace Survey.API.Controllers
             }
 
             var existingSurvey = await _context.Surveys
-                .Include(s => s.Questionnaires)
+                .Include(s => s.Questionnaires.OrderBy(q => q.QuestionnairePos))
                 .ThenInclude(q => q.MultipleChoices)
                 .Include(s => s.SurveyType)
                 .FirstOrDefaultAsync(s => s.SurveyId == id);

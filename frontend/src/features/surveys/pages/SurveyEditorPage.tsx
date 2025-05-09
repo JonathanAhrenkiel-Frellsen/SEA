@@ -48,13 +48,29 @@ const SurveyEditorPage = () => {
         if (active.id !== over?.id) {
             const oldIndex = fields.findIndex((q) => q.id === active.id);
             const newIndex = fields.findIndex((q) => q.id === over?.id);
+
             move(oldIndex, newIndex);
+
+            // Sync open states
             const newOpenStates = [...openStates];
             const moved = newOpenStates.splice(oldIndex, 1)[0];
             newOpenStates.splice(newIndex, 0, moved);
             setOpenStates(newOpenStates);
+
+            // Update QuestionnairePos for all fields
+            const updatedQuestions = [...watch('questions')];
+            updatedQuestions.splice(newIndex, 0, updatedQuestions.splice(oldIndex, 1)[0]);
+
+            updatedQuestions.forEach((q, idx) => {
+                q.QuestionnairePos = idx;
+            });
+
+            setValue('questions', updatedQuestions);
         }
     };
+
+
+
 
     const handleAddQuestion = () => {
         append({
@@ -64,6 +80,7 @@ const SurveyEditorPage = () => {
             QuestionnaireTitle: '',
             InputType: 'text',
             Range: '',
+            QuestionnairePos: fields.length
         });
         setOpenStates((prev) => [...prev, true]);
     };
@@ -119,9 +136,11 @@ const SurveyEditorPage = () => {
         const survey = fetchSurvey(id, undefined);
 
         survey.then((data) => {
+            console.log("Loaded survey:", data);
             const questions = data.Questionnaires!.map((question) => ({
                 ...question,
                 QuestionnaireId: question.QuestionnaireId,
+                QuestionnairePos: question.QuestionnairePos,
                 MultipleChoices: question.MultipleChoices.map((choice) => ({
                     ...choice,
                     MultipleChoiceId: choice.MultipleChoiceId,
