@@ -12,6 +12,7 @@
 
 export interface QuestionnaireDto {
     QuestionnaireId: number;
+    QuestionnairePos: number;
     QuestionnaireTitle: string;
     InputType: string;
     Range: string;

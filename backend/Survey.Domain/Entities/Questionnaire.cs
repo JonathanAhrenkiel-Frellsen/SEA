@@ -13,6 +13,8 @@ namespace Survey.Domain.Entities
     {
         [Key]
         public int QuestionnaireId { get; set; }
+        public int QuestionnairePos { get; set; }
+
         public string QuestionnaireTitle { get; set; } = string.Empty;
         public string InputType { get; set; } = string.Empty;
         public string Range { get; set; } = string.Empty;
