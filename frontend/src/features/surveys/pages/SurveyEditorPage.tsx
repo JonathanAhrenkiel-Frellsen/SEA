@@ -51,23 +51,9 @@ const SurveyEditorPage = () => {
 
             move(oldIndex, newIndex);
 
-            // Sync open states
-            const newOpenStates = [...openStates];
-            const moved = newOpenStates.splice(oldIndex, 1)[0];
-            newOpenStates.splice(newIndex, 0, moved);
-            setOpenStates(newOpenStates);
-
-            // Update QuestionnairePos for all fields
-            const updatedQuestions = [...watch('questions')];
-            updatedQuestions.splice(newIndex, 0, updatedQuestions.splice(oldIndex, 1)[0]);
-
-            updatedQuestions.forEach((q, idx) => {
-                q.QuestionnairePos = idx;
-            });
-
-            setValue('questions', updatedQuestions);
         }
     };
+
 
 
 
@@ -95,12 +81,9 @@ const SurveyEditorPage = () => {
         remove(index);
         setOpenStates((prev) => prev.filter((_, i) => i !== index));
     };
-
     const onSubmit = async (data: SurveyForm) => {
         try {
-            const user = selectUser(store.getState())
-
-            // Map SurveyForm to your DTO format if needed
+            const user = selectUser(store.getState());
             const surveyDto: DesignedSurveyDto = {
                 SurveyId: id ? parseInt(id) : undefined,
                 SurveyTitle: data.title,
@@ -109,11 +92,18 @@ const SurveyEditorPage = () => {
                 EndDate: new Date(),
                 UserId: user!.UserId,
                 SurveyTypeId: 1,
-                PrivateKey: data.isPrivate ? Math.floor(1000 + Math.random() * 9000).toString() : '',
-                Questionnaires: data.questions
+                PrivateKey: data.isPrivate
+                    ? Math.floor(1000 + Math.random() * 9000).toString()
+                    : '',
+                Questionnaires: data.questions.map((q, idx) => ({
+                    ...q,
+                    QuestionnairePos: idx,
+                })),
             };
 
-            const survey: DesignedSurveyDto | undefined = await handleSaveSurvey(surveyDto);
+            const survey: DesignedSurveyDto | undefined = await handleSaveSurvey(
+                surveyDto
+            );
 
             if (survey) {
                 setShowSuccessModal(true);
@@ -123,6 +113,7 @@ const SurveyEditorPage = () => {
             console.error('Failed to submit survey:', error);
         }
     };
+
 
     const onDelete = async () => {
         await deleteSurvey(id!);

@@ -9,7 +9,9 @@ public class PincodeAttribute : Attribute, IAsyncAuthorizationFilter
 {
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
-        var surveyIdStr = context.RouteData.Values["id"]?.ToString();
+        // var surveyIdStr = context.RouteData.Values["id"]?.ToString();
+        var key = context.RouteData.Values.ContainsKey("id") ? "id" : "surveyId";
+        var surveyIdStr = context.RouteData.Values[key]?.ToString();
         if (!int.TryParse(surveyIdStr, out var surveyId))
         {
             context.Result = new BadRequestObjectResult("Invalid survey ID.");

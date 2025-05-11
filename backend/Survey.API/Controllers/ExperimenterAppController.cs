@@ -83,6 +83,7 @@ namespace Survey.API.Controllers
                 existingSurvey.EndDate = surveyDto.EndDate;
                 existingSurvey.SurveyTypeId = surveyDto.SurveyTypeId;
                 existingSurvey.UserId = surveyDto.UserId;
+                existingSurvey.PrivateKey = surveyDto.PrivateKey;
 
                 foreach (var qDto in surveyDto.Questionnaires)
                 {
@@ -122,6 +123,7 @@ namespace Survey.API.Controllers
                             QuestionnaireTitle = qDto.QuestionnaireTitle,
                             InputType = qDto.InputType,
                             Range = qDto.Range,
+                            QuestionnairePos = qDto.QuestionnairePos,
                             MultipleChoices = qDto.MultipleChoices?
                                 .Select(mc => new MultipleChoice
                                 {
