@@ -11,7 +11,7 @@
 
 
 export interface SurveySaveAnswerDto {
-    QuestionnaireId: number | undefined;
+    QuestionnaireId: number;
     SurveyAnswer: string | undefined;
-    SurveyId: number | undefined;
+    SurveyId: number;
 }
