@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import LoginPage from '../features/surveys/pages/LoginPage';
+import LoginPage from '../features/auth/pages/LoginPage';
 import QuestionPage from '../features/surveys/pages/QuestionPage';
 import SurveyListPage from '../features/surveys/pages/SurveyListPage';
 import SurveyFormPage from '../features/surveys/pages/SurveyEditorPage';
-import AnalysisPage from '../features/surveys/pages/AnalysisPage';
+import AnalysisPage from '../features/analytics/pages/AnalysisPage';
 import FinishSurveyPage from '../features/surveys/pages/FinishSurveyPage';
 
 export const AppRoutes = () => {

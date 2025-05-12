@@ -14,6 +14,7 @@
     {
         public int? QuestionnaireId { get; set; }
         public string? QuestionnaireTitle { get; set; }
+        public int QuestionnairePos { get; set; }
         public string? InputType { get; set; }
         public string? Range { get; set; }
         public string? SurveyAnswer { get; set; }

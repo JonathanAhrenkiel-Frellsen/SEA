@@ -1,4 +1,4 @@
-import { Button } from "../Buttons/Button";
+import { Button } from "../../../../shared/components/Buttons/Button";
 import {useDispatch, useSelector} from "react-redux";
 import {selectUser} from "../../../auth/slices/authSlice";
 import {useNavigate} from "react-router-dom";

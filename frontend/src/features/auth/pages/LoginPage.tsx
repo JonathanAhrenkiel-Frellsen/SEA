@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button } from "../components/Buttons/Button";
-import TextInput from "../components/Inputs/TextInput";
-import { login, register } from "../../auth/api/authApi";
+import { Button } from "../../../shared/components/Buttons/Button";
+import TextInput from "../../../shared/components/Input/TextInput";
+import { login, register } from "../api/authApi";
 import { UserDto } from "../../../shared/dto/UserDto";
 import { RegisterUserDto } from "../../../shared/dto/RegisterUserDto";
 import { LoginDto } from "../../../shared/dto/LoginDto";
@@ -22,9 +22,12 @@ const LoginPage = () => {
         if (user.UserTypeId !== 3) {
             navigate('/surveys'); // This is a superuser or experimenter
         } else {
-            navigate('/'); // This is an experimentee
+            if (isLogin) {
+                navigate('/'); // This is an experimentee
+            } else {
+                setError('');
+            }
             setIsLogin(true);
-            setError('');
         }
     };
 

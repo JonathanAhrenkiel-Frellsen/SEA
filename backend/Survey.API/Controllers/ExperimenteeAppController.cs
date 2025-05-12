@@ -104,6 +104,7 @@ namespace Survey.API.Controllers
                 {
                     QuestionnaireId = q.QuestionnaireId,
                     QuestionnaireTitle = q.QuestionnaireTitle,
+                    QuestionnairePos = q.QuestionnairePos,
                     InputType = q.InputType,
                     Range = q.Range,
                     SurveyAnswer = string.Empty, // Initialize with empty answer

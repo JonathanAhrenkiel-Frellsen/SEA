@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react';
-import { Button } from '../components/Buttons/Button';
+import { Button } from '../../../shared/components/Buttons/Button';
 import {useEffect, useState} from "react";
-import NewSurveyModal from '../components/NewSurveyModal/NewSurveyModal';
+import NewSurveyModal from '../components/Modals/NewSurveyModal/NewSurveyModal';
 import {fetchSurveys} from "../api/surveyApi";
 import {DesignedSurveyDto} from "../../../shared/dto/DesignedSurveyDto";
 import {formatDate} from "../../../shared/utils/formatDate";
