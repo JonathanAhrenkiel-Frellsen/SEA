@@ -26,7 +26,7 @@ namespace Survey.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
-            var user = await _context.Users
+            var user = await _context.Users.Include(user => user.UserType)
                 .SingleOrDefaultAsync(u => u.UserEmail == model.UserEmail && u.UserPassword == model.Password);
 
             if (user == null)
@@ -36,12 +36,13 @@ namespace Survey.API.Controllers
 
             var token = GenerateJwtToken(user);
 
-            var userDto = new
+            var userDto = new UserDto
             {
-                user.UserId,
-                user.UserEmail,
-                user.UserName,
-                user.UserType
+                UserId = user.UserId,
+                UserEmail = user.UserEmail,
+                UserPassword = "hidden",
+                UserName = user.UserName,
+                UserTypeId = user.UserType?.UserTypeId
             };
 
             return Ok(new { token, user = userDto });
@@ -73,7 +74,7 @@ namespace Survey.API.Controllers
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(60),
+                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
                 signingCredentials: credentials
             );
 

@@ -22,6 +22,7 @@ const LoginPage = () => {
         if (user.UserTypeId !== 3) {
             navigate('/surveys'); // This is a superuser or experimenter
         } else {
+            navigate('/'); // This is an experimentee
             setIsLogin(true);
             setError('');
         }
