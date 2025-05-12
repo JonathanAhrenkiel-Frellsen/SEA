@@ -287,7 +287,7 @@ const SurveyEditorPage = () => {
                   <div className="bg-main text-white p-6 w-96 text-center">
                       <h2 className="text-2xl font-semibold mb-4">Survey Saved!</h2>
                       <p className="mb-6">Your survey was saved successfully. You can now return to the survey list.</p>
-                      <CopyBox value={`${window.location.origin}/${surveyResponse!.SurveyId}/questions?pinCode=${surveyResponse!.PrivateKey != null}`} />
+                      <CopyBox value={`${window.location.origin}/${surveyResponse!.SurveyId}/questions?pinCode=${surveyResponse!.PrivateKey != ''}`} />
 
                       {surveyResponse?.PrivateKey && surveyResponse.PrivateKey !== '' && (
                         <CopyBox label="Private Key:" value={surveyResponse.PrivateKey} />
