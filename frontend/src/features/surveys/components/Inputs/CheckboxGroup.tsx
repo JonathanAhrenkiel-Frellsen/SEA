@@ -7,9 +7,10 @@ import {MultipleChoiceDto} from "../../../../shared/dto/DesignedSurveyDto";
 interface CheckboxGroupProps {
     name: string;
     options: MultipleChoiceDto[];
+    label?: string;
 }
 
-const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ name, options }) => {
+const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ name, options, label }) => {
     const dispatch = useDispatch();
     const selectedValues = useSelector((state: RootState) => state.surveyForm[name] || []);
 
@@ -19,6 +20,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ name, options }) => {
 
     return (
         <div className="flex flex-col gap-2">
+            {label && <label className="text-white">{label}</label>}
             {options.map((option) => (
                 <label key={option.MultipleChoiceId} className="flex items-center gap-2 text-white cursor-pointer">
                     <input
