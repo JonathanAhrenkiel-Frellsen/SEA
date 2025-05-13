@@ -10,10 +10,94 @@
 
 
 
+export interface UserType {
+    UserTypeId: number;
+    UserTypeName: string;
+    Users: User[] | undefined;
+}
+
+export interface User {
+    UserId: number;
+    UserName: string;
+    UserEmail: string;
+    UserPassword: string;
+    UserTypeId: number;
+    UserType: UserType | undefined;
+    Surveys: DesignedSurvey[] | undefined;
+    SurveyCompletions: SurveyCompletion[] | undefined;
+}
+
+export interface DesignedSurvey {
+    SurveyId: number;
+    SurveyTitle: string;
+    SurveyDescription: string;
+    StartDate: Date;
+    EndDate: Date;
+    SurveyTypeId: number;
+    SurveyType: SurveyType | undefined;
+    PrivateKey: string | undefined;
+    UserId: number;
+    User: User | undefined;
+    Questionnaires: Questionnaire[];
+    SurveyCompletions: SurveyCompletion[] | undefined;
+}
+
+export interface SurveyType {
+    SurveyTypeId: number;
+    SurveyTypeName: string;
+    DesignedSurveys: DesignedSurvey[] | undefined;
+}
+
+export interface Questionnaire {
+    QuestionnaireId: number;
+    QuestionnairePos: number;
+    QuestionnaireTitle: string;
+    InputType: string;
+    Range: string;
+    SurveyId: number | undefined;
+    Survey: DesignedSurvey | undefined;
+    MultipleChoices: MultipleChoice[] | undefined;
+    SurveyAnswers: SurveyAnswer[] | undefined;
+}
+
+export interface MultipleChoice {
+    MultipleChoiceId: number;
+    MultipleChoiceName: string;
+    QuestionnaireId: number;
+    Questionnaire: Questionnaire | undefined;
+}
+
+export interface SurveyAnswer {
+    SurveyAnswerId: number;
+    QuestionnaireId: number;
+    Questionnaire: Questionnaire | undefined;
+    Answer: string;
+    SurveyCompletionId: number;
+    SurveyCompletion: SurveyCompletion | undefined;
+}
+
+export interface SurveyCompletion {
+    SurveyCompletionId: number;
+    SurveyCompletionDate: Date;
+    SurveyId: number;
+    Survey: DesignedSurvey | undefined;
+    UserId: number;
+    User: User | undefined;
+    SurveyCompletionTypeId: number;
+    SurveyCompletionType: SurveyCompletionType | undefined;
+    SurveyAnswers: SurveyAnswer[];
+}
+
+export interface SurveyCompletionType {
+    SurveyCompletionTypeId: number;
+    SurveyCompletionTypeName: string;
+    SurveyCompletions: SurveyCompletion[] | undefined;
+}
+
 export interface UserDto {
     UserId: number | undefined;
     UserName: string | undefined;
     UserEmail: string | undefined;
     UserPassword: string | undefined;
-    UserTypeId: number | undefined;
+    UserType: UserType | undefined;
 }

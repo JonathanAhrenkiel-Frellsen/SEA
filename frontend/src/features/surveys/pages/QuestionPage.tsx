@@ -170,6 +170,7 @@ const QuestionPage = () => {
           <CheckboxGroup
             key={questions[currentQuestionIndex].QuestionnaireId}
             name={questions[currentQuestionIndex].QuestionnaireId.toString()}
+            label={questions[currentQuestionIndex].QuestionnaireTitle}
             options={questions[currentQuestionIndex].MultipleChoices}
           />
         )}
