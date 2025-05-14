@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "../../../shared/components/Buttons/Button";
 import TextInput from "../../../shared/components/Input/TextInput";
 import { login, register } from "../api/authApi";
@@ -13,13 +13,22 @@ const LoginPage = () => {
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isExperimentor, setIsExperimentor] = useState(false);
 
     const [error, setError] = useState("");
 
     const [isLogin, setIsLogin] = useState(false);
 
     const handleSuccessResponse = (user: UserDto) => {
-        if (user.UserTypeId !== 3) {
+        if (!isLogin) {
+            setIsLogin(true);
+            setError('');
+            return;
+        }
+
+        console.log(user);
+
+        if (user.UserType?.UserTypeId !== 3) {
             navigate('/surveys'); // This is a superuser or experimenter
         } else {
             if (isLogin) {
@@ -47,7 +56,7 @@ const LoginPage = () => {
             const user: RegisterUserDto = {
                 UserEmail: email,
                 UserPassword: password,
-                UserTypeId: 3,
+                UserTypeId: isExperimentor ? 2 : 3,
                 UserName: fullName
             };
 
@@ -96,6 +105,18 @@ const LoginPage = () => {
                         type="password"
                       />
                   </div>
+
+                  {!isLogin && (
+                    <span className="flex items-center gap-2 text-white cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={isExperimentor}
+                          onChange={(e) => setIsExperimentor(e.target.checked)}
+                          className="w-4 h-4 border-2 border-white bg-transparent appearance-none checked:bg-white checked:border-white focus:outline-none cursor-pointer"
+                        />
+                        Is Experimentor
+                    </span>
+                  )}
 
                   <div className="flex justify-end">
                       <Button
