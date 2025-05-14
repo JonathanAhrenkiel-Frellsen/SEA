@@ -1,6 +1,6 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import {ArrowLeft, Upload, UploadIcon} from 'lucide-react';
-import {Button} from "../components/Buttons/Button";
+import {Button} from "../../../shared/components/Buttons/Button";
 
 const dummyData = [
     { day: 0, answers: 10 },

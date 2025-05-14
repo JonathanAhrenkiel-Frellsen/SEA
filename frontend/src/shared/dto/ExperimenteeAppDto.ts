@@ -13,6 +13,7 @@
 export interface SurveyStoredAnwsersDto {
     QuestionnaireId: number | undefined;
     QuestionnaireTitle: string | undefined;
+    QuestionnairePos: number;
     InputType: string | undefined;
     Range: string | undefined;
     SurveyAnswer: string | undefined;

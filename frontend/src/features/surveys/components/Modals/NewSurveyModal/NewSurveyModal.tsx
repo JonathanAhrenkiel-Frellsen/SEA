@@ -1,5 +1,5 @@
 import { X, ArrowRight, Upload } from 'lucide-react';
-import { Button } from '../Buttons/Button';
+import { Button } from '../../../../../shared/components/Buttons/Button';
 
 interface NewSurveyModalProps {
     onClose: () => void;
