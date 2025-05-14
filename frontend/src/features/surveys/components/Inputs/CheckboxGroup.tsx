@@ -10,7 +10,7 @@ interface CheckboxGroupProps {
     label?: string;
 }
 
-const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ name, label, options, label }) => {
+const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ name, options, label }) => {
     const dispatch = useDispatch();
     const selectedValues = useSelector((state: RootState) => state.surveyForm[name] || []);
 

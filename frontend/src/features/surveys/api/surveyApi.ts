@@ -120,6 +120,23 @@ export const saveSurveyAnswer = async (surveyAnswer: SurveySaveAnswerDto): Promi
   return;
 }
 
+export async function completeSurvey (surveyId: string) {
+  const jwt_token = selectToken(store.getState());
+
+  const response = await fetch(`${EXPERIMENTEE_API_URL}/CompleteSurvey/${surveyId}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${jwt_token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to fetch surveys: ${response.status} ${errorText}`);
+  }
+}
+
 export const loadSurveyAnswers = async (surveyId: string, pin: string | undefined): Promise<ExperimenteeAppDto> => {
   const jwt_token = selectToken(store.getState());
 

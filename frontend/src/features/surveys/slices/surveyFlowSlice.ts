@@ -25,8 +25,6 @@ const surveyFlowSlice = createSlice({
         nextQuestion: (state) => {
             if (state.currentQuestionIndex < state.questions.length - 1) {
                 state.currentQuestionIndex += 1;
-            } else {
-                window.location.href = '/thank-you';
             }
         },
         resetSurvey: (state) => {
