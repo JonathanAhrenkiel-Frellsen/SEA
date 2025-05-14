@@ -42,7 +42,7 @@ namespace Survey.API.Controllers
                 UserEmail = user.UserEmail,
                 UserPassword = "hidden",
                 UserName = user.UserName,
-                UserTypeId = user.UserType?.UserTypeId
+                UserType = user.UserType
             };
 
             return Ok(new { token, user = userDto });

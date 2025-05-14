@@ -10,7 +10,7 @@ import {
   selectFieldValueById,
 } from "../slices/surveySlice";
 import { loadParsedSurveyAnswers } from "../services/surveyService";
-import { saveSurveyAnswer } from "../api/surveyApi";
+import {completeSurvey, saveSurveyAnswer} from "../api/surveyApi";
 import {Button} from "../../../shared/components/Buttons/Button";
 import {ArrowRight} from "lucide-react";
 import PinEntryForm from "../components/PinEntryForm/EntryEntryForm";
@@ -57,8 +57,10 @@ const QuestionPage = () => {
 
     saveSurveyAnswer(surveyAnswer).then(() => {
       if (currentQuestionIndex >= questions.length - 1) {
-        navigate(`/thank-you`);
-        return;
+        completeSurvey(id!).then(() => {
+          navigate('/thank-you');
+          return;
+        })
       }
 
       setCurrentQuestionIndex((prev) => prev + 1);

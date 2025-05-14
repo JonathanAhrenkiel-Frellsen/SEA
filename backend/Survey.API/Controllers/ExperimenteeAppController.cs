@@ -197,24 +197,22 @@ namespace Survey.API.Controllers
 
         // POST: api/ExperimenteeApp/CompleteSurvey
         [Authorize]
-        [HttpPost("CompleteSurvey")]
-        public async Task<IActionResult> CompleteSurvey([FromBody] SurveySaveAnswerDto newsurveyAnswer)
+        [HttpGet("CompleteSurvey/{surveyId}")]
+        public async Task<IActionResult> CompleteSurvey(string surveyId)
         {
             var userId = User.FindFirst("UserId")!.Value;
-
-            if (newsurveyAnswer == null)
-            {
-                return BadRequest("No survey answer data was passed");
-            }
+            
+            Console.WriteLine($"surveyId: {surveyId}");
+            
             var existingData = await _context.SurveyCompletion
                 .FirstOrDefaultAsync(s => s.UserId.ToString() == userId
-                && s.SurveyId == newsurveyAnswer.SurveyId);
+                && s.SurveyId.ToString() == surveyId);
             if (existingData == null)
             {
                 return NotFound("Survey not found.");
             }
             existingData.SurveyCompletionTypeId = 2; // 2 is for completed surveys
-            existingData.SurveyCompletionDate = DateTime.Now;
+            existingData.SurveyCompletionDate = DateTime.UtcNow;
             try
             {
                 await _context.SaveChangesAsync();
