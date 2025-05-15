@@ -160,7 +160,6 @@ namespace Survey.API.Controllers
 
                 var newData = new SurveyCompletion
                 {
-                    SurveyCompletionId = 0,
                     SurveyId = newSurveyAnswer.SurveyId,
                     UserId = int.Parse(userId),
                     SurveyCompletionDate = DateTime.UtcNow,
@@ -170,7 +169,6 @@ namespace Survey.API.Controllers
                     [
                         new SurveyAnswer
                         {
-                            SurveyAnswerId = 0,
                             QuestionnaireId = newSurveyAnswer.QuestionnaireId,
                             Answer = newSurveyAnswer.SurveyAnswer ?? string.Empty
                         }

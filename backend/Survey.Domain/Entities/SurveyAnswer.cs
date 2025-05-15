@@ -11,15 +11,14 @@ namespace Survey.Domain.Entities
 {
     public class SurveyAnswer
     {
-        [Key]
-        public int SurveyAnswerId { get; set; }
         [ForeignKey("Questionnaire")]
         public int QuestionnaireId { get; set; }
         public virtual Questionnaire? Questionnaire { get; set; }
         public string Answer { get; set; } = string.Empty;
-        [JsonIgnore]
         [ForeignKey("SurveyCompletion")]
-        public int SurveyCompletionId { get; set; }
+        public int SurveyId { get; set; }
+        [ForeignKey("User")]
+        public int UserId { get; set; }
         public virtual SurveyCompletion? SurveyCompletion { get; set; }
 
     }

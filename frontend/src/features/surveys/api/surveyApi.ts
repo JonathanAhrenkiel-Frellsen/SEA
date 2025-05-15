@@ -4,9 +4,7 @@ import {selectToken} from "../../auth/slices/authSlice";
 import {store} from "../../../app/store";
 import {SurveySaveAnswerDto} from "../../../shared/dto/SurveySaveAnswerDto";
 import { ExperimenteeAppDto } from "../../../shared/dto/ExperimenteeAppDto";
-
-const EXPERIMENTER_API_URL = `${process.env.REACT_APP_BASE_URL}/api/ExperimenterApp`;
-const EXPERIMENTEE_API_URL = `${process.env.REACT_APP_BASE_URL}/api/ExperimenteeApp`;
+import {EXPERIMENTEE_API_URL, EXPERIMENTER_API_URL} from "../../../shared/apiEndpoints";
 
 export const handleSaveSurvey = async (survey: DesignedSurveyDto): Promise<DesignedSurveyDto | undefined> => {
   try {

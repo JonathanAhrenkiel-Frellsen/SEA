@@ -4,9 +4,7 @@ import { LoginDto } from '../../../shared/dto/LoginDto';
 import { UserDto } from '../../../shared/dto/UserDto';
 import {selectToken, logoutAction, setCredentials} from '../slices/authSlice';
 import {RegisterUserDto} from "../../../shared/dto/RegisterUserDto";
-
-const AUTH_API_URL = `${process.env.REACT_APP_BASE_URL}/api/Auth`;
-const USER_API_URL = `${process.env.REACT_APP_BASE_URL}/api/UserApp`;
+import {AUTH_API_URL, USER_API_URL} from '../../../shared/apiEndpoints';
 
 // Setup axios with auth interceptor
 const authAxios = axios.create();

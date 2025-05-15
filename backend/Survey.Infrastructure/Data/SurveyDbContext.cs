@@ -18,54 +18,31 @@ public class SurveyDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //modelBuilder.Entity<SurveyAnswer>()
-        //    .HasOne(sc => sc.Questionnaire)
-        //    .WithMany()
-        //    .HasForeignKey(sc => sc.QuestionnaireId)
-        //    .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<SurveyCompletion>()
+            .HasKey(sc => new { sc.SurveyId, sc.UserId });
 
-        //modelBuilder.Entity<SurveyAnswer>()
-        //    .HasOne(sc => sc.Survey)
-        //    .WithMany()
-        //    .HasForeignKey(sc => sc.SurveyId)
-        //    .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<SurveyCompletion>()
+            .HasOne(sc => sc.User)
+            .WithMany(u => u.SurveyCompletions)
+            .HasForeignKey(sc => sc.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-        //modelBuilder.Entity<SurveyCompletion>()
-        //    .HasOne(sc => sc.Survey)
-        //    .WithMany()
-        //    .HasForeignKey(sc => sc.SurveyId)
-        //    .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<SurveyCompletion>()
+            .HasOne(sc => sc.Survey)
+            .WithMany(s => s.SurveyCompletions)
+            .HasForeignKey(sc => sc.SurveyId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-        //modelBuilder.Entity<SurveyCompletion>()
-        //    .HasOne(sc => sc.User)
-        //    .WithMany()
-        //    .HasForeignKey(sc => sc.UserId)
-        //    .OnDelete(DeleteBehavior.Restrict);
-
-        //modelBuilder.Entity<SurveyAnswer>()
-        //   .HasOne(sa => sa.SurveyCompletion)
-        //   .WithMany(sc => sc.SurveyAnswers)
-        //   .HasForeignKey(sa => sa.SurveyCompletionId)
-        //   .OnDelete(DeleteBehavior.Restrict);
-
-        //modelBuilder.Entity<SurveyCompletion>()
-        //    .HasOne(sc => sc.Survey)
-        //    .WithMany()
-        //    .HasForeignKey(sc => sc.SurveyId)
-        //    .OnDelete(DeleteBehavior.Restrict);
-
+        modelBuilder.Entity<SurveyCompletion>()
+            .HasOne(sc => sc.SurveyCompletionType)
+            .WithMany()
+            .HasForeignKey(sc => sc.SurveyCompletionTypeId);
         
         modelBuilder.Entity<Questionnaire>()
             .HasOne(q => q.Survey)
             .WithMany(s => s.Questionnaires)
             .HasForeignKey(q => q.SurveyId)
             .OnDelete(DeleteBehavior.Cascade);
-        
-        modelBuilder.Entity<SurveyCompletion>()
-           .HasOne(sc => sc.User)
-           .WithMany(u => u.SurveyCompletions)
-           .HasForeignKey(sc => sc.UserId)
-           .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<DesignedSurvey>()
             .HasOne(s => s.User)
@@ -74,9 +51,12 @@ public class SurveyDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<SurveyAnswer>()
+            .HasKey(sa => new { sa.UserId, sa.QuestionnaireId });
+
+        modelBuilder.Entity<SurveyAnswer>()
             .HasOne(sa => sa.SurveyCompletion)
             .WithMany(sc => sc.SurveyAnswers)
-            .HasForeignKey(sa => sa.SurveyCompletionId)
+            .HasForeignKey(sa => new { sa.SurveyId, sa.UserId })
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<SurveyAnswer>()
@@ -91,9 +71,5 @@ public class SurveyDbContext : DbContext
             .HasForeignKey(sc => sc.SurveyId)
             .OnDelete(DeleteBehavior.Cascade);
     }
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //{
-    //    optionsBuilder.UseLazyLoadingProxies();
-    //}
 
 }
