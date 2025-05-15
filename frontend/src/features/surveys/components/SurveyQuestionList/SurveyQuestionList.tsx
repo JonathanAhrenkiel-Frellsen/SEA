@@ -32,6 +32,7 @@ const SurveyQuestionList = ({
                                 readOnly
                             }: SurveyQuestionListProps) => {
     const onDragEnd = (event: any) => {
+        if (readOnly) return;
         const { active, over } = event;
         if (active.id !== over?.id) {
             const oldIndex = fields.findIndex((q) => q.id === active.id);
@@ -51,11 +52,32 @@ const SurveyQuestionList = ({
         setOpenStates((prev: boolean[]) => prev.filter((_, i) => i !== index));
     };
 
-    return (
+    // Render normally, but conditionally render DndContext and SortableItem
+    return readOnly ? (
+        // Just render the list, no DndContext or SortableItem
+        <>
+            {fields.map((field, index) => (
+                <div key={field.id}>
+                    <SurveyQuestionItem
+                        index={index}
+                        field={field}
+                        open={openStates[index]}
+                        toggleOpen={toggleOpen}
+                        handleDelete={handleDelete}
+                        register={register}
+                        control={control}
+                        watch={watch}
+                        readOnly={readOnly}
+                    />
+                </div>
+            ))}
+        </>
+    ) : (
+        // The normal draggable context
         <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
             <SortableContext items={fields.map((f) => f.id)} strategy={verticalListSortingStrategy}>
                 {fields.map((field, index) => (
-                    <SortableItem key={field.id} id={field.id.toString()}>
+                    <SortableItem key={field.id} id={field.id.toString()} readOnly={readOnly}>
                         <SurveyQuestionItem
                             index={index}
                             field={field}
