@@ -12,13 +12,16 @@ interface SurveyFooterActionsProps {
     handleSubmit: any;
     handleShowSuccessModal: (survey: DesignedSurveyDto) => void;
     published?: boolean;
+    onPublish: () => void;
 }
+
 
 const SurveyFooterActions = ({
                                  id,
                                  handleSubmit,
                                  handleShowSuccessModal,
-                                 published
+                                 published,
+                                 onPublish
                              }: SurveyFooterActionsProps) => {
     const navigate = useNavigate();
 
@@ -78,12 +81,19 @@ const SurveyFooterActions = ({
 
             <div className="flex gap-2">
                 {!published && (
-                    <Button
-                        text="Save Survey"
-                        type="primary"
-                        icon={<SaveIcon size={16} />}
-                        onClick={handleSubmit(onSubmit)}
-                    />
+                    <>
+                        <Button
+                            text="Save Survey"
+                            type="primary"
+                            icon={<SaveIcon size={16} />}
+                            onClick={handleSubmit(onSubmit)}
+                        />
+                        <Button
+                            text="Publish"
+                            type="primary"
+                            onClick={onPublish}
+                        />
+                    </>
                 )}
                 <Button
                     text="Export Survey"
@@ -92,6 +102,7 @@ const SurveyFooterActions = ({
                     onClick={() => (window.location.href = '/surveys')}
                 />
             </div>
+
         </div>
     );
 };

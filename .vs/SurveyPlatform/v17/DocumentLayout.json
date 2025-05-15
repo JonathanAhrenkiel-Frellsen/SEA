@@ -1,17 +1,21 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\davud\\SEA\\",
+  "WorkspaceRootPath": "C:\\Users\\Haaris\\Documents\\GitHub\\SEA\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{371D666E-0245-42D9-8CCC-779130210EBB}|backend\\Survey.Domain\\Survey.Domain.csproj|c:\\users\\davud\\sea\\backend\\survey.domain\\entities\\designedsurvey.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{73D99EE6-8D83-4D57-8C3A-F7B56727294E}|backend\\Survey.Infrastructure\\Survey.Infrastructure.csproj|c:\\users\\haaris\\documents\\github\\sea\\backend\\survey.infrastructure\\data\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73D99EE6-8D83-4D57-8C3A-F7B56727294E}|backend\\Survey.Infrastructure\\Survey.Infrastructure.csproj|solutionrelative:backend\\survey.infrastructure\\data\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{371D666E-0245-42D9-8CCC-779130210EBB}|backend\\Survey.Domain\\Survey.Domain.csproj|c:\\users\\haaris\\documents\\github\\sea\\backend\\survey.domain\\entities\\designedsurvey.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{371D666E-0245-42D9-8CCC-779130210EBB}|backend\\Survey.Domain\\Survey.Domain.csproj|solutionrelative:backend\\survey.domain\\entities\\designedsurvey.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|c:\\users\\davud\\sea\\backend\\survey.api\\controllers\\experimenterappcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|c:\\users\\haaris\\documents\\github\\sea\\backend\\survey.api\\controllers\\experimenterappcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|solutionrelative:backend\\survey.api\\controllers\\experimenterappcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|c:\\users\\davud\\sea\\backend\\survey.api\\controllers\\analysiscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|c:\\users\\haaris\\documents\\github\\sea\\backend\\survey.api\\controllers\\analysiscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|solutionrelative:backend\\survey.api\\controllers\\analysiscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -22,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -33,25 +37,42 @@
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "DatabaseInitializer.cs",
+              "DocumentMoniker": "C:\\Users\\Haaris\\Documents\\GitHub\\SEA\\backend\\Survey.Infrastructure\\Data\\DatabaseInitializer.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Infrastructure\\Data\\DatabaseInitializer.cs",
+              "ToolTip": "C:\\Users\\Haaris\\Documents\\GitHub\\SEA\\backend\\Survey.Infrastructure\\Data\\DatabaseInitializer.cs",
+              "RelativeToolTip": "backend\\Survey.Infrastructure\\Data\\DatabaseInitializer.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAgwBAAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-15T14:47:36.785Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "DesignedSurvey.cs",
-              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.Domain\\Entities\\DesignedSurvey.cs",
+              "DocumentMoniker": "C:\\Users\\Haaris\\Documents\\GitHub\\SEA\\backend\\Survey.Domain\\Entities\\DesignedSurvey.cs",
               "RelativeDocumentMoniker": "backend\\Survey.Domain\\Entities\\DesignedSurvey.cs",
-              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.Domain\\Entities\\DesignedSurvey.cs",
+              "ToolTip": "C:\\Users\\Haaris\\Documents\\GitHub\\SEA\\backend\\Survey.Domain\\Entities\\DesignedSurvey.cs",
               "RelativeToolTip": "backend\\Survey.Domain\\Entities\\DesignedSurvey.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAA6wB4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAAAAAAAAAAA4wBgAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-15T11:34:07.391Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "AnalysisController.cs",
-              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\Controllers\\AnalysisController.cs",
+              "DocumentMoniker": "C:\\Users\\Haaris\\Documents\\GitHub\\SEA\\backend\\Survey.API\\Controllers\\AnalysisController.cs",
               "RelativeDocumentMoniker": "backend\\Survey.API\\Controllers\\AnalysisController.cs",
-              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\Controllers\\AnalysisController.cs",
+              "ToolTip": "C:\\Users\\Haaris\\Documents\\GitHub\\SEA\\backend\\Survey.API\\Controllers\\AnalysisController.cs",
               "RelativeToolTip": "backend\\Survey.API\\Controllers\\AnalysisController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -59,19 +80,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "ExperimenterAppController.cs",
-              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\Controllers\\ExperimenterAppController.cs",
+              "DocumentMoniker": "C:\\Users\\Haaris\\Documents\\GitHub\\SEA\\backend\\Survey.API\\Controllers\\ExperimenterAppController.cs",
               "RelativeDocumentMoniker": "backend\\Survey.API\\Controllers\\ExperimenterAppController.cs",
-              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\Controllers\\ExperimenterAppController.cs",
+              "ToolTip": "C:\\Users\\Haaris\\Documents\\GitHub\\SEA\\backend\\Survey.API\\Controllers\\ExperimenterAppController.cs",
               "RelativeToolTip": "backend\\Survey.API\\Controllers\\ExperimenterAppController.cs",
               "ViewState": "AgIAAC4AAAAAAAAAAAAYwDcAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-15T10:49:41.793Z"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
             }
           ]
         }

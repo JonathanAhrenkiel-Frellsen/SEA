@@ -81,11 +81,22 @@ const SurveyEditorPage = () => {
         setSurveyResponse(survey);
     }
 
+    const handlePublish = async () => {
+        if (!id) return;
+        await fetch(`/api/ExperimenterApp/surveys/${id}/publish`, { method: "POST" });
+        setPublished(true);
+        // Optionally show a modal or banner
+    };
     return (
         <div className="min-h-screen bg-main text-white p-6 font-josefin">
             <div className="mb-6">
                 <Button text="Go Back" icon={<ArrowLeft size={16} />} type="secondary" onClick={() => navigate('/surveys')} />
             </div>
+            {published && (
+                <div className="bg-green-700 text-white rounded-xl px-4 py-2 mb-4 font-semibold text-center">
+                    This survey is published and cannot be edited.
+                </div>
+            )}
 
             <EditSurveyHeader register={register} watch={watch} setValue={setValue} readOnly={published} />
 
@@ -102,16 +113,19 @@ const SurveyEditorPage = () => {
                 readOnly={published}
                 />
 
-            <div className="bg-main relative flex flex-col gap-4 w-full mt-6">
-                <Button text="Add Question" type="secondary" onClick={handleAddQuestion} icon={<PlusIcon size={16} />} />
-            </div>
+            {!published && (
+                <div className="bg-main relative flex flex-col gap-4 w-full mt-6">
+                    <Button text="Add Question" type="secondary" onClick={handleAddQuestion} icon={<PlusIcon size={16} />} />
+                </div>
+            )}
+
 
             <SurveyFooterActions
                 id={id}
                 handleSubmit={handleSubmit}
                 handleShowSuccessModal={handleShowSuccessModal}
                 published={published}
-            />
+                onPublish={handlePublish}          />
 
             {showSuccessModal && surveyResponse && (
                 <SuccessModal
