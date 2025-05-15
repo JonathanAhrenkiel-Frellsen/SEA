@@ -44,6 +44,7 @@ const SurveyFooterActions = ({
                     ...q,
                     QuestionnairePos: idx,
                 })),
+                ResponseCount : 0,
             };
 
             const survey: DesignedSurveyDto | undefined = await handleSaveSurvey(
