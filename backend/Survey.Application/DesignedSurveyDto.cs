@@ -12,6 +12,8 @@
         public int UserId { get; set; }
         
         public List<QuestionnaireDto>? Questionnaires { get; set; }
+
+        public int ResponseCount { get; set; }
     }
     
     public class QuestionnaireDto
@@ -32,4 +34,7 @@
         public int MultipleChoiceId { get; set; }
         public string MultipleChoiceName { get; set; } = string.Empty;
     }
+
+
+
 }

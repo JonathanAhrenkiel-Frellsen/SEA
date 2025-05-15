@@ -26,6 +26,7 @@ const SurveyListPage = () => {
                     <div>
                         <h2 className="text-lg font-semibold">{survey.SurveyTitle}</h2>
                         <p className="text-sm text-white/70">{survey.StartDate ? formatDate(survey.StartDate.toString()) : ''}</p>
+                        <p className="text-sm text-white/70">{survey.ResponseCount ?? 0} responses</p>
                     </div>
                     <div className="flex gap-2">
                         <Button text="Analysis" type="secondary" onClick={() => window.location.href = `/analysis/${survey.SurveyId}`} />
