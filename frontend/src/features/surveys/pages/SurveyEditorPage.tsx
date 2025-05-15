@@ -11,6 +11,7 @@ import SurveyFooterActions from '../components/SurveyFooterActions/SurveyFooterA
 import {SurveyForm} from "../types/SurveyForm";
 import SuccessModal from "../components/Modals/SuccessModal/SuccessModal";
 import SurveyQuestionList from "../components/SurveyQuestionList/SurveyQuestionList";
+import {publishSurvey} from "../api/surveyApi";
 
 const SurveyEditorPage = () => {
     const { id } = useParams<{ id?: string }>();
@@ -83,9 +84,17 @@ const SurveyEditorPage = () => {
 
     const handlePublish = async () => {
         if (!id) return;
-        await fetch(`/api/ExperimenterApp/surveys/${id}/publish`, { method: "POST" });
-        setPublished(true);
-        // Optionally show a modal or banner
+        try {
+            const { shareUrl } = await publishSurvey(id);
+            setPublished(true);
+            // Optionally show the shareUrl in a modal:
+            setSurveyResponse((prev) => prev && ({ ...prev, PrivateKey: "", /* or pass shareUrl */ }));
+            // or open a new modal to display shareUrl
+            console.log("Published! Share at:", shareUrl);
+        } catch (err) {
+            console.error("Publish failed:", err);
+            alert("Could not publish survey. See console.");
+        }
     };
     return (
         <div className="min-h-screen bg-main text-white p-6 font-josefin">
