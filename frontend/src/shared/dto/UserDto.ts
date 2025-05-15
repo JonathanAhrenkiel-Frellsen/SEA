@@ -40,6 +40,7 @@ export interface DesignedSurvey {
     User: User | undefined;
     Questionnaires: Questionnaire[];
     SurveyCompletions: SurveyCompletion[] | undefined;
+    Published: boolean;
 }
 
 export interface SurveyType {

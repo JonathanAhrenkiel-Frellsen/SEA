@@ -17,7 +17,8 @@ const SurveyEditorPage = () => {
     const navigate = useNavigate();
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [surveyResponse, setSurveyResponse] = useState<DesignedSurveyDto | null>(null);
-
+    //added
+    const [published, setPublished] = useState<boolean>(false);
     const { control, register, handleSubmit, watch, setValue } = useForm<SurveyForm>({
         defaultValues: {
             title: '',
@@ -53,6 +54,10 @@ const SurveyEditorPage = () => {
             setValue('questions', questions);
             setValue('isPrivate', data.PrivateKey !== '');
             setValue('title', data.SurveyTitle || '');
+            setPublished(data.Published ?? false);
+
+
+
         }).catch((error) => {
             console.error('Error fetching survey:', error);
         });
@@ -82,7 +87,7 @@ const SurveyEditorPage = () => {
                 <Button text="Go Back" icon={<ArrowLeft size={16} />} type="secondary" onClick={() => navigate('/surveys')} />
             </div>
 
-            <EditSurveyHeader register={register} watch={watch} setValue={setValue} />
+            <EditSurveyHeader register={register} watch={watch} setValue={setValue} readOnly={published} />
 
             <h2 className="text-xl font-semibold mt-4">Questions</h2>
             <SurveyQuestionList
@@ -94,6 +99,7 @@ const SurveyEditorPage = () => {
                 openStates={openStates}
                 move={move}
                 remove={remove}
+                readOnly={published}
                 />
 
             <div className="bg-main relative flex flex-col gap-4 w-full mt-6">
@@ -104,6 +110,7 @@ const SurveyEditorPage = () => {
                 id={id}
                 handleSubmit={handleSubmit}
                 handleShowSuccessModal={handleShowSuccessModal}
+                published={published}
             />
 
             {showSuccessModal && surveyResponse && (

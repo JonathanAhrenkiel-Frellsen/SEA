@@ -5,14 +5,16 @@ interface SurveyHeaderProps {
     register: UseFormRegister<SurveyForm>;
     watch: UseFormWatch<SurveyForm>;
     setValue: UseFormSetValue<SurveyForm>;
+    readOnly: boolean;
 }
 
-const EditSurveyHeader = ({ register, watch, setValue }: SurveyHeaderProps) => (
+const EditSurveyHeader = ({register, watch, setValue, readOnly}: SurveyHeaderProps) => (
     <>
         <input
             {...register('title')}
             placeholder="Survey title"
             className="bg-transparent border border-white p-2 text-lg font-semibold w-full mb-6 outline-none"
+            disabled={readOnly}
         />
         <span className="flex items-center gap-2 text-white cursor-pointer">
       <input
@@ -20,6 +22,7 @@ const EditSurveyHeader = ({ register, watch, setValue }: SurveyHeaderProps) => (
           checked={watch('isPrivate')}
           onChange={(e) => setValue('isPrivate', e.target.checked)}
           className="w-4 h-4 border-2 border-white bg-transparent appearance-none checked:bg-white checked:border-white focus:outline-none cursor-pointer"
+          disabled={readOnly}
       />
       Is private
     </span>

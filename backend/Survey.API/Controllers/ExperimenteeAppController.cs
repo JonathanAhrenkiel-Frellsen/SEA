@@ -88,10 +88,18 @@ namespace Survey.API.Controllers
                     .ThenInclude(q => q.MultipleChoices)
                 .FirstOrDefaultAsync(s => s.SurveyId.ToString() == surveyId);
 
+
             if (survey == null)
             {
                 return NotFound("Survey not found.");
             }
+
+            
+
+            
+
+            if (!survey.Published)
+                return BadRequest("Survey is not published yet.");
 
 
             var Data = new ExperimenteeAppDto
@@ -147,6 +155,14 @@ namespace Survey.API.Controllers
             {
                 return BadRequest("No survey answer data was passed");
             }
+
+            var survey = await _context.Surveys.FirstOrDefaultAsync(s => s.SurveyId == newSurveyAnswer.SurveyId);
+            if (survey == null)
+                return NotFound("Survey not found.");
+
+
+            if (!survey.Published)
+                return BadRequest("Survey is not published yet.");
 
             var existingData = await _context.SurveyAnswer
                 .Include(sa => sa.SurveyCompletion)
@@ -209,6 +225,15 @@ namespace Survey.API.Controllers
             {
                 return NotFound("Survey not found.");
             }
+
+            var survey = await _context.Surveys.FirstOrDefaultAsync(s => s.SurveyId.ToString() == surveyId);
+            if (survey == null)
+                return NotFound("Survey not found.");
+
+
+            if (!survey.Published)
+                return BadRequest("Survey is not published yet.");
+
             existingData.SurveyCompletionTypeId = 2; // 2 is for completed surveys
             existingData.SurveyCompletionDate = DateTime.UtcNow;
             try

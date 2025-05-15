@@ -16,6 +16,8 @@ interface SurveyQuestionListProps {
     setOpenStates: any;
     openStates: boolean[];
     remove: UseFieldArrayRemove;
+    readOnly?: boolean;
+
 }
 
 const SurveyQuestionList = ({
@@ -26,7 +28,8 @@ const SurveyQuestionList = ({
                                 openStates,
                                 move,
                                 setOpenStates,
-                                remove
+                                remove,
+                                readOnly
                             }: SurveyQuestionListProps) => {
     const onDragEnd = (event: any) => {
         const { active, over } = event;
@@ -62,6 +65,7 @@ const SurveyQuestionList = ({
                             register={register}
                             control={control}
                             watch={watch}
+                            readOnly={readOnly}
                         />
                     </SortableItem>
                 ))}
