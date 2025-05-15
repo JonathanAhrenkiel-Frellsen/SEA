@@ -1,10 +1,10 @@
-import {DesignedSurveyDto} from "../../../shared/dto/DesignedSurveyDto";
+import { DesignedSurveyDto } from "../../../shared/dto/DesignedSurveyDto";
 import axios from "axios";
-import {selectToken} from "../../auth/slices/authSlice";
-import {store} from "../../../app/store";
-import {SurveySaveAnswerDto} from "../../../shared/dto/SurveySaveAnswerDto";
+import { selectToken } from "../../auth/slices/authSlice";
+import { store } from "../../../app/store";
+import { SurveySaveAnswerDto } from "../../../shared/dto/SurveySaveAnswerDto";
 import { ExperimenteeAppDto } from "../../../shared/dto/ExperimenteeAppDto";
-import {EXPERIMENTEE_API_URL, EXPERIMENTER_API_URL} from "../../../shared/apiEndpoints";
+import { EXPERIMENTEE_API_URL, EXPERIMENTER_API_URL } from "../../../shared/apiEndpoints";
 
 export const handleSaveSurvey = async (survey: DesignedSurveyDto): Promise<DesignedSurveyDto | undefined> => {
   try {
@@ -118,7 +118,7 @@ export const saveSurveyAnswer = async (surveyAnswer: SurveySaveAnswerDto): Promi
   return;
 }
 
-export async function completeSurvey (surveyId: string) {
+export async function completeSurvey(surveyId: string) {
   const jwt_token = selectToken(store.getState());
 
   const response = await fetch(`${EXPERIMENTEE_API_URL}/CompleteSurvey/${surveyId}`, {

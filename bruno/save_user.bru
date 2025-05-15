@@ -1,0 +1,22 @@
+meta {
+  name: save_user
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/userapp/SaveUser
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "userName": "Haaris",
+    "userEmail": "Haaris@example.com",
+    "userPassword": "123456",
+    "userTypeId": 1
+  }
+  
+  
+}

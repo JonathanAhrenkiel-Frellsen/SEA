@@ -35,4 +35,6 @@ export interface DesignedSurveyDto {
     PrivateKey: string | undefined;
     UserId: number;
     Questionnaires: QuestionnaireDto[] | undefined;
+    //Added amount Responses
+    ResponseCount: number;
 }

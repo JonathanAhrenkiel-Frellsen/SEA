@@ -236,6 +236,17 @@ namespace Survey.API.Controllers
 
             var surveys = await query.ToListAsync();
 
+            //Added responsecount-dto
+            var surveyIds = surveys.Select(s => s.SurveyId).ToList();
+
+            var responseCounts = await _context.SurveyCompletion
+                .Where(sc => sc.SurveyCompletionTypeId == 2 && surveyIds.Contains(sc.SurveyId))
+                .GroupBy(sc => sc.SurveyId)
+                .Select(g => new { SurveyId = g.Key, Count = g.Count() })
+                .ToListAsync();
+
+            var responseCountDict = responseCounts.ToDictionary(rc => rc.SurveyId, rc => rc.Count);
+
             var dto = surveys.Select(s => new DesignedSurveyDto
             {
                 SurveyId = s.SurveyId,
@@ -244,7 +255,8 @@ namespace Survey.API.Controllers
                 StartDate = s.StartDate,
                 EndDate = s.EndDate,
                 SurveyTypeId = s.SurveyTypeId,
-                UserId = s.UserId
+                UserId = s.UserId,
+                ResponseCount = responseCountDict.ContainsKey(s.SurveyId) ? responseCountDict[s.SurveyId] : 0
             }).ToList();
 
             return Ok(dto);
