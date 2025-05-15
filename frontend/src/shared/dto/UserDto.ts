@@ -68,16 +68,15 @@ export interface MultipleChoice {
 }
 
 export interface SurveyAnswer {
-    SurveyAnswerId: number;
     QuestionnaireId: number;
     Questionnaire: Questionnaire | undefined;
     Answer: string;
-    SurveyCompletionId: number;
+    SurveyId: number;
+    UserId: number;
     SurveyCompletion: SurveyCompletion | undefined;
 }
 
 export interface SurveyCompletion {
-    SurveyCompletionId: number;
     SurveyCompletionDate: Date;
     SurveyId: number;
     Survey: DesignedSurvey | undefined;

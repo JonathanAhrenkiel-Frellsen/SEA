@@ -22,7 +22,10 @@ var dtoTypes = new[]
     typeof(DesignedSurveyDto),
     typeof(ImportSurveyDto),
     typeof(SurveySaveAnswerDto),
-    typeof(ExperimenteeAppDto)
+    typeof(ExperimenteeAppDto),
+    typeof(SurveyResponseOverTimeDto),
+    typeof(CompletionHistogramBucketDto),
+    typeof(SurveyCompletionRateDto),
 };
 
 Directory.CreateDirectory("../../frontend/src/shared/dto");
