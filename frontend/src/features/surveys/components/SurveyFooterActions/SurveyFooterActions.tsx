@@ -76,7 +76,6 @@ const SurveyFooterActions = ({
                     icon={<Trash2 size={16} />}
                     type="delete"
                     onClick={handleSubmit(onDelete)}
-                    disabled={published}
                 />
             ) : (
                 <div />
