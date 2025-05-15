@@ -85,15 +85,16 @@ const SurveyEditorPage = () => {
     const handlePublish = async () => {
         if (!id) return;
         try {
-            const { shareUrl } = await publishSurvey(id);
+            await publishSurvey(id);
+
             setPublished(true);
-            // Optionally show the shareUrl in a modal:
-            setSurveyResponse((prev) => prev && ({ ...prev, PrivateKey: "", /* or pass shareUrl */ }));
-            // or open a new modal to display shareUrl
-            console.log("Published! Share at:", shareUrl);
+
+            const freshSurveyDto = await fetchSurvey(id, undefined);
+
+            await handleShowSuccessModal(freshSurveyDto);
         } catch (err) {
             console.error("Publish failed:", err);
-            alert("Could not publish survey. See console.");
+            alert("Could not publish. Check console.");
         }
     };
     return (

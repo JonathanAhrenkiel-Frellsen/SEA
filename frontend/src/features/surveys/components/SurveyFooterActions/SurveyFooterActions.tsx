@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {selectUser} from "../../../auth/slices/authSlice";
 import {store} from "../../../../app/store";
 import {DesignedSurveyDto} from "../../../../shared/dto/DesignedSurveyDto";
-
+import React, { useState } from 'react';
 interface SurveyFooterActionsProps {
     id?: string;
     handleSubmit: any;
@@ -19,7 +19,6 @@ interface SurveyFooterActionsProps {
 const SurveyFooterActions = ({
                                  id,
                                  handleSubmit,
-                                 handleShowSuccessModal,
                                  published,
                                  onPublish
                              }: SurveyFooterActionsProps) => {
@@ -30,6 +29,8 @@ const SurveyFooterActions = ({
 
         navigate('/surveys')
     }
+
+    const [justSaved, setJustSaved] = useState(false);
 
     const onSubmit = async (data: SurveyForm) => {
         try {
@@ -58,7 +59,9 @@ const SurveyFooterActions = ({
             );
 
             if (survey) {
-                handleShowSuccessModal(survey);
+                setJustSaved(true);
+                setTimeout(() => setJustSaved(false), 2000);
+                navigate(`/surveys/${survey.SurveyId}/edit`);
             }
         } catch (error) {
             console.error('Failed to submit survey:', error);
@@ -83,7 +86,7 @@ const SurveyFooterActions = ({
                 {!published && (
                     <>
                         <Button
-                            text="Save Survey"
+                            text={ justSaved ? "Saved!" : "Save Survey" }
                             type="primary"
                             icon={<SaveIcon size={16} />}
                             onClick={handleSubmit(onSubmit)}
