@@ -158,3 +158,23 @@ export const loadSurveyAnswers = async (surveyId: string, pin: string | undefine
 
   return response.json();
 }
+
+export const publishSurvey = async (
+    surveyId: string
+): Promise<{ message: string; shareUrl: string }> => {
+  const jwt_token = selectToken(store.getState());
+  if (!jwt_token) throw new Error("JWT token not available");
+
+  const response = await axios.post(
+      `${EXPERIMENTER_API_URL}/surveys/${surveyId}/publish`,
+      null,
+      {
+        headers: {
+          Authorization: `Bearer ${jwt_token}`,
+          "Content-Type": "application/json",
+        },
+      }
+  );
+
+  return response.data;
+};

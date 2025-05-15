@@ -11,13 +11,15 @@ import SurveyFooterActions from '../components/SurveyFooterActions/SurveyFooterA
 import {SurveyForm} from "../types/SurveyForm";
 import SuccessModal from "../components/Modals/SuccessModal/SuccessModal";
 import SurveyQuestionList from "../components/SurveyQuestionList/SurveyQuestionList";
+import {publishSurvey} from "../api/surveyApi";
 
 const SurveyEditorPage = () => {
     const { id } = useParams<{ id?: string }>();
     const navigate = useNavigate();
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [surveyResponse, setSurveyResponse] = useState<DesignedSurveyDto | null>(null);
-
+    //added
+    const [published, setPublished] = useState<boolean>(false);
     const { control, register, handleSubmit, watch, setValue } = useForm<SurveyForm>({
         defaultValues: {
             title: '',
@@ -53,6 +55,10 @@ const SurveyEditorPage = () => {
             setValue('questions', questions);
             setValue('isPrivate', data.PrivateKey !== '');
             setValue('title', data.SurveyTitle || '');
+            setPublished(data.Published ?? false);
+
+
+
         }).catch((error) => {
             console.error('Error fetching survey:', error);
         });
@@ -76,13 +82,33 @@ const SurveyEditorPage = () => {
         setSurveyResponse(survey);
     }
 
+    const handlePublish = async () => {
+        if (!id) return;
+        try {
+            await publishSurvey(id);
+
+            setPublished(true);
+
+            const freshSurveyDto = await fetchSurvey(id, undefined);
+
+            await handleShowSuccessModal(freshSurveyDto);
+        } catch (err) {
+            console.error("Publish failed:", err);
+            alert("Could not publish. Check console.");
+        }
+    };
     return (
         <div className="min-h-screen bg-main text-white p-6 font-josefin">
             <div className="mb-6">
                 <Button text="Go Back" icon={<ArrowLeft size={16} />} type="secondary" onClick={() => navigate('/surveys')} />
             </div>
+            {published && (
+                <div className="bg-green-700 text-white rounded-xl px-4 py-2 mb-4 font-semibold text-center">
+                    This survey is published and cannot be edited.
+                </div>
+            )}
 
-            <EditSurveyHeader register={register} watch={watch} setValue={setValue} />
+            <EditSurveyHeader register={register} watch={watch} setValue={setValue} readOnly={published} />
 
             <h2 className="text-xl font-semibold mt-4">Questions</h2>
             <SurveyQuestionList
@@ -94,17 +120,22 @@ const SurveyEditorPage = () => {
                 openStates={openStates}
                 move={move}
                 remove={remove}
+                readOnly={published}
                 />
 
-            <div className="bg-main relative flex flex-col gap-4 w-full mt-6">
-                <Button text="Add Question" type="secondary" onClick={handleAddQuestion} icon={<PlusIcon size={16} />} />
-            </div>
+            {!published && (
+                <div className="bg-main relative flex flex-col gap-4 w-full mt-6">
+                    <Button text="Add Question" type="secondary" onClick={handleAddQuestion} icon={<PlusIcon size={16} />} />
+                </div>
+            )}
+
 
             <SurveyFooterActions
                 id={id}
                 handleSubmit={handleSubmit}
                 handleShowSuccessModal={handleShowSuccessModal}
-            />
+                published={published}
+                onPublish={handlePublish}          />
 
             {showSuccessModal && surveyResponse && (
                 <SuccessModal

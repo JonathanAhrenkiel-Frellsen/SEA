@@ -77,6 +77,12 @@ namespace Survey.API.Controllers
                     return NotFound($"Survey with ID {surveyDto.SurveyId} not found");
                 }
 
+                //Added a statement to check whether the survey is published
+                if (existingSurvey.Published)
+                {
+                    return BadRequest($"Survey with ID {surveyDto.SurveyId} is already published and cannot be edited.");
+                }
+
                 existingSurvey.SurveyTitle = surveyDto.SurveyTitle;
                 existingSurvey.SurveyDescription = surveyDto.SurveyDescription;
                 existingSurvey.StartDate = surveyDto.StartDate;
@@ -182,6 +188,26 @@ namespace Survey.API.Controllers
                 return CreatedAtAction(nameof(SaveSurvey), new { id = newSurvey.SurveyId }, newSurvey);
             }
         }
+
+        // POST: api/ExperimenterApp/PublishSurvey
+
+        [HttpPost("surveys/{id}/publish")]
+        public async Task<IActionResult> PublishSurvey(int id)
+        {
+            var survey = await _context.Surveys.FirstOrDefaultAsync(s => s.SurveyId == id);
+
+            if (survey == null)
+                return NotFound("Survey not found");
+
+            if (survey.Published)
+                return BadRequest("Survey is already published.");
+
+            survey.Published = true;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Survey published successfully", shareUrl = $"[YOUR_BASE_URL]/surveys/{id}" });
+        }
+
 
         // POST: api/ExperimenterApp/LoadSurvey
         [Authorize]

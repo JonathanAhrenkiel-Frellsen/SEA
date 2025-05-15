@@ -14,8 +14,8 @@ const SuccessModal = ({ surveyResponse, onClose }: SuccessModalProps) => {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-main text-white p-6 w-96 text-center rounded shadow-xl">
-                <h2 className="text-2xl font-semibold mb-4">Survey Saved!</h2>
-                <p className="mb-6">Your survey was saved successfully. You can now return to the survey list.</p>
+                <h2 className="text-2xl font-semibold mb-4">Survey Published!</h2>
+                <p className="mb-6">Your survey was published. You can now share the survey link.</p>
 
                 <CopyBox label="Shareable Link:" value={surveyUrl} />
 

@@ -14,8 +14,10 @@
         public List<QuestionnaireDto>? Questionnaires { get; set; }
 
         public int ResponseCount { get; set; }
+        public bool Published { get; set; } = false;
+
     }
-    
+
     public class QuestionnaireDto
     {
         public int QuestionnaireId { get; set; }

@@ -1,12 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Haaris\\Documents\\GitHub\\SEA\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|c:\\users\\haaris\\documents\\github\\sea\\backend\\survey.api\\controllers\\experimenterappcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|solutionrelative:backend\\survey.api\\controllers\\experimenterappcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -14,7 +9,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -27,19 +22,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ExperimenterAppController.cs",
-              "DocumentMoniker": "C:\\Users\\Haaris\\Documents\\GitHub\\SEA\\backend\\Survey.API\\Controllers\\ExperimenterAppController.cs",
-              "RelativeDocumentMoniker": "backend\\Survey.API\\Controllers\\ExperimenterAppController.cs",
-              "ToolTip": "C:\\Users\\Haaris\\Documents\\GitHub\\SEA\\backend\\Survey.API\\Controllers\\ExperimenterAppController.cs",
-              "RelativeToolTip": "backend\\Survey.API\\Controllers\\ExperimenterAppController.cs",
-              "ViewState": "AgIAAJkAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T10:49:41.793Z",
-              "EditorCaption": ""
             }
           ]
         }

@@ -12,6 +12,7 @@ interface SurveyQuestionItemProps {
     register: UseFormRegister<any>;
     control: Control<any>;
     watch: UseFormWatch<any>;
+    readOnly?: boolean;
 }
 
 const SurveyQuestionItem = ({
@@ -23,6 +24,7 @@ const SurveyQuestionItem = ({
                                 register,
                                 control,
                                 watch,
+                                readOnly = false
                             }: SurveyQuestionItemProps) => {
     const inputType = watch(`questions.${index}.InputType`);
 
@@ -33,21 +35,27 @@ const SurveyQuestionItem = ({
                     {...register(`questions.${index}.QuestionnaireTitle`)}
                     placeholder="Question title"
                     className="bg-transparent text-white flex-1 outline-none"
+                    disabled={readOnly}
                 />
                 <div className="flex items-center gap-2">
                     <select
                         {...register(`questions.${index}.InputType`)}
                         className="bg-main p-1 appearance-none"
+                        disabled={readOnly}
                     >
                         <option value="checkbox" className="bg-main text-white">Checkbox</option>
                         <option value="text" className="bg-main text-white">Text</option>
                     </select>
-                    <button type="button" onClick={() => toggleOpen(index)}>
-                        {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                    </button>
-                    <button type="button" onClick={() => handleDelete(index)}>
-                        <Trash2 size={16} />
-                    </button>
+                    {!readOnly && (
+                        <>
+                            <button type="button" onClick={() => toggleOpen(index)}>
+                                {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                            </button>
+                            <button type="button" onClick={() => handleDelete(index)}>
+                                <Trash2 size={16} />
+                            </button>
+                        </>
+                    )}
                 </div>
             </div>
 
@@ -71,21 +79,24 @@ const SurveyQuestionItem = ({
                                         field.onChange(updated);
                                     }}
                                     className="bg-transparent text-white border border-white p-2 outline-none"
+                                    disabled={readOnly}
                                 />
                             ))}
-                            <button
-                                type="button"
-                                className="text-sm underline"
-                                onClick={() => {
-                                    if (!field.value) return;
-                                    field.onChange([
-                                        ...field.value,
-                                        { MultipleChoiceId: 0, MultipleChoiceName: '' },
-                                    ]);
-                                }}
-                            >
-                                + Add option
-                            </button>
+                            {!readOnly && (
+                                <button
+                                    type="button"
+                                    className="text-sm underline"
+                                    onClick={() => {
+                                        if (!field.value) return;
+                                        field.onChange([
+                                            ...field.value,
+                                            { MultipleChoiceId: 0, MultipleChoiceName: '' },
+                                        ]);
+                                    }}
+                                >
+                                    + Add option
+                                </button>
+                            )}
                         </div>
                     )}
                 />

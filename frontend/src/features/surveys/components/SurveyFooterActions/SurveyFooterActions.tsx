@@ -6,17 +6,21 @@ import {useNavigate} from "react-router-dom";
 import {selectUser} from "../../../auth/slices/authSlice";
 import {store} from "../../../../app/store";
 import {DesignedSurveyDto} from "../../../../shared/dto/DesignedSurveyDto";
-
+import React, { useState } from 'react';
 interface SurveyFooterActionsProps {
     id?: string;
     handleSubmit: any;
     handleShowSuccessModal: (survey: DesignedSurveyDto) => void;
+    published?: boolean;
+    onPublish: () => void;
 }
+
 
 const SurveyFooterActions = ({
                                  id,
                                  handleSubmit,
-                                 handleShowSuccessModal
+                                 published,
+                                 onPublish
                              }: SurveyFooterActionsProps) => {
     const navigate = useNavigate();
 
@@ -25,6 +29,8 @@ const SurveyFooterActions = ({
 
         navigate('/surveys')
     }
+
+    const [justSaved, setJustSaved] = useState(false);
 
     const onSubmit = async (data: SurveyForm) => {
         try {
@@ -44,7 +50,8 @@ const SurveyFooterActions = ({
                     ...q,
                     QuestionnairePos: idx,
                 })),
-                ResponseCount : 0,
+                ResponseCount: 0,
+                Published: false
             };
 
             const survey: DesignedSurveyDto | undefined = await handleSaveSurvey(
@@ -52,7 +59,9 @@ const SurveyFooterActions = ({
             );
 
             if (survey) {
-                handleShowSuccessModal(survey);
+                setJustSaved(true);
+                setTimeout(() => setJustSaved(false), 2000);
+                navigate(`/surveys/${survey.SurveyId}/edit`);
             }
         } catch (error) {
             console.error('Failed to submit survey:', error);
@@ -73,12 +82,21 @@ const SurveyFooterActions = ({
             )}
 
             <div className="flex gap-2">
-                <Button
-                    text="Save Survey"
-                    type="primary"
-                    icon={<SaveIcon size={16} />}
-                    onClick={handleSubmit(onSubmit)}
-                />
+                {!published && (
+                    <>
+                        <Button
+                            text={ justSaved ? "Saved!" : "Save Survey" }
+                            type="primary"
+                            icon={<SaveIcon size={16} />}
+                            onClick={handleSubmit(onSubmit)}
+                        />
+                        <Button
+                            text="Publish"
+                            type="primary"
+                            onClick={onPublish}
+                        />
+                    </>
+                )}
                 <Button
                     text="Export Survey"
                     type="secondary"
@@ -86,6 +104,7 @@ const SurveyFooterActions = ({
                     onClick={() => (window.location.href = '/surveys')}
                 />
             </div>
+
         </div>
     );
 };
