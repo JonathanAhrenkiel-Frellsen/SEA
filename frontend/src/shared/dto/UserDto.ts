@@ -41,6 +41,8 @@ export interface DesignedSurvey {
     Questionnaires: Questionnaire[];
     SurveyCompletions: SurveyCompletion[] | undefined;
     Published: boolean;
+    IsPaused: boolean;
+    IsEditable: boolean;
 }
 
 export interface SurveyType {

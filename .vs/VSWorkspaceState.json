@@ -2,15 +2,16 @@
   "ExpandedNodes": [
     "",
     "\\backend",
+    "\\backend\\Survey.API",
+    "\\backend\\Survey.API\\Controllers",
     "\\backend\\Survey.Infrastructure",
     "\\backend\\Survey.Infrastructure\\Data",
     "\\frontend",
-    "\\frontend\\public",
     "\\frontend\\src",
+    "\\frontend\\src\\assets",
     "\\frontend\\src\\features",
-    "\\frontend\\src\\features\\surveys",
-    "\\frontend\\src\\features\\surveys\\api",
-    "\\frontend\\src\\features\\surveys\\pages"
+    "\\frontend\\src\\shared"
   ],
+  "SelectedNode": "\\backend\\Survey.API\\Controllers\\ExperimenterAppController.cs",
   "PreviewInSolutionExplorer": false
 }

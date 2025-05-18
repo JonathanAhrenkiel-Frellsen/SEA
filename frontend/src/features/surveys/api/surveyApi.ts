@@ -178,3 +178,73 @@ export const publishSurvey = async (
 
   return response.data;
 };
+
+
+
+/**
+ * Get a single survey with published and paused flags
+ */
+export const getSurvey = async (surveyId: number): Promise<DesignedSurveyDto> => {
+  const token = selectToken(store.getState());
+  const response = await axios.get<DesignedSurveyDto>(
+      `${EXPERIMENTER_API_URL}/surveys/${surveyId}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+  );
+  return response.data;
+};
+
+/**
+ * Pause the survey (stops new responses)
+ */
+export const pauseSurvey = async (surveyId: number): Promise<void> => {
+  const token = selectToken(store.getState());
+  await axios.post(
+      `${EXPERIMENTER_API_URL}/surveys/${surveyId}/pause`,
+      null,
+      { headers: { Authorization: `Bearer ${token}` } }
+  );
+};
+
+/**
+ * Resume the survey (allows new responses again)
+ */
+export const resumeSurvey = async (surveyId: number): Promise<void> => {
+  const token = selectToken(store.getState());
+  await axios.post(
+      `${EXPERIMENTER_API_URL}/surveys/${surveyId}/resume`,
+      null,
+      { headers: { Authorization: `Bearer ${token}` } }
+  );
+};
+
+/**
+ * Fetch the public survey (including paused state)
+ */
+export const getPublicSurvey = async (surveyId: number, pinCode?: string): Promise<ExperimenteeAppDto> => {
+  const token = selectToken(store.getState());
+  const response = await axios.get<ExperimenteeAppDto>(
+      `${EXPERIMENTEE_API_URL}/${surveyId}/public`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'X-Survey-Pin': pinCode || ''
+        }
+      }
+  );
+  return response.data;
+};
+
+/**
+ * Submit a response (only if published and not paused)
+ */
+export const submitResponse = async (
+    surveyId: number,
+    answerDto: SurveySaveAnswerDto
+): Promise<void> => {
+  // No auth needed for public endpoint if unauthenticated, else include token
+  const response = await axios.post(
+      `${EXPERIMENTEE_API_URL}/${surveyId}/responses`,
+      answerDto
+  );
+  if (response.status !== 200) throw new Error('Failed to submit response');
+};

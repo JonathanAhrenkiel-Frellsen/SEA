@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Survey.API.Attributes;
 using Survey.Application;
 using Survey.Domain.Entities;
-using SurveyDbContext = Survey.Infrastructure.Data.SurveyDbContext;
+using Survey.Infrastructure.Data;
 
 namespace Survey.API.Controllers
 {
@@ -17,6 +17,42 @@ namespace Survey.API.Controllers
         public ExperimenteeAppController(SurveyDbContext context)
         {
             _context = context;
+        }
+
+        // GET: api/ExperimenteeApp/{id}/public
+        [HttpGet("{id}/public")]
+        public async Task<IActionResult> GetPublic(int id)
+        {
+            var survey = await _context.Surveys
+                                       .Include(s => s.Questionnaires)
+                                       .FirstOrDefaultAsync(s => s.SurveyId == id);
+            if (survey == null)
+                return NotFound();
+            if (!survey.Published)
+                return BadRequest("Survey is not yet published.");
+
+            var dto = new ExperimenteeAppDto
+            {
+                SurveyId = survey.SurveyId,
+                SurveyTitle = survey.SurveyTitle,
+                SurveyDescription = survey.SurveyDescription,
+                IsPaused = survey.IsPaused
+            };
+            return Ok(dto);
+        }
+
+        // POST: api/ExperimenteeApp/{id}/responses
+        [HttpPost("{id}/responses")]
+        public async Task<IActionResult> SubmitResponse(int id, [FromBody] SurveySaveAnswerDto answerDto)
+        {
+            var survey = await _context.Surveys.FindAsync(id);
+            if (survey == null)
+                return NotFound();
+            if (!survey.Published || survey.IsPaused)
+                return BadRequest("This survey is not accepting responses at the moment.");
+
+
+            return Ok(new { message = "Response recorded." });
         }
 
         // POST: api/ExperimenteeApp/GetListofSavedSurveys
@@ -75,9 +111,10 @@ namespace Survey.API.Controllers
                 .ToListAsync();
             return Ok(surveys);
         }
-        
+
         [Authorize]
-        [Pincode] // needs the surveyId form the HttpGET!
+        [Pincode]
+        // GET: api/ExperimenteeApp/LoadSurvey/{surveyId}
         [HttpGet("LoadSurvey/{surveyId}")]
         public async Task<IActionResult> LoadSurvey(string surveyId)
         {
@@ -88,19 +125,16 @@ namespace Survey.API.Controllers
                     .ThenInclude(q => q.MultipleChoices)
                 .FirstOrDefaultAsync(s => s.SurveyId.ToString() == surveyId);
 
-
             if (survey == null)
             {
                 return NotFound("Survey not found.");
             }
 
-            
-
-            
-
             if (!survey.Published)
                 return BadRequest("Survey is not published yet.");
 
+            if (survey.IsPaused)
+                return BadRequest("This survey is temporarily closed and not accepting new responses.");
 
             var Data = new ExperimenteeAppDto
             {
@@ -108,44 +142,44 @@ namespace Survey.API.Controllers
                 SurveyTitle = survey.SurveyTitle,
                 SurveyDescription = survey.SurveyDescription,
                 UserId = int.Parse(userId),
-                SurveyStoredAnwsers = [.. survey.Questionnaires.Select(q => new SurveyStoredAnwsersDto
+                SurveyStoredAnwsers = survey.Questionnaires.Select(q => new SurveyStoredAnwsersDto
                 {
                     QuestionnaireId = q.QuestionnaireId,
                     QuestionnaireTitle = q.QuestionnaireTitle,
                     QuestionnairePos = q.QuestionnairePos,
                     InputType = q.InputType,
                     Range = q.Range,
-                    SurveyAnswer = string.Empty, // Initialize with empty answer
+                    SurveyAnswer = string.Empty,
                     MultipleChoices = q.MultipleChoices != null
-                        ? [.. q.MultipleChoices.Select(mc => new MultipleChoicesDto
+                        ? q.MultipleChoices.Select(mc => new MultipleChoicesDto
                         {
                             MultipleChoiceId = mc.MultipleChoiceId,
                             MultipleChoiceName = mc.MultipleChoiceName
-                        })]
+                        }).ToList()
                         : new List<MultipleChoicesDto>()
-                })]
+                }).ToList()
             };
 
             var savedAnswers = await _context.SurveyAnswer
-                .Where(sa => sa.SurveyCompletion != null && sa.SurveyCompletion.UserId.ToString() == userId
-                && sa.SurveyCompletion.SurveyId.ToString() == surveyId)
+                .Where(sa => sa.SurveyCompletion != null
+                    && sa.SurveyCompletion.UserId.ToString() == userId
+                    && sa.SurveyCompletion.SurveyId.ToString() == surveyId)
                 .ToListAsync();
 
             foreach (var answer in savedAnswers)
             {
-                var storedAnswer = Data.SurveyStoredAnwsers.FirstOrDefault(s => s.QuestionnaireId == answer.QuestionnaireId);
-                if (storedAnswer != null)
+                var stored = Data.SurveyStoredAnwsers.FirstOrDefault(s => s.QuestionnaireId == answer.QuestionnaireId);
+                if (stored != null)
                 {
-                    storedAnswer.SurveyAnswer = answer.Answer;
+                    stored.SurveyAnswer = answer.Answer;
                 }
             }
 
             return Ok(Data);
         }
 
-
-        // POST: api/ExperimenteeApp/SaveSurveyAnswer
         [Authorize]
+        // POST: api/ExperimenteeApp/SaveSurveyAnswer
         [HttpPost("SaveSurveyAnswer")]
         public async Task<IActionResult> SaveSurveyAnswers([FromBody] SurveySaveAnswerDto newSurveyAnswer)
         {
@@ -160,9 +194,9 @@ namespace Survey.API.Controllers
             if (survey == null)
                 return NotFound("Survey not found.");
 
-
             if (!survey.Published)
                 return BadRequest("Survey is not published yet.");
+
 
             var existingData = await _context.SurveyAnswer
                 .Include(sa => sa.SurveyCompletion)
@@ -173,22 +207,20 @@ namespace Survey.API.Controllers
 
             if (existingData == null)
             {
-
                 var newData = new SurveyCompletion
                 {
                     SurveyId = newSurveyAnswer.SurveyId,
                     UserId = int.Parse(userId),
                     SurveyCompletionDate = DateTime.UtcNow,
-                    SurveyCompletionTypeId = 1, // 1 is for saved surveys
-
-                    SurveyAnswers =
-                    [
+                    SurveyCompletionTypeId = 1,
+                    SurveyAnswers = new List<SurveyAnswer>
+                    {
                         new SurveyAnswer
                         {
                             QuestionnaireId = newSurveyAnswer.QuestionnaireId,
                             Answer = newSurveyAnswer.SurveyAnswer ?? string.Empty
                         }
-                    ]
+                    }
                 };
                 _context.SurveyCompletion.Add(newData);
             }
@@ -209,32 +241,26 @@ namespace Survey.API.Controllers
             return Ok("Survey answer saved successfully.");
         }
 
-        // POST: api/ExperimenteeApp/CompleteSurvey
         [Authorize]
+        // GET: api/ExperimenteeApp/CompleteSurvey/{surveyId}
         [HttpGet("CompleteSurvey/{surveyId}")]
         public async Task<IActionResult> CompleteSurvey(string surveyId)
         {
             var userId = User.FindFirst("UserId")!.Value;
-            
-            Console.WriteLine($"surveyId: {surveyId}");
-            
             var existingData = await _context.SurveyCompletion
                 .FirstOrDefaultAsync(s => s.UserId.ToString() == userId
-                && s.SurveyId.ToString() == surveyId);
+                    && s.SurveyId.ToString() == surveyId);
             if (existingData == null)
-            {
                 return NotFound("Survey not found.");
-            }
 
             var survey = await _context.Surveys.FirstOrDefaultAsync(s => s.SurveyId.ToString() == surveyId);
             if (survey == null)
                 return NotFound("Survey not found.");
 
-
             if (!survey.Published)
                 return BadRequest("Survey is not published yet.");
 
-            existingData.SurveyCompletionTypeId = 2; // 2 is for completed surveys
+            existingData.SurveyCompletionTypeId = 2; // completed
             existingData.SurveyCompletionDate = DateTime.UtcNow;
             try
             {
@@ -247,9 +273,9 @@ namespace Survey.API.Controllers
             return Ok("Survey completed successfully.");
         }
 
-        // POST: api/ExperimenteeApp/DeleteSavedSurvey
         [Authorize]
-        [HttpDelete("DeleteSavedSurvey{surveyId}")]
+        // DELETE: api/ExperimenteeApp/DeleteSavedSurvey/{surveyId}
+        [HttpDelete("DeleteSavedSurvey/{surveyId}")]
         public async Task<IActionResult> DeleteSavedSurvey(string surveyId)
         {
             var userId = User.FindFirst("UserId")!.Value;
@@ -265,8 +291,8 @@ namespace Survey.API.Controllers
             var existingData = await _context.SurveyCompletion
                 .Include(s => s.SurveyAnswers)
                 .FirstOrDefaultAsync(s => s.UserId.ToString() == userId
-                && s.SurveyId.ToString() == surveyId
-                && s.SurveyCompletionTypeId == 1);
+                    && s.SurveyId.ToString() == surveyId
+                    && s.SurveyCompletionTypeId == 1);
 
             if (existingData == null)
             {

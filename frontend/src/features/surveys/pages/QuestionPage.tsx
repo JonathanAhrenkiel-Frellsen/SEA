@@ -10,128 +10,172 @@ import {
   selectFieldValueById,
 } from "../slices/surveySlice";
 import { loadParsedSurveyAnswers } from "../services/surveyService";
-import {completeSurvey, saveSurveyAnswer} from "../api/surveyApi";
-import {Button} from "../../../shared/components/Buttons/Button";
-import {ArrowRight} from "lucide-react";
+import { completeSurvey, saveSurveyAnswer } from "../api/surveyApi";
+import { Button } from "../../../shared/components/Buttons/Button";
+import { ArrowRight } from "lucide-react";
 import PinEntryForm from "../components/PinEntryForm/EntryEntryForm";
 import SurveyQuestion from "../components/SurveyQuestion/SurveyQuestion";
 
-const QuestionPage = () => {
-  const [questions, setQuestions] = useState<QuestionnaireDto[]>([]);
-  const [title, setTitle] = useState<string>('');
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [pin, setPin] = useState('');
-  const [isPinRequired, setIsPinRequired] = useState(false);
-  const [pinError, setPinError] = useState('');
+const QuestionPage: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const searchParams = new URLSearchParams(location.search);
 
+  // State
+  const [questions, setQuestions]               = useState<QuestionnaireDto[]>([]);
+  const [title, setTitle]                       = useState<string>("");
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [pin, setPin]                           = useState<string>("");
+  const [isPinRequired, setIsPinRequired]       = useState<boolean>(false);
+  const [pinError, setPinError]                 = useState<string>("");
+  const [isPaused, setIsPaused]                 = useState<boolean>(false);
+  const [surveyClosed, setSurveyClosed]         = useState<boolean>(false);
+  const [errorMessage, setErrorMessage]         = useState<string>("");
+
+  // Fetch and populate survey answers + pause flag
+  async function loadSurvey() {
+    // reset any previous errors
+    setSurveyClosed(false);
+    setErrorMessage("");
+
+    // PIN validation
+    if (isPinRequired && !/^\d+$/.test(pin)) {
+      setPinError("PIN must be numbers only.");
+      return;
+    }
+    if (!id) return;
+
+    let result;
+    try {
+      result = await loadParsedSurveyAnswers(id, pin);
+    } catch (err: any) {
+      // catch paused‐survey 400
+      if (err.response?.status === 400) {
+        setErrorMessage(err.response.data || "Survey is closed.");
+        setSurveyClosed(true);
+        return;
+      }
+      setErrorMessage("Temporarily, the survey is not accepting answers");
+      setSurveyClosed(true);
+      return;
+    }
+    if (!result) return;
+
+    // populate state
+    setIsPaused(result.isPaused);
+    setTitle(result.title);
+    setQuestions(result.questions.sort((a, b) => a.QuestionnairePos - b.QuestionnairePos));
+
+    // restore saved answers
+    result.answers.forEach(answer => {
+      if (answer.type === "text") {
+        dispatch(setTextValue({ name: answer.id, value: answer.value as string }));
+      } else {
+        dispatch(setCheckboxValue({ name: answer.id, value: answer.value as string[] }));
+      }
+    });
+
+    // if already complete, redirect
+    if (result.isComplete) {
+      navigate("/thank-you");
+    } else {
+      setCurrentQuestionIndex(result.nextIndex);
+    }
+
+    // hide PIN-entry on success
+    setIsPinRequired(false);
+  }
+
+  // Submit a single answer
   const handleContinue = () => {
+    if (isPaused) return;           // extra guard
     const question = questions[currentQuestionIndex];
     if (!question) return;
 
     const answer = selectFieldValueById(
         store.getState().surveyForm,
-        question.QuestionnaireId.toString()
+        question.QuestionnaireId.toString(),
     );
 
-    const isAnswerEmpty =
-        question.InputType === 'text'
-            ? !answer || answer.trim() === ''
+    const isEmpty =
+        question.InputType === "text"
+            ? !answer || answer.trim() === ""
             : !answer || (Array.isArray(answer) && answer.length === 0);
 
-    if (isAnswerEmpty) {
-      alert("Please answer the question before continuing.");
+    if (isEmpty) {
+      alert("Please answer before continuing.");
       return;
     }
 
-    const surveyAnswer: SurveySaveAnswerDto = {
+    const dto: SurveySaveAnswerDto = {
       SurveyId: id ? parseInt(id) : 0,
       QuestionnaireId: question.QuestionnaireId,
-      SurveyAnswer: Array.isArray(answer) ? answer.join(', ') : answer,
+      SurveyAnswer: Array.isArray(answer) ? answer.join(", ") : answer,
     };
 
-    saveSurveyAnswer(surveyAnswer).then(() => {
+    saveSurveyAnswer(dto).then(() => {
       if (currentQuestionIndex >= questions.length - 1) {
-        completeSurvey(id!).then(() => {
-          navigate('/thank-you');
-          return;
-        })
-      }
-
-      setCurrentQuestionIndex((prev) => prev + 1);
-    });
-  };
-
-  const loadSurvey = async () => {
-    if (isPinRequired && !/^\d+$/.test(pin)) {
-      setPinError("PIN must be numbers only.");
-      return;
-    }
-
-    if (!id) return;
-
-    const result = await loadParsedSurveyAnswers(id, pin);
-    if (!result) return;
-
-    setTitle(result.title);
-    setQuestions(result.questions.sort((a, b) => a.QuestionnairePos - b.QuestionnairePos));
-
-    result.answers.forEach((answer) => {
-      if (answer.type === 'text') {
-        dispatch(setTextValue({ name: answer.id, value: answer.value as string }));
-      } else if (answer.type === 'checkbox') {
-        dispatch(setCheckboxValue({ name: answer.id, value: answer.value as string[] }));
+        completeSurvey(id!).then(() => navigate("/thank-you"));
+      } else {
+        setCurrentQuestionIndex(prev => prev + 1);
       }
     });
-
-    if (result.isComplete) {
-      navigate('/thank-you');
-    } else {
-      setCurrentQuestionIndex(result.nextIndex);
-    }
-
-    setIsPinRequired(false);
   };
 
   useEffect(() => {
     const requiresPin = searchParams.get("pinCode") === "true";
     setIsPinRequired(requiresPin);
-
     if (!requiresPin && id) {
       loadSurvey();
     }
   }, [id]);
 
-  if (isPinRequired) {
+  if (surveyClosed) {
     return (
-        <PinEntryForm
-            pin={pin}
-            setPin={setPin}
-            pinError={pinError}
-            onSubmit={loadSurvey}
-        />
+        <div className="flex items-center justify-center h-full p-8">
+          <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 max-w-md text-yellow-800">
+            <p className="font-bold">Survey Paused</p>
+            <p className="mt-2">{errorMessage}</p>
+          </div>
+        </div>
     );
   }
 
-  const currentQuestion = questions[currentQuestionIndex];
+  if (!isPinRequired && isPaused) {
+    return (
+        <div className="p-6 text-center text-lg">
+          This survey is temporarily closed and not accepting new responses.
+        </div>
+    );
+  }
 
+  if (isPinRequired) {
+    return (
+        <PinEntryForm pin={pin} setPin={setPin} pinError={pinError} onSubmit={loadSurvey} />
+    );
+  }
+
+  const question = questions[currentQuestionIndex];
   return (
       <div>
-        {currentQuestion && (
+        {question && (
             <>
-              <SurveyQuestion question={currentQuestion} title={title} />
-              <div className="flex justify-end mt-10">
+              <SurveyQuestion question={question} title={title} />
+              <div className="flex flex-col items-end mt-10">
                 <Button
                     text="Continue"
                     type="primary"
                     onClick={handleContinue}
                     icon={<ArrowRight size={16} />}
+                    disabled={isPaused}
                 />
+                {isPaused && (
+                    <p className="text-red-500 mt-2">
+                      This survey has been paused. You cannot submit answers right now.
+                    </p>
+                )}
               </div>
             </>
         )}

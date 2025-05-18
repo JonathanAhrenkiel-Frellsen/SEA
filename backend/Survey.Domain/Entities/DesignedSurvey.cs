@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace Survey.Domain.Entities
 {
+
+   
     public class DesignedSurvey
     {
         [Key]
@@ -29,6 +31,30 @@ namespace Survey.Domain.Entities
         [JsonIgnore]
         public virtual ICollection<SurveyCompletion>? SurveyCompletions { get; set; }
         public bool Published { get; set; } = false;
+
+        public bool IsPaused { get; private set; } = false;
+
+
+        public void Resume()
+        {
+            if (!Published)
+                throw new InvalidOperationException("Only published surveys can be resumed.");
+            if (!IsPaused)
+                throw new InvalidOperationException("Survey is not paused.");
+            IsPaused = false;
+        }
+
+        public void Pause()
+        {
+            if (!Published)
+                throw new InvalidOperationException("Only published surveys can be paused.");
+            if (IsPaused)
+                throw new InvalidOperationException("Survey is already paused.");
+            IsPaused = true;
+        }
+
+
+        public bool IsEditable => !Published;
 
         public DesignedSurvey()
         {
