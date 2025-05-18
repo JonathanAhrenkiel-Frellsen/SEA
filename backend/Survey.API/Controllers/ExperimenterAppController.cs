@@ -189,6 +189,86 @@ namespace Survey.API.Controllers
             }
         }
 
+
+        // GET: api/ExperimenterApp/surveys/{id}
+        [HttpGet("surveys/{id}")]
+        public async Task<IActionResult> GetSurvey(int id)
+        {
+            var survey = await _context.Surveys
+                .Include(s => s.Questionnaires)
+                .ThenInclude(q => q.MultipleChoices)
+                .FirstOrDefaultAsync(s => s.SurveyId == id);
+            if (survey == null) return NotFound();
+
+
+
+            var dto = new DesignedSurveyDto
+            {
+                SurveyId = survey.SurveyId,
+                SurveyTitle = survey.SurveyTitle,
+                SurveyDescription = survey.SurveyDescription,
+                StartDate = survey.StartDate,
+                EndDate = survey.EndDate,
+                SurveyTypeId = survey.SurveyTypeId,
+                PrivateKey = survey.PrivateKey,
+                Published = survey.Published,
+                IsPaused = survey.IsPaused,  // NEW
+                Questionnaires = survey.Questionnaires.Select(q => new QuestionnaireDto
+                {
+                    QuestionnaireId = q.QuestionnaireId,
+                    QuestionnairePos = q.QuestionnairePos,
+                    QuestionnaireTitle = q.QuestionnaireTitle,
+                    InputType = q.InputType,
+                    Range = q.Range,
+                    SurveyId = q.SurveyId,
+                    MultipleChoices = q.MultipleChoices.Select(mc => new MultipleChoiceDto
+                    {
+                        MultipleChoiceId = mc.MultipleChoiceId,
+                        MultipleChoiceName = mc.MultipleChoiceName
+                    }).ToList()
+                }).ToList()
+            };
+
+            return Ok(dto);
+        }
+
+        // POST: api/ExperimenterApp/surveys/{id}/pause
+        [HttpPost("surveys/{id}/pause")]
+        public async Task<IActionResult> PauseSurvey(int id)
+        {
+            var survey = await _context.Surveys.FindAsync(id);
+            if (survey == null) return NotFound();
+            try
+            {
+                survey.Pause();
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Survey paused" });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // POST: api/ExperimenterApp/surveys/{id}/resume
+        [HttpPost("surveys/{id}/resume")]
+        public async Task<IActionResult> ResumeSurvey(int id)
+        {
+            var survey = await _context.Surveys.FindAsync(id);
+            if (survey == null) return NotFound();
+            try
+            {
+                survey.Resume();
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Survey resumed" });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
         // POST: api/ExperimenterApp/PublishSurvey
 
         [HttpPost("surveys/{id}/publish")]
@@ -212,7 +292,7 @@ namespace Survey.API.Controllers
         // POST: api/ExperimenterApp/LoadSurvey
         [Authorize]
         [Pincode] // needs the surveyId form the HttpGET!
-        [HttpGet("surveys/{id}")]
+        [HttpGet("LoadSurvey/{surveyId}")]
         public async Task<ActionResult<DesignedSurvey>> LoadSurvey(int id)
         {
             if (id <= 0)

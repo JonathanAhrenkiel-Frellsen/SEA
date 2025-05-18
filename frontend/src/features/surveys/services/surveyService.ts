@@ -1,6 +1,6 @@
 import {loadSurveyAnswers} from "../api/surveyApi";
 import {QuestionnaireDto} from "../../../shared/dto/DesignedSurveyDto";
-
+import { ExperimenteeAppDto }    from '../../../shared/dto/ExperimenteeAppDto';
 export interface ParsedSurveyAnswers {
     title: string;
     questions: QuestionnaireDto[];
@@ -11,6 +11,7 @@ export interface ParsedSurveyAnswers {
     }[];
     nextIndex: number;
     isComplete: boolean;
+    isPaused: boolean;
 }
 
 export async function loadParsedSurveyAnswers(
@@ -57,6 +58,7 @@ export async function loadParsedSurveyAnswers(
         questions,
         answers: parsedAnswers,
         nextIndex,
-        isComplete
+        isComplete,
+        isPaused: answers.IsPaused
     };
 }

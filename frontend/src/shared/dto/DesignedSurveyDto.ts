@@ -37,4 +37,5 @@ export interface DesignedSurveyDto {
     Questionnaires: QuestionnaireDto[] | undefined;
     ResponseCount: number;
     Published: boolean;
+    IsPaused: boolean;
 }

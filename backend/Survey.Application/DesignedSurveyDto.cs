@@ -10,11 +10,13 @@
         public int SurveyTypeId { get; set; }
         public string? PrivateKey { get; set; }
         public int UserId { get; set; }
+         
         
         public List<QuestionnaireDto>? Questionnaires { get; set; }
 
         public int ResponseCount { get; set; }
         public bool Published { get; set; } = false;
+        public bool IsPaused { get; set; }
 
     }
 

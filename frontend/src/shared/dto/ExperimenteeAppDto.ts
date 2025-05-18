@@ -31,4 +31,5 @@ export interface ExperimenteeAppDto {
     SurveyDescription: string | undefined;
     UserId: number | undefined;
     SurveyStoredAnwsers: SurveyStoredAnwsersDto[] | undefined;
+    IsPaused: boolean;
 }

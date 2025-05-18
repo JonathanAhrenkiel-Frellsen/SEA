@@ -7,7 +7,7 @@
         public string? SurveyDescription { get; set; }
         public int? UserId { get; set; }
         public virtual ICollection<SurveyStoredAnwsersDto>? SurveyStoredAnwsers { get; set; }
-
+        public bool IsPaused { get; set; }
     }
 
     public class SurveyStoredAnwsersDto

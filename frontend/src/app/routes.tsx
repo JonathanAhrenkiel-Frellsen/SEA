@@ -15,6 +15,7 @@ export const AppRoutes = () => {
             <Route path="/:id/questions" element={<QuestionPage />} />
             <Route path="/thank-you" element={<FinishSurveyPage />} />
             <Route path="/surveys" element={<SurveyListPage />} />
+            <Route path="/public/:id" element={<QuestionPage />} />
             <Route path="/surveys/new" element={<SurveyFormPage />} />
             <Route path="/surveys/:id/edit" element={<SurveyFormPage />} />
             <Route path="/analysis/:id" element={<AnalysisPage />} />
