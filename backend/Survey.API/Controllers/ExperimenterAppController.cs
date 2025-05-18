@@ -90,6 +90,7 @@ namespace Survey.API.Controllers
                 existingSurvey.SurveyTypeId = surveyDto.SurveyTypeId;
                 existingSurvey.UserId = surveyDto.UserId;
                 existingSurvey.PrivateKey = surveyDto.PrivateKey;
+                existingSurvey.Published = surveyDto.Published;
 
                 foreach (var qDto in surveyDto.Questionnaires)
                 {
@@ -362,7 +363,9 @@ namespace Survey.API.Controllers
                 EndDate = s.EndDate,
                 SurveyTypeId = s.SurveyTypeId,
                 UserId = s.UserId,
-                ResponseCount = responseCountDict.ContainsKey(s.SurveyId) ? responseCountDict[s.SurveyId] : 0
+                ResponseCount = responseCountDict.ContainsKey(s.SurveyId) ? responseCountDict[s.SurveyId] : 0,
+                Published = s.Published,
+                IsPaused = s.IsPaused
             }).ToList();
 
             return Ok(dto);
