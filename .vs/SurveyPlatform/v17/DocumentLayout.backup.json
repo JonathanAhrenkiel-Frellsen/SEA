@@ -1,7 +1,129 @@
 {
   "Version": 1,
+<<<<<<< Updated upstream
   "WorkspaceRootPath": "C:\\Users\\Haaris\\Documents\\GitHub\\SEA\\",
   "Documents": [],
+=======
+  "WorkspaceRootPath": "C:\\Users\\davud\\SEA\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|c:\\users\\davud\\sea\\backend\\survey.api\\controllers\\experimenteeappcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|solutionrelative:backend\\survey.api\\controllers\\experimenteeappcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|c:\\users\\davud\\sea\\backend\\survey.api\\backend\\obj\\survey.infrastructure.entityframeworkcore.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|solutionrelative:backend\\survey.api\\backend\\obj\\survey.infrastructure.entityframeworkcore.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|c:\\users\\davud\\sea\\backend\\survey.api\\controllers\\experimenterappcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|solutionrelative:backend\\survey.api\\controllers\\experimenterappcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{371D666E-0245-42D9-8CCC-779130210EBB}|backend\\Survey.Domain\\Survey.Domain.csproj|c:\\users\\davud\\sea\\backend\\survey.domain\\entities\\surveycompletion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{371D666E-0245-42D9-8CCC-779130210EBB}|backend\\Survey.Domain\\Survey.Domain.csproj|solutionrelative:backend\\survey.domain\\entities\\surveycompletion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A84E7AF-1F77-4441-82BC-22F49C7E3C0A}|backend\\Survey.Application\\Survey.Application.csproj|c:\\users\\davud\\sea\\backend\\survey.application\\experimenteeappdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A84E7AF-1F77-4441-82BC-22F49C7E3C0A}|backend\\Survey.Application\\Survey.Application.csproj|solutionrelative:backend\\survey.application\\experimenteeappdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A84E7AF-1F77-4441-82BC-22F49C7E3C0A}|backend\\Survey.Application\\Survey.Application.csproj|c:\\users\\davud\\sea\\backend\\survey.application\\designedsurveydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A84E7AF-1F77-4441-82BC-22F49C7E3C0A}|backend\\Survey.Application\\Survey.Application.csproj|solutionrelative:backend\\survey.application\\designedsurveydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{371D666E-0245-42D9-8CCC-779130210EBB}|backend\\Survey.Domain\\Survey.Domain.csproj|c:\\users\\davud\\sea\\backend\\survey.domain\\entities\\multiplechoice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{371D666E-0245-42D9-8CCC-779130210EBB}|backend\\Survey.Domain\\Survey.Domain.csproj|solutionrelative:backend\\survey.domain\\entities\\multiplechoice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{371D666E-0245-42D9-8CCC-779130210EBB}|backend\\Survey.Domain\\Survey.Domain.csproj|c:\\users\\davud\\sea\\backend\\survey.domain\\entities\\designedsurvey.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{371D666E-0245-42D9-8CCC-779130210EBB}|backend\\Survey.Domain\\Survey.Domain.csproj|solutionrelative:backend\\survey.domain\\entities\\designedsurvey.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|c:\\users\\davud\\sea\\backend\\survey.api\\controllers\\userappcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|solutionrelative:backend\\survey.api\\controllers\\userappcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{371D666E-0245-42D9-8CCC-779130210EBB}|backend\\Survey.Domain\\Survey.Domain.csproj|c:\\users\\davud\\sea\\backend\\survey.domain\\entities\\surveyanswer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{371D666E-0245-42D9-8CCC-779130210EBB}|backend\\Survey.Domain\\Survey.Domain.csproj|solutionrelative:backend\\survey.domain\\entities\\surveyanswer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{371D666E-0245-42D9-8CCC-779130210EBB}|backend\\Survey.Domain\\Survey.Domain.csproj|c:\\users\\davud\\sea\\backend\\survey.domain\\entities\\surveytype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{371D666E-0245-42D9-8CCC-779130210EBB}|backend\\Survey.Domain\\Survey.Domain.csproj|solutionrelative:backend\\survey.domain\\entities\\surveytype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73D99EE6-8D83-4D57-8C3A-F7B56727294E}|backend\\Survey.Infrastructure\\Survey.Infrastructure.csproj|c:\\users\\davud\\sea\\backend\\survey.infrastructure\\data\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73D99EE6-8D83-4D57-8C3A-F7B56727294E}|backend\\Survey.Infrastructure\\Survey.Infrastructure.csproj|solutionrelative:backend\\survey.infrastructure\\data\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|c:\\users\\davud\\sea\\backend\\survey.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|solutionrelative:backend\\survey.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|c:\\users\\davud\\sea\\backend\\survey.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|solutionrelative:backend\\survey.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73D99EE6-8D83-4D57-8C3A-F7B56727294E}|backend\\Survey.Infrastructure\\Survey.Infrastructure.csproj|c:\\users\\davud\\sea\\backend\\survey.infrastructure\\migrations\\20250517094650_addisactivetodesignedsurvey.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73D99EE6-8D83-4D57-8C3A-F7B56727294E}|backend\\Survey.Infrastructure\\Survey.Infrastructure.csproj|solutionrelative:backend\\survey.infrastructure\\migrations\\20250517094650_addisactivetodesignedsurvey.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|c:\\users\\davud\\sea\\backend\\survey.api\\survey.api.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{30F055BF-0AAD-4BFC-BC14-1BAE2DB1ACAA}|backend\\Survey.API\\Survey.API.csproj|solutionrelative:backend\\survey.api\\survey.api.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{371D666E-0245-42D9-8CCC-779130210EBB}|backend\\Survey.Domain\\Survey.Domain.csproj|c:\\users\\davud\\sea\\backend\\survey.domain\\entities\\questionnaire.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{371D666E-0245-42D9-8CCC-779130210EBB}|backend\\Survey.Domain\\Survey.Domain.csproj|solutionrelative:backend\\survey.domain\\entities\\questionnaire.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\davud\\SEA\\frontend\\src\\features\\surveys\\pages\\QuestionPage.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\src\\features\\surveys\\pages\\QuestionPage.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\davud\\SEA\\backend\\DtoGenerator\\DtoGenerator.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\DtoGenerator\\DtoGenerator.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\davud\\SEA\\backend\\DtoGenerator\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\DtoGenerator\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\davud\\SEA\\docker-compose.yml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:docker-compose.yml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\davud\\SEA\\package-lock.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:package-lock.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\davud\\SEA\\frontend\\src\\features\\surveys\\pages\\SurveyListPage.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\src\\features\\surveys\\pages\\SurveyListPage.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\davud\\SEA\\frontend\\src\\features\\surveys\\pages\\SurveyEditorPage.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\src\\features\\surveys\\pages\\SurveyEditorPage.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\davud\\SEA\\frontend\\src\\features\\surveys\\pages\\FinishSurveyPage.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\src\\features\\surveys\\pages\\FinishSurveyPage.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A84E7AF-1F77-4441-82BC-22F49C7E3C0A}|backend\\Survey.Application\\Survey.Application.csproj|c:\\users\\davud\\sea\\backend\\survey.application\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A84E7AF-1F77-4441-82BC-22F49C7E3C0A}|backend\\Survey.Application\\Survey.Application.csproj|solutionrelative:backend\\survey.application\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A84E7AF-1F77-4441-82BC-22F49C7E3C0A}|backend\\Survey.Application\\Survey.Application.csproj|c:\\users\\davud\\sea\\backend\\survey.application\\analysisdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A84E7AF-1F77-4441-82BC-22F49C7E3C0A}|backend\\Survey.Application\\Survey.Application.csproj|solutionrelative:backend\\survey.application\\analysisdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A84E7AF-1F77-4441-82BC-22F49C7E3C0A}|backend\\Survey.Application\\Survey.Application.csproj|c:\\users\\davud\\sea\\backend\\survey.application\\exportsurvey.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A84E7AF-1F77-4441-82BC-22F49C7E3C0A}|backend\\Survey.Application\\Survey.Application.csproj|solutionrelative:backend\\survey.application\\exportsurvey.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A84E7AF-1F77-4441-82BC-22F49C7E3C0A}|backend\\Survey.Application\\Survey.Application.csproj|c:\\users\\davud\\sea\\backend\\survey.application\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A84E7AF-1F77-4441-82BC-22F49C7E3C0A}|backend\\Survey.Application\\Survey.Application.csproj|solutionrelative:backend\\survey.application\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+>>>>>>> Stashed changes
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +131,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
+<<<<<<< Updated upstream
           "SelectedChildIndex": -1,
+=======
+          "SelectedChildIndex": 5,
+>>>>>>> Stashed changes
           "Children": [
             {
               "$type": "Bookmark",
@@ -22,6 +148,359 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+<<<<<<< Updated upstream
+=======
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Survey.Infrastructure.EntityFrameworkCore.targets",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\backend\\obj\\Survey.Infrastructure.EntityFrameworkCore.targets",
+              "RelativeDocumentMoniker": "backend\\Survey.API\\backend\\obj\\Survey.Infrastructure.EntityFrameworkCore.targets",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\backend\\obj\\Survey.Infrastructure.EntityFrameworkCore.targets",
+              "RelativeToolTip": "backend\\Survey.API\\backend\\obj\\Survey.Infrastructure.EntityFrameworkCore.targets",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2025-05-18T10:50:43.61Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ExperimenterAppController.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\Controllers\\ExperimenterAppController.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.API\\Controllers\\ExperimenterAppController.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\Controllers\\ExperimenterAppController.cs",
+              "RelativeToolTip": "backend\\Survey.API\\Controllers\\ExperimenterAppController.cs",
+              "ViewState": "AgIAAAsBAAAAAAAAAAAWwCQBAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T22:05:30.491Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ExperimenteeAppController.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\Controllers\\ExperimenteeAppController.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.API\\Controllers\\ExperimenteeAppController.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\Controllers\\ExperimenteeAppController.cs",
+              "RelativeToolTip": "backend\\Survey.API\\Controllers\\ExperimenteeAppController.cs",
+              "ViewState": "AgIAABMBAAAAAAAAAAAIwDEBAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T22:22:39.701Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "SurveyCompletion.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.Domain\\Entities\\SurveyCompletion.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Domain\\Entities\\SurveyCompletion.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.Domain\\Entities\\SurveyCompletion.cs",
+              "RelativeToolTip": "backend\\Survey.Domain\\Entities\\SurveyCompletion.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAIwBgAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-18T01:22:01.521Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ExperimenteeAppDto.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.Application\\ExperimenteeAppDto.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Application\\ExperimenteeAppDto.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.Application\\ExperimenteeAppDto.cs",
+              "RelativeToolTip": "backend\\Survey.Application\\ExperimenteeAppDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T22:36:44.118Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DesignedSurveyDto.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.Application\\DesignedSurveyDto.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Application\\DesignedSurveyDto.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.Application\\DesignedSurveyDto.cs",
+              "RelativeToolTip": "backend\\Survey.Application\\DesignedSurveyDto.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAywBUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T22:22:16.287Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MultipleChoice.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.Domain\\Entities\\MultipleChoice.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Domain\\Entities\\MultipleChoice.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.Domain\\Entities\\MultipleChoice.cs",
+              "RelativeToolTip": "backend\\Survey.Domain\\Entities\\MultipleChoice.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T10:58:40.181Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DesignedSurvey.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.Domain\\Entities\\DesignedSurvey.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Domain\\Entities\\DesignedSurvey.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.Domain\\Entities\\DesignedSurvey.cs",
+              "RelativeToolTip": "backend\\Survey.Domain\\Entities\\DesignedSurvey.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAcwDAAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T22:18:20.667Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "UserAppController.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\Controllers\\UserAppController.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.API\\Controllers\\UserAppController.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\Controllers\\UserAppController.cs",
+              "RelativeToolTip": "backend\\Survey.API\\Controllers\\UserAppController.cs",
+              "ViewState": "AgIAAG0AAAAAAAAAAAAcwHoAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T22:03:10.759Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "SurveyAnswer.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.Domain\\Entities\\SurveyAnswer.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Domain\\Entities\\SurveyAnswer.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.Domain\\Entities\\SurveyAnswer.cs",
+              "RelativeToolTip": "backend\\Survey.Domain\\Entities\\SurveyAnswer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T22:17:30.071Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "SurveyType.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.Domain\\Entities\\SurveyType.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Domain\\Entities\\SurveyType.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.Domain\\Entities\\SurveyType.cs",
+              "RelativeToolTip": "backend\\Survey.Domain\\Entities\\SurveyType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T22:17:21.184Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "DatabaseInitializer.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.Infrastructure\\Data\\DatabaseInitializer.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Infrastructure\\Data\\DatabaseInitializer.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.Infrastructure\\Data\\DatabaseInitializer.cs",
+              "RelativeToolTip": "backend\\Survey.Infrastructure\\Data\\DatabaseInitializer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T08:41:34.232Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\Program.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.API\\Program.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\Program.cs",
+              "RelativeToolTip": "backend\\Survey.API\\Program.cs",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAUwFoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T09:31:02.016Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\appsettings.json",
+              "RelativeDocumentMoniker": "backend\\Survey.API\\appsettings.json",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\appsettings.json",
+              "RelativeToolTip": "backend\\Survey.API\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-05-17T09:31:00.997Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "20250517094650_AddIsActiveToDesignedSurvey.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.Infrastructure\\Migrations\\20250517094650_AddIsActiveToDesignedSurvey.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Infrastructure\\Migrations\\20250517094650_AddIsActiveToDesignedSurvey.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.Infrastructure\\Migrations\\20250517094650_AddIsActiveToDesignedSurvey.cs",
+              "RelativeToolTip": "backend\\Survey.Infrastructure\\Migrations\\20250517094650_AddIsActiveToDesignedSurvey.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T21:04:02.468Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Survey.API.http",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\Survey.API.http",
+              "RelativeDocumentMoniker": "backend\\Survey.API\\Survey.API.http",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.API\\Survey.API.http",
+              "RelativeToolTip": "backend\\Survey.API\\Survey.API.http",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2025-05-17T11:50:34.011Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Questionnaire.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.Domain\\Entities\\Questionnaire.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Domain\\Entities\\Questionnaire.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.Domain\\Entities\\Questionnaire.cs",
+              "RelativeToolTip": "backend\\Survey.Domain\\Entities\\Questionnaire.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T10:58:41.015Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "UserDto.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.Application\\UserDto.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Application\\UserDto.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.Application\\UserDto.cs",
+              "RelativeToolTip": "backend\\Survey.Application\\UserDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T10:59:42.892Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "QuestionPage.tsx",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\frontend\\src\\features\\surveys\\pages\\QuestionPage.tsx",
+              "RelativeDocumentMoniker": "frontend\\src\\features\\surveys\\pages\\QuestionPage.tsx",
+              "ToolTip": "C:\\Users\\davud\\SEA\\frontend\\src\\features\\surveys\\pages\\QuestionPage.tsx",
+              "RelativeToolTip": "frontend\\src\\features\\surveys\\pages\\QuestionPage.tsx",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAmwFEAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-05-17T09:22:08.065Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "AnalysisDto.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.Application\\AnalysisDto.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Application\\AnalysisDto.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.Application\\AnalysisDto.cs",
+              "RelativeToolTip": "backend\\Survey.Application\\AnalysisDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T10:56:26.377Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "ExportSurvey.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.Application\\ExportSurvey.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Application\\ExportSurvey.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.Application\\ExportSurvey.cs",
+              "RelativeToolTip": "backend\\Survey.Application\\ExportSurvey.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T10:56:23.759Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "LoginDto.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\Survey.Application\\LoginDto.cs",
+              "RelativeDocumentMoniker": "backend\\Survey.Application\\LoginDto.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\Survey.Application\\LoginDto.cs",
+              "RelativeToolTip": "backend\\Survey.Application\\LoginDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T10:55:57.9Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "docker-compose.yml",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\docker-compose.yml",
+              "RelativeDocumentMoniker": "docker-compose.yml",
+              "ToolTip": "C:\\Users\\davud\\SEA\\docker-compose.yml",
+              "RelativeToolTip": "docker-compose.yml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
+              "WhenOpened": "2025-05-17T09:39:05.823Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "package-lock.json",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\package-lock.json",
+              "RelativeDocumentMoniker": "package-lock.json",
+              "ToolTip": "C:\\Users\\davud\\SEA\\package-lock.json",
+              "RelativeToolTip": "package-lock.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-05-17T09:39:04.949Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\DtoGenerator\\Program.cs",
+              "RelativeDocumentMoniker": "backend\\DtoGenerator\\Program.cs",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\DtoGenerator\\Program.cs",
+              "RelativeToolTip": "backend\\DtoGenerator\\Program.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAAACsAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T09:30:54.263Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "DtoGenerator.csproj",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\backend\\DtoGenerator\\DtoGenerator.csproj",
+              "RelativeDocumentMoniker": "backend\\DtoGenerator\\DtoGenerator.csproj",
+              "ToolTip": "C:\\Users\\davud\\SEA\\backend\\DtoGenerator\\DtoGenerator.csproj",
+              "RelativeToolTip": "backend\\DtoGenerator\\DtoGenerator.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-05-17T09:30:47.933Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "SurveyListPage.tsx",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\frontend\\src\\features\\surveys\\pages\\SurveyListPage.tsx",
+              "RelativeDocumentMoniker": "frontend\\src\\features\\surveys\\pages\\SurveyListPage.tsx",
+              "ToolTip": "C:\\Users\\davud\\SEA\\frontend\\src\\features\\surveys\\pages\\SurveyListPage.tsx",
+              "RelativeToolTip": "frontend\\src\\features\\surveys\\pages\\SurveyListPage.tsx",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAwwDEAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-05-17T09:22:10.527Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "SurveyEditorPage.tsx",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\frontend\\src\\features\\surveys\\pages\\SurveyEditorPage.tsx",
+              "RelativeDocumentMoniker": "frontend\\src\\features\\surveys\\pages\\SurveyEditorPage.tsx",
+              "ToolTip": "C:\\Users\\davud\\SEA\\frontend\\src\\features\\surveys\\pages\\SurveyEditorPage.tsx",
+              "RelativeToolTip": "frontend\\src\\features\\surveys\\pages\\SurveyEditorPage.tsx",
+              "ViewState": "AgIAAKsAAAAAAAAAAAAAAM4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-05-17T09:22:09.699Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "FinishSurveyPage.tsx",
+              "DocumentMoniker": "C:\\Users\\davud\\SEA\\frontend\\src\\features\\surveys\\pages\\FinishSurveyPage.tsx",
+              "RelativeDocumentMoniker": "frontend\\src\\features\\surveys\\pages\\FinishSurveyPage.tsx",
+              "ToolTip": "C:\\Users\\davud\\SEA\\frontend\\src\\features\\surveys\\pages\\FinishSurveyPage.tsx",
+              "RelativeToolTip": "frontend\\src\\features\\surveys\\pages\\FinishSurveyPage.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-05-17T09:21:55.625Z"
+>>>>>>> Stashed changes
             }
           ]
         }
