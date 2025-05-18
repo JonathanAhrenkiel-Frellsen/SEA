@@ -38,8 +38,12 @@ const SurveyListPage: React.FC = () => {
                         <p className="text-sm">
                             Status: {survey.Published
                             ? (survey.IsPaused ? 'Paused' : 'Active')
-                            : 'Draft'}
+                            : '—'}
                         </p>
+                        <p className="text-sm">
+                            Visibility: {survey.Published ? 'Published' : 'Draft'}
+                        </p>
+
                     </div>
 
                     <div className="flex gap-2">
