@@ -248,3 +248,56 @@ export const submitResponse = async (
   );
   if (response.status !== 200) throw new Error('Failed to submit response');
 };
+
+export const exportSurveyCsv = async (
+  surveyId: number,
+  type: 'completed' | 'saved' = 'completed'
+): Promise<void> => {
+  const token = selectToken(store.getState());
+
+  const response = await fetch(
+    `${EXPERIMENTER_API_URL}/surveys/${surveyId}/export?type=${type}`,
+    {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+
+  if (!response.ok) throw new Error("Export failed");
+
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `survey_${surveyId}_${type}_results.csv`;
+  a.click();
+};
+
+
+export const exportSurveyStructure = async (surveyId: number): Promise<void> => {
+  const token = selectToken(store.getState());
+
+  const response = await fetch(
+    `${EXPERIMENTER_API_URL}/surveys/${surveyId}/structure-export`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to export survey structure: ${response.status} ${errorText}`);
+  }
+
+  const blob = await response.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `survey_${surveyId}_structure.csv`;
+  a.click();
+  a.remove();
+};
+

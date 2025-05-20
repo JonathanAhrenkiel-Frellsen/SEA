@@ -6,6 +6,8 @@ import { fetchSurveys, pauseSurvey, resumeSurvey } from '../api/surveyApi';
 import { DesignedSurveyDto } from '../../../shared/dto/DesignedSurveyDto';
 import { formatDate } from '../../../shared/utils/formatDate';
 
+
+
 const SurveyListPage: React.FC = () => {
     const [showModal, setShowModal] = useState(false);
     const [surveys, setSurveys] = useState<DesignedSurveyDto[]>([]);
@@ -70,6 +72,8 @@ const SurveyListPage: React.FC = () => {
                             icon={<ArrowRight size={16} />}
                             onClick={() => window.location.href = `/surveys/${survey.SurveyId}/edit`}
                         />
+                        
+
                     </div>
                 </div>
             ))}

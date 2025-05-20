@@ -55,7 +55,6 @@ namespace Survey.API.Controllers
             return Task.FromResult<IActionResult>(Ok(new { message = "Discard the token at client side" }));
         }
 
-
         private string GenerateJwtToken(User user)
         {
             var claims = new[]

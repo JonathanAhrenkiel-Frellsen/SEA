@@ -592,5 +592,100 @@ namespace Survey.API.Controllers
 
             return File(bytes, "text/csv", fileName);
         }
+
+
+
+
+
+
+
+
+        [Authorize]
+        [HttpGet("surveys/{surveyId}/export")]
+        public async Task<IActionResult> ExportSurveyResponsesToCsv(int surveyId, [FromQuery] string type = "completed")
+        {
+            var isCompleted = type.ToLower() == "completed";
+            var completionTypeId = isCompleted ? 2 : 1;
+
+            var completions = await _context.SurveyCompletion
+                .Include(sc => sc.User)
+                .Include(sc => sc.SurveyAnswers)
+                    .ThenInclude(a => a.Questionnaire)
+                .Where(sc => sc.SurveyId == surveyId && sc.SurveyCompletionTypeId == completionTypeId)
+                .ToListAsync();
+
+            if (completions.Count == 0)
+                return NotFound("No survey completions found.");
+
+            var questionTitles = completions
+                .SelectMany(c => c.SurveyAnswers)
+                .Select(a => a.Questionnaire?.QuestionnaireTitle ?? $"Q{a.QuestionnaireId}")
+                .Distinct()
+                .ToList();
+
+            var csv = new StringBuilder();
+            csv.AppendLine("Name,Email,Date," + string.Join(",", questionTitles));
+
+            foreach (var c in completions)
+            {
+                var row = new List<string>
+                {
+                    c.User?.UserName ?? "Unknown",
+                    c.User?.UserEmail ?? "Unknown",
+                    c.SurveyCompletionDate.ToString("yyyy-MM-dd HH:mm:ss")
+                };
+
+                foreach (var title in questionTitles)
+                {
+                    var answer = c.SurveyAnswers
+                        .FirstOrDefault(a => a.Questionnaire?.QuestionnaireTitle == title)
+                        ?.Answer ?? "";
+                    row.Add(answer.Replace(",", " "));
+                }
+
+                csv.AppendLine(string.Join(",", row));
+            }
+
+            var fileName = $"survey_{surveyId}_{type}_results.csv";
+            return File(Encoding.UTF8.GetBytes(csv.ToString()), "text/csv", fileName);
+        }
+        [Authorize]
+        [HttpGet("surveys/{id}/structure-export")]
+        public async Task<IActionResult> ExportSurveyStructure(int id)
+        {
+            var survey = await _context.Surveys
+                .Include(s => s.Questionnaires)
+                    .ThenInclude(q => q.MultipleChoices)
+                .FirstOrDefaultAsync(s => s.SurveyId == id);
+
+            if (survey == null)
+                return NotFound("Survey not found");
+
+            var isPublic = string.IsNullOrEmpty(survey.PrivateKey);
+
+            var csv = new StringBuilder();
+            csv.AppendLine("Survey Title,Accessibility,Question,Answer Type,Answer Options");
+
+            foreach (var q in survey.Questionnaires.OrderBy(q => q.QuestionnairePos))
+            {
+                var options = q.InputType == "checkbox"
+                    ? string.Join(" | ", q.MultipleChoices?.Select(mc => mc.MultipleChoiceName) ?? [])
+                    : "";
+
+                csv.AppendLine(
+                    $"\"{survey.SurveyTitle}\"," +
+                    $"{(isPublic ? "Public" : "Private")}," +
+                    $"\"{q.QuestionnaireTitle}\"," +
+                    $"{q.InputType}," +
+                    $"\"{options}\""
+                );
+            }
+
+            var fileName = $"survey_{id}_structure.csv";
+            return File(Encoding.UTF8.GetBytes(csv.ToString()), "text/csv", fileName);
+        }
+
+
+
     }
 }
