@@ -10,6 +10,7 @@ import SuccessModal from '../components/Modals/SuccessModal/SuccessModal';
 import { fetchSurvey, publishSurvey, pauseSurvey, resumeSurvey } from '../api/surveyApi';
 import { DesignedSurveyDto, QuestionnaireDto } from '../../../shared/dto/DesignedSurveyDto';
 import { SurveyForm } from '../types/SurveyForm';
+import { exportSurveyCsv } from '../api/surveyApi';
 
 const SurveyEditorPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -105,6 +106,7 @@ const SurveyEditorPage: React.FC = () => {
                     <span>Status: {isPaused ? 'Paused' : 'Active'}</span>
                 </div>
             )}
+
 
             {/* Locked message when published */}
             {published && (

@@ -1,12 +1,15 @@
 import { Button } from '../../../../shared/components/Buttons/Button';
 import { Trash2, SaveIcon, UploadIcon } from 'lucide-react';
 import {SurveyForm} from "../../types/SurveyForm";
-import {deleteSurvey, handleSaveSurvey} from "../../api/surveyApi";
+import {deleteSurvey, handleSaveSurvey, exportSurveyStructure} from "../../api/surveyApi";
 import {useNavigate} from "react-router-dom";
 import {selectUser} from "../../../auth/slices/authSlice";
 import {store} from "../../../../app/store";
 import {DesignedSurveyDto} from "../../../../shared/dto/DesignedSurveyDto";
 import React, { useState } from 'react';
+
+
+
 interface SurveyFooterActionsProps {
     id?: string;
     handleSubmit: any;
@@ -99,11 +102,12 @@ const SurveyFooterActions = ({
                     </>
                 )}
                 <Button
-                    text="Export Survey"
+                    text="Export Setup"
                     type="secondary"
                     icon={<UploadIcon size={16} />}
-                    onClick={() => (window.location.href = '/surveys')}
+                    onClick={() => exportSurveyStructure(Number(id))}
                 />
+
             </div>
 
         </div>
