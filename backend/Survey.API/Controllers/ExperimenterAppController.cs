@@ -604,6 +604,7 @@ namespace Survey.API.Controllers
         [HttpGet("surveys/{surveyId}/export")]
         public async Task<IActionResult> ExportSurveyResponsesToCsv(int surveyId, [FromQuery] string type = "completed")
         {
+            var fileName = "";
             var isCompleted = type.ToLower() == "completed";
             var completionTypeId = isCompleted ? 2 : 1;
 
@@ -615,7 +616,12 @@ namespace Survey.API.Controllers
                 .ToListAsync();
 
             if (completions.Count == 0)
-                return NotFound("No survey completions found.");
+            {
+                var emptyCsv = "Name,Email,Date\n(No responses yet)";
+                fileName = $"survey_{surveyId}_{type}_results.csv";
+                return File(Encoding.UTF8.GetBytes(emptyCsv), "text/csv", fileName);
+            }
+
 
             var questionTitles = completions
                 .SelectMany(c => c.SurveyAnswers)
@@ -646,7 +652,7 @@ namespace Survey.API.Controllers
                 csv.AppendLine(string.Join(",", row));
             }
 
-            var fileName = $"survey_{surveyId}_{type}_results.csv";
+            fileName = $"survey_{surveyId}_{type}_results.csv";
             return File(Encoding.UTF8.GetBytes(csv.ToString()), "text/csv", fileName);
         }
         [Authorize]
