@@ -15,6 +15,10 @@ import { exportSurveyCsv } from '../api/surveyApi';
 const SurveyEditorPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const { control, register, handleSubmit, watch, setValue } = useForm<SurveyForm>({
+        defaultValues: { title: '', isPrivate: false, questions: [] },
+    });
+    const { fields, append, remove, move } = useFieldArray({ control, name: 'questions' });
 
     // State for published and pause
     const [published, setPublished] = useState<boolean>(false);
@@ -22,11 +26,15 @@ const SurveyEditorPage: React.FC = () => {
     const [openStates, setOpenStates] = useState<boolean[]>([]);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [surveyResponse, setSurveyResponse] = useState<DesignedSurveyDto | null>(null);
+    const [copied, setCopied] = useState(false);
+    const isPrivate = watch('isPrivate');
+    const surveyLink = `${window.location.origin}/public/${id}?pinCode=${isPrivate ? 'true' : 'false'}`;
 
-    const { control, register, handleSubmit, watch, setValue } = useForm<SurveyForm>({
-        defaultValues: { title: '', isPrivate: false, questions: [] },
-    });
-    const { fields, append, remove, move } = useFieldArray({ control, name: 'questions' });
+    const handleCopy = () => {
+        navigator.clipboard.writeText(surveyLink);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1000);
+    };
 
     useEffect(() => {
         if (!id) return;
@@ -76,6 +84,8 @@ const SurveyEditorPage: React.FC = () => {
         }
     };
 
+
+
     return (
         <div className="min-h-screen bg-main text-white p-6 font-josefin">
             {/* Go Back */}
@@ -110,13 +120,24 @@ const SurveyEditorPage: React.FC = () => {
 
             {/* Locked message when published */}
             {published && (
+
                 <div className="bg-green-700 text-white rounded-xl px-4 py-2 mb-4 font-semibold text-center">
                     This survey is published and cannot be edited.
                 </div>
+                    
+
             )}
 
             {/* Survey Header & Questions */}
-            <EditSurveyHeader register={register} watch={watch} setValue={setValue} readOnly={published} />
+            <EditSurveyHeader
+                register={register}
+                watch={watch}
+                setValue={setValue}
+                readOnly={published}
+                surveyLink={published ? surveyLink : undefined}
+                onCopy={handleCopy}
+                copied={copied}
+            />
 
             <h2 className="text-xl font-semibold mt-4">Questions</h2>
             <SurveyQuestionList

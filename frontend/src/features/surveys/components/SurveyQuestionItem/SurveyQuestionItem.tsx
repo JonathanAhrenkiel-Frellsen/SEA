@@ -51,8 +51,8 @@ const SurveyQuestionItem = ({
                             <button type="button" onClick={() => toggleOpen(index)}>
                                 {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                             </button>
-                            <button type="button" onClick={() => handleDelete(index)}>
-                                <Trash2 size={16} />
+                            <button type="button" className='ml-1 p-1 rounded hover:bg-red-700 transition' onClick={() => handleDelete(index)}>
+                                <Trash2 size={20} className="text-red-400" />
                             </button>
                         </>
                     )}
@@ -66,21 +66,36 @@ const SurveyQuestionItem = ({
                     render={({ field }) => (
                         <div className="flex flex-col gap-2 mt-2">
                             {field.value?.map((opt: MultipleChoiceDto, optIdx: number) => (
-                                <input
-                                    key={optIdx}
-                                    value={opt.MultipleChoiceName}
-                                    onChange={(e) => {
-                                        if (!field.value) return;
-                                        const updated = [...field.value];
-                                        updated[optIdx] = {
-                                            ...updated[optIdx],
-                                            MultipleChoiceName: e.target.value,
-                                        };
-                                        field.onChange(updated);
-                                    }}
-                                    className="bg-transparent text-white border border-white p-2 outline-none"
-                                    disabled={readOnly}
-                                />
+                                <div key={optIdx} className="flex items-center gap-2">
+                                    <input
+                                        value={opt.MultipleChoiceName}
+                                        onChange={(e) => {
+                                            if (!field.value) return;
+                                            const updated = [...field.value];
+                                            updated[optIdx] = {
+                                                ...updated[optIdx],
+                                                MultipleChoiceName: e.target.value,
+                                            };
+                                            field.onChange(updated);
+                                        }}
+                                        className="bg-transparent text-white border border-white p-2 outline-none flex-1"
+                                        disabled={readOnly}
+                                    />
+                                    {!readOnly && (
+                                        <button
+                                            type="button"
+                                            className="ml-1 p-1 rounded hover:bg-red-700 transition"
+                                            onClick={() => {
+                                                if (!field.value) return;
+                                                const updated = field.value.filter((_: MultipleChoiceDto, idx: number) => idx !== optIdx);
+                                                field.onChange(updated);
+                                            }}
+                                            aria-label="Delete option"
+                                        >
+                                            <Trash2 size={16} className="text-red-400" />
+                                        </button>
+                                    )}
+                                </div>
                             ))}
                             {!readOnly && (
                                 <button
