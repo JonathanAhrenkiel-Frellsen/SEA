@@ -77,7 +77,7 @@ const SurveyFooterActions = ({
             {id ? (
                 <Button
                     text="Delete Survey"
-                    icon={<Trash2 size={16} />}
+                    icon={<Trash2 size={16} className="text-red-400" />}
                     type="delete"
                     onClick={handleSubmit(onDelete)}
                 />

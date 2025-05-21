@@ -15,10 +15,7 @@ import { exportSurveyCsv } from '../api/surveyApi';
 const SurveyEditorPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { control, register, handleSubmit, watch, setValue } = useForm<SurveyForm>({
-        defaultValues: { title: '', isPrivate: false, questions: [] },
-    });
-    const { fields, append, remove, move } = useFieldArray({ control, name: 'questions' });
+    const surveyLink = `${window.location.origin}/survey/${id}`;
 
     // State for published and pause
     const [published, setPublished] = useState<boolean>(false);
@@ -27,14 +24,15 @@ const SurveyEditorPage: React.FC = () => {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [surveyResponse, setSurveyResponse] = useState<DesignedSurveyDto | null>(null);
     const [copied, setCopied] = useState(false);
-    const isPrivate = watch('isPrivate');
-    const surveyLink = `${window.location.origin}/public/${id}?pinCode=${isPrivate ? 'true' : 'false'}`;
-
     const handleCopy = () => {
         navigator.clipboard.writeText(surveyLink);
         setCopied(true);
         setTimeout(() => setCopied(false), 1000);
     };
+    const { control, register, handleSubmit, watch, setValue } = useForm<SurveyForm>({
+        defaultValues: { title: '', isPrivate: false, questions: [] },
+    });
+    const { fields, append, remove, move } = useFieldArray({ control, name: 'questions' });
 
     useEffect(() => {
         if (!id) return;
