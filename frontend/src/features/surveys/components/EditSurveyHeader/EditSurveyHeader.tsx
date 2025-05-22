@@ -10,6 +10,9 @@ interface SurveyHeaderProps {
     surveyLink?: string;
     onCopy?: () => void;
     copied?: boolean;
+    pinCode?: string;
+    onCopyPin?: () => void;
+    copiedPin?: boolean;
 }
 
 const EditSurveyHeader = ({
@@ -19,7 +22,10 @@ const EditSurveyHeader = ({
     readOnly,
     surveyLink,
     onCopy,
-    copied
+    copied,
+    pinCode,
+    onCopyPin,
+    copiedPin
 }: SurveyHeaderProps) => {
     // Get the current title and privacy status
     const title = watch('title');
@@ -43,7 +49,8 @@ const EditSurveyHeader = ({
                         readOnly={readOnly}
                     />
                     {readOnly && surveyLink && (
-                        <div className="flex items-center border-x border-b border-white rounded-b bg-black px-2 py-1">
+                        <div className={`flex items-center border-x border-b border-white bg-black px-2 py-1
+                            ${readOnly && pinCode ? '' : 'rounded-b'}`}>
                             <span className="text-sm text-white flex-1 truncate select-all">
                                 <b>Link:</b> {surveyLink}
                             </span>
@@ -53,6 +60,21 @@ const EditSurveyHeader = ({
                                 className="ml-2 bg-green-800 hover:bg-green-600 text-white px-2 py-1 rounded text-sm transition"
                             >
                                 {copied ? "Copied!" : "Copy"}
+                            </button>
+                        </div>
+                    )}
+                    {/* Pin code display for published surveys */}
+                    {readOnly && pinCode && (
+                        <div className="flex items-center border-x border-b border-white rounded-b bg-black px-2 py-1">
+                            <span className="text-sm text-white flex-1 truncate select-all">
+                                <b>Pin code:</b> {pinCode}
+                            </span>
+                            <button
+                                type="button"
+                                onClick={onCopyPin}
+                                className="ml-2 bg-green-800 hover:bg-green-600 text-white px-2 py-1 rounded text-sm transition"
+                            >
+                                {copiedPin ? "Copied!" : "Copy"}
                             </button>
                         </div>
                     )}

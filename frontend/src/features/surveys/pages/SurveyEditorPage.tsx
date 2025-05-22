@@ -13,6 +13,7 @@ import { SurveyForm } from '../types/SurveyForm';
 import { exportSurveyCsv } from '../api/surveyApi';
 
 const SurveyEditorPage: React.FC = () => {
+    const [pinCode, setPinCode] = useState<string | undefined>(undefined);
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { control, register, handleSubmit, watch, setValue } = useForm<SurveyForm>({
@@ -27,13 +28,21 @@ const SurveyEditorPage: React.FC = () => {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [surveyResponse, setSurveyResponse] = useState<DesignedSurveyDto | null>(null);
     const [copied, setCopied] = useState(false);
+    const [copiedPin, setCopiedPin] = useState(false);
     const isPrivate = watch('isPrivate');
     const surveyLink = `${window.location.origin}/public/${id}?pinCode=${isPrivate ? 'true' : 'false'}`;
 
     const handleCopy = () => {
         navigator.clipboard.writeText(surveyLink);
         setCopied(true);
-        setTimeout(() => setCopied(false), 1000);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
+    const handleCopyPin = () => {
+        if (!pinCode) return;
+        navigator.clipboard.writeText(pinCode);
+        setCopiedPin(true);
+        setTimeout(() => setCopiedPin(false), 2000);
     };
 
     useEffect(() => {
@@ -46,6 +55,7 @@ const SurveyEditorPage: React.FC = () => {
                 setPublished(data.Published    ?? false);
                 setIsPaused(data.IsPaused       ?? false);
                 setOpenStates(new Array(data.Questionnaires?.length ?? 0).fill(false));
+                setPinCode(data.PrivateKey || undefined); // <-- Add this line
             })
             .catch(console.error);
     }, [id, setValue]);
@@ -137,6 +147,9 @@ const SurveyEditorPage: React.FC = () => {
                 surveyLink={published ? surveyLink : undefined}
                 onCopy={handleCopy}
                 copied={copied}
+                pinCode={pinCode}
+                onCopyPin={handleCopyPin}
+                copiedPin={copiedPin}
             />
 
             <h2 className="text-xl font-semibold mt-4">Questions</h2>
@@ -180,6 +193,7 @@ const SurveyEditorPage: React.FC = () => {
                     onClose={() => navigate('/surveys')}
                 />
             )}
+
         </div>
     );
 };
