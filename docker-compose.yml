@@ -19,6 +19,6 @@ services:
     environment:
       POSTGRES_DB: surveydb
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: t9LiJBEHFX # TODO JAF set in GitHub secrets
+      POSTGRES_PASSWORD: t9LiJBEHFX
     ports:
       - "5432:5432"

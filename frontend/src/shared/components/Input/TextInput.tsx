@@ -5,7 +5,7 @@ interface TextInputProps {
     setValue: (value: string) => void;
     label?: string;
     placeholder?: string;
-    type?: 'text' | 'email' | 'password' | 'number';
+    type?: 'text' | 'email' | 'password' | 'number' | 'date';
 }
 
 const TextInput: React.FC<TextInputProps> = ({
