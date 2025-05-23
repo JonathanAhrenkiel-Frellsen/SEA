@@ -64,10 +64,6 @@ namespace Survey.API.Data
                     Console.WriteLine($"[ERROR] Migration failed: {ex.Message} (attempt {attempt}/{maxRetries}). Retrying...");
                     Thread.Sleep(TimeSpan.FromSeconds(delaySeconds));
                 }
-                catch
-                {
-                    throw; // final attempt failed, rethrow
-                }
             }
 
             throw new Exception("Could not migrate and seed database: Postgres never became ready.");

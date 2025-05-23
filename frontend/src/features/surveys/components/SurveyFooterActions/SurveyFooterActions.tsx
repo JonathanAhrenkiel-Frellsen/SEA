@@ -7,6 +7,7 @@ import {selectUser} from "../../../auth/slices/authSlice";
 import {store} from "../../../../app/store";
 import {DesignedSurveyDto} from "../../../../shared/dto/DesignedSurveyDto";
 import React, { useState } from 'react';
+import {parseToDate} from "../../services/timeService";
 
 
 
@@ -42,8 +43,8 @@ const SurveyFooterActions = ({
                 SurveyId: id ? parseInt(id) : undefined,
                 SurveyTitle: data.title,
                 SurveyDescription: '',
-                StartDate: new Date(),
-                EndDate: new Date(),
+                StartDate: parseToDate(data.startDate) ?? new Date(),
+                EndDate: parseToDate(data.endDate) ?? new Date(),
                 UserId: user!.UserId,
                 SurveyTypeId: 1,
                 PrivateKey: data.isPrivate
