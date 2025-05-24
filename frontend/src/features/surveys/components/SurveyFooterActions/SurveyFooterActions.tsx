@@ -29,7 +29,6 @@ const SurveyFooterActions = ({
 
     const onDelete = async () => {
         await deleteSurvey(id!);
-
         navigate('/surveys')
     }
 
@@ -50,17 +49,38 @@ const SurveyFooterActions = ({
                     ? Math.floor(1000 + Math.random() * 9000).toString()
                     : '',
                 Questionnaires: data.questions.map((q, idx) => ({
-                    ...q,
+                    QuestionnaireId: q.QuestionnaireId ?? 0,
+                    SurveyId: id ? parseInt(id) : undefined,
                     QuestionnairePos: idx,
+                    QuestionnaireTitle: q.QuestionnaireTitle ?? '',
+                    InputType: q.InputType ?? '',
+                    Range: q.Range ?? '',
+                    MultipleChoices: Array.isArray(q.MultipleChoices)
+                        ? q.MultipleChoices.map((c: any, i: number) =>
+                            typeof c === "string"
+                                ? {
+                                    MultipleChoiceId: 0,
+                                    MultipleChoiceName: c,
+                                    ChoiceText: c
+                                }
+                                : {
+                                    MultipleChoiceId: c.MultipleChoiceId ?? 0,
+                                    MultipleChoiceName: c.MultipleChoiceName ?? c.ChoiceText ?? "",
+                                    ChoiceText: c.ChoiceText ?? ""
+                                }
+                          )
+                        : [],
                 })),
                 ResponseCount: 0,
                 Published: false,
                 IsPaused: false
             };
 
-            const survey: DesignedSurveyDto | undefined = await handleSaveSurvey(
-                surveyDto
-            );
+            // Her logger du DTO'et
+            console.log("DTO der sendes til backend:", surveyDto);
+
+            // Her sender du det til backend
+            const survey: DesignedSurveyDto | undefined = await handleSaveSurvey(surveyDto);
 
             if (survey) {
                 setJustSaved(true);
@@ -97,7 +117,10 @@ const SurveyFooterActions = ({
                         <Button
                             text="Publish"
                             type="primary"
-                            onClick={onPublish}
+                            onClick={handleSubmit(async (data: SurveyForm) => {
+                                await onSubmit(data); // Gem først
+                                onPublish();          // Så publish
+                            })}
                         />
                     </>
                 )}
@@ -107,9 +130,7 @@ const SurveyFooterActions = ({
                     icon={<UploadIcon size={16} />}
                     onClick={() => exportSurveyStructure(Number(id))}
                 />
-
             </div>
-
         </div>
     );
 };

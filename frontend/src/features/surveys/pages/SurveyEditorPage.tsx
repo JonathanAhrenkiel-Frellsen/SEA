@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { ArrowLeft, PlusIcon } from 'lucide-react';
 import { Button } from '../../../shared/components/Buttons/Button';
@@ -10,20 +10,23 @@ import SuccessModal from '../components/Modals/SuccessModal/SuccessModal';
 import { fetchSurvey, publishSurvey, pauseSurvey, resumeSurvey } from '../api/surveyApi';
 import { DesignedSurveyDto, QuestionnaireDto } from '../../../shared/dto/DesignedSurveyDto';
 import { SurveyForm } from '../types/SurveyForm';
-import { exportSurveyCsv } from '../api/surveyApi';
 
 const SurveyEditorPage: React.FC = () => {
+    const { control, register, handleSubmit, watch, setValue, reset, formState } = useForm<SurveyForm>({
+        defaultValues: { title: '', isPrivate: false, questions: [] },
+        mode: "onChange"
+    });
+    console.log("Form errors:", formState.errors);
     const [pinCode, setPinCode] = useState<string | undefined>(undefined);
     const { id } = useParams<{ id: string }>();
+    const location = useLocation();
+    const importedSurvey = location.state?.importedSurvey;
     const navigate = useNavigate();
-    const { control, register, handleSubmit, watch, setValue } = useForm<SurveyForm>({
-        defaultValues: { title: '', isPrivate: false, questions: [] },
-    });
     const { fields, append, remove, move } = useFieldArray({ control, name: 'questions' });
 
     // State for published and pause
     const [published, setPublished] = useState<boolean>(false);
-    const [isPaused,  setIsPaused]  = useState<boolean>(false);
+    const [isPaused, setIsPaused] = useState<boolean>(false);
     const [openStates, setOpenStates] = useState<boolean[]>([]);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [surveyResponse, setSurveyResponse] = useState<DesignedSurveyDto | null>(null);
@@ -45,20 +48,41 @@ const SurveyEditorPage: React.FC = () => {
         setTimeout(() => setCopiedPin(false), 2000);
     };
 
+    // Hent eksisterende survey hvis id findes
     useEffect(() => {
         if (!id) return;
         fetchSurvey(id!, undefined)
             .then(data => {
-                setValue('title',       data.SurveyTitle    || '');
-                setValue('isPrivate',   data.PrivateKey !== '');
-                setValue('questions',   data.Questionnaires || []);
-                setPublished(data.Published    ?? false);
-                setIsPaused(data.IsPaused       ?? false);
+                setValue('title', data.SurveyTitle || '');
+                setValue('isPrivate', data.PrivateKey !== '');
+                setValue('questions', data.Questionnaires || []);
+                setPublished(data.Published ?? false);
+                setIsPaused(data.IsPaused ?? false);
                 setOpenStates(new Array(data.Questionnaires?.length ?? 0).fill(false));
-                setPinCode(data.PrivateKey || undefined); // <-- Add this line
+                setPinCode(data.PrivateKey || undefined);
             })
             .catch(console.error);
     }, [id, setValue]);
+
+    // Importeret survey fra CSV
+    useEffect(() => {
+        if (!id && importedSurvey && importedSurvey.length > 0) {
+            reset({
+                title: importedSurvey[0]['Survey Title'] || '',
+                isPrivate: (importedSurvey[0]['Accessibility'] || '').toLowerCase() === 'private',
+                questions: importedSurvey.map((row: any, idx: number) => ({
+                    SurveyId: 1,
+                    QuestionnaireId: 0,
+                    QuestionnairePos: idx,
+                    QuestionnaireTitle: row['Question'] || '',
+                    InputType: (row['Answer Type'] || 'text').toLowerCase(),
+                    Range: '',
+                    MultipleChoices: (row['Answer Options'] || '').split(';').map((s: string) => s.trim()).filter(Boolean),
+                }))
+            });
+            setOpenStates(new Array(importedSurvey.length).fill(false));
+        }
+    }, [importedSurvey, reset, id]);
 
     const handleAddQuestion = () => {
         append({
@@ -79,13 +103,10 @@ const SurveyEditorPage: React.FC = () => {
     };
 
     const handlePublish = async () => {
-        console.log("🔔 handlePublish called for survey", id);
         if (!id) return;
         try {
-            // Call publish API and mark published
             await publishSurvey(id);
             setPublished(true);
-            // Re-fetch survey data to populate modal
             const fresh = await fetchSurvey(id!, undefined);
             handleShowSuccessModal(fresh);
         } catch (err) {
@@ -93,8 +114,6 @@ const SurveyEditorPage: React.FC = () => {
             alert("Could not publish. Check console.");
         }
     };
-
-
 
     return (
         <div className="min-h-screen bg-main text-white p-6 font-josefin">
@@ -127,15 +146,11 @@ const SurveyEditorPage: React.FC = () => {
                 </div>
             )}
 
-
             {/* Locked message when published */}
             {published && (
-
                 <div className="bg-green-700 text-white rounded-xl px-4 py-2 mb-4 font-semibold text-center">
                     This survey is published and cannot be edited.
                 </div>
-                    
-
             )}
 
             {/* Survey Header & Questions */}
@@ -179,7 +194,7 @@ const SurveyEditorPage: React.FC = () => {
 
             {/* Save & Publish actions */}
             <SurveyFooterActions
-                id={String(id)}
+                {...(id ? { id: String(id) } : {})}
                 handleSubmit={handleSubmit}
                 handleShowSuccessModal={handleShowSuccessModal}
                 published={published}
@@ -193,7 +208,6 @@ const SurveyEditorPage: React.FC = () => {
                     onClose={() => navigate('/surveys')}
                 />
             )}
-
         </div>
     );
 };
