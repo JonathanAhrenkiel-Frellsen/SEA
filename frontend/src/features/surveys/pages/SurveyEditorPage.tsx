@@ -14,7 +14,7 @@ import {StartEndInput} from "../components/StartEndDateInput/StartEndInput";
 
 const SurveyEditorPage: React.FC = () => {
     const { control, register, handleSubmit, watch, setValue, reset, formState } = useForm<SurveyForm>({
-        defaultValues: { title: '', isPrivate: false, questions: [] },
+        defaultValues: { title: '', isPrivate: false, questions: [], endDate: null, startDate: null },
         mode: "onChange"
     });
     console.log("Form errors:", formState.errors);
@@ -23,9 +23,6 @@ const SurveyEditorPage: React.FC = () => {
     const location = useLocation();
     const importedSurvey = location.state?.importedSurvey;
     const navigate = useNavigate();
-    const { control, register, handleSubmit, watch, setValue } = useForm<SurveyForm>({
-        defaultValues: { title: '', isPrivate: false, questions: [], endDate: null, startDate: null },
-    });
     const { fields, append, remove, move } = useFieldArray({ control, name: 'questions' });
 
     // State for published and pause
