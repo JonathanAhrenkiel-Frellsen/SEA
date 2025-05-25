@@ -10,6 +10,7 @@ import SuccessModal from '../components/Modals/SuccessModal/SuccessModal';
 import { fetchSurvey, publishSurvey, pauseSurvey, resumeSurvey } from '../api/surveyApi';
 import { DesignedSurveyDto, QuestionnaireDto } from '../../../shared/dto/DesignedSurveyDto';
 import { SurveyForm } from '../types/SurveyForm';
+import {StartEndInput} from "../components/StartEndDateInput/StartEndInput";
 
 const SurveyEditorPage: React.FC = () => {
     const { control, register, handleSubmit, watch, setValue, reset, formState } = useForm<SurveyForm>({
@@ -22,6 +23,9 @@ const SurveyEditorPage: React.FC = () => {
     const location = useLocation();
     const importedSurvey = location.state?.importedSurvey;
     const navigate = useNavigate();
+    const { control, register, handleSubmit, watch, setValue } = useForm<SurveyForm>({
+        defaultValues: { title: '', isPrivate: false, questions: [], endDate: null, startDate: null },
+    });
     const { fields, append, remove, move } = useFieldArray({ control, name: 'questions' });
 
     // State for published and pause
@@ -52,10 +56,18 @@ const SurveyEditorPage: React.FC = () => {
     useEffect(() => {
         if (!id) return;
         fetchSurvey(id!, undefined)
-            .then(data => {
+            .then((data: DesignedSurveyDto) => {
                 setValue('title', data.SurveyTitle || '');
                 setValue('isPrivate', data.PrivateKey !== '');
                 setValue('questions', data.Questionnaires || []);
+                setValue(
+                  'startDate',
+                  data.StartDate ? new Date(data.StartDate).toISOString().slice(0, 10) : ''
+                );
+                setValue(
+                  'endDate',
+                  data.EndDate ? new Date(data.EndDate).toISOString().slice(0, 10) : ''
+                );
                 setPublished(data.Published ?? false);
                 setIsPaused(data.IsPaused ?? false);
                 setOpenStates(new Array(data.Questionnaires?.length ?? 0).fill(false));
@@ -166,6 +178,8 @@ const SurveyEditorPage: React.FC = () => {
                 onCopyPin={handleCopyPin}
                 copiedPin={copiedPin}
             />
+
+            <StartEndInput control={control} />
 
             <h2 className="text-xl font-semibold mt-4">Questions</h2>
             <SurveyQuestionList

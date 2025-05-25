@@ -2,8 +2,9 @@ services:
   backend:
     build: ./backend
     ports:
-      - "5000:80"
+      - "5000:8080"
     environment:
+      - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__Default=Host=postgres;Port=5432;Database=surveydb;Username=postgres;Password=t9LiJBEHFX
 
   frontend:
@@ -18,6 +19,6 @@ services:
     environment:
       POSTGRES_DB: surveydb
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: t9LiJBEHFX # TODO JAF set in GitHub secrets
+      POSTGRES_PASSWORD: t9LiJBEHFX
     ports:
       - "5432:5432"
