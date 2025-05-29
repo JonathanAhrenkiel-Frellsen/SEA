@@ -37,6 +37,9 @@
 
 # ASP.NET generated files
 **/appsettings.*.json
+# but do track our integration settings
+!backend/Survey.API/appsettings.Integration.json
+
 
 # IDEs & OS
 /.idea/
