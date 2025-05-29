@@ -28,13 +28,19 @@
   <ItemGroup>
     <ProjectReference Include="..\Survey.Infrastructure\Survey.Infrastructure.csproj" />
   </ItemGroup>
+	
+  <ItemGroup>
+    <None Update="appsettings.Integration.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <None Update="appsettings.Production.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
+   
   <ItemGroup>
     <None Update="appsettings.Development.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
