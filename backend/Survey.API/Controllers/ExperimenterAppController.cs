@@ -372,6 +372,7 @@ namespace Survey.API.Controllers
         }
 
         // POST: api/ExperimenterApp/DeleteSurvey
+        [Authorize]
         [HttpDelete("surveys/{id}")]
         public async Task<ActionResult> DeleteSurvey(int id)
         {

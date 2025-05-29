@@ -40,8 +40,19 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 Console.WriteLine("Connection string: " + connectionString);
 
+// Register exactly one EF Core provider: InMemory under Integration, otherwise Postgres.
 builder.Services.AddDbContext<SurveyDbContext>(options =>
-    options.UseNpgsql(connectionString));
+{
+    if (builder.Environment.IsEnvironment("Integration"))
+    {
+        options.UseInMemoryDatabase("IntegrationTestDb");
+    }
+    else
+    {
+        options.UseNpgsql(connectionString);
+    }
+});
+
 
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
@@ -93,10 +104,21 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
+
+
+if (!app.Environment.IsEnvironment("Integration"))
 {
-    var services = scope.ServiceProvider;
-    services.MigrateAndSeed();
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        services.MigrateAndSeed();
+    }
 }
 
 app.Run();
+
+namespace Survey.API
+{
+    // Makes the WebApplication entry point visible to WebApplicationFactory<Program>
+    public partial class Program { }
+}
