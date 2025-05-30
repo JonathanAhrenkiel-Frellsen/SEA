@@ -12,7 +12,7 @@ public class PincodeAttribute : Attribute, IAsyncAuthorizationFilter
         // var surveyIdStr = context.RouteData.Values["id"]?.ToString();
         var key = context.RouteData.Values.ContainsKey("id") ? "id" : "surveyId";
         var surveyIdStr = context.RouteData.Values[key]?.ToString();
-        if (!int.TryParse(surveyIdStr, out var surveyId))
+        if (!int.TryParse(surveyIdStr, out var surveyId) || surveyId <= 0)
         {
             context.Result = new BadRequestObjectResult("Invalid survey ID.");
             return;

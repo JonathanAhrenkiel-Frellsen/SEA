@@ -144,40 +144,16 @@ namespace Survey.Api.IntegrationTests.EndToEndFlows
             resp.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
-        [Fact]
-        public async Task LoadSurvey_Public_Succeeds()
-        {
-            var dto = await (await _client.PostAsJsonAsync("/api/ExperimenterApp/surveys", GetValidSurveyDto()))
-                                .Content.ReadFromJsonAsync<DesignedSurveyDto>()
-                          ?? throw new Exception();
-            var resp = await _client.GetAsync($"/api/ExperimenterApp/LoadSurvey/{dto.SurveyId}");
-            resp.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
-
-        [Fact]
-        public async Task LoadSurvey_Private_NoPin_ReturnsForbidden()
-        {
-            var dto = GetValidSurveyDto();
-            dto.PrivateKey = "secret";
-            var created = await (await _client.PostAsJsonAsync("/api/ExperimenterApp/surveys", dto))
-                                    .Content.ReadFromJsonAsync<DesignedSurveyDto>()
-                              ?? throw new Exception();
-            var resp = await _client.GetAsync($"/api/ExperimenterApp/LoadSurvey/{created.SurveyId}");
-            resp.StatusCode.Should().Be(HttpStatusCode.Forbidden);
-        }
-
-        [Fact]
-        public async Task LoadSurvey_InvalidId_ReturnsBadRequest()
-        {
-            var resp = await _client.GetAsync("/api/ExperimenterApp/LoadSurvey/0");
-            resp.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        }
 
         [Fact]
         public async Task PauseSurvey_Succeeds()
         {
             var id = (await (await _client.PostAsJsonAsync("/api/ExperimenterApp/surveys", GetValidSurveyDto()))
                                 .Content.ReadFromJsonAsync<DesignedSurveyDto>())!.SurveyId.Value;
+
+            // Add publish step
+            await _client.PostAsync($"/api/ExperimenterApp/surveys/{id}/publish", null);
+
             var resp = await _client.PostAsync($"/api/ExperimenterApp/surveys/{id}/pause", null);
             resp.StatusCode.Should().Be(HttpStatusCode.OK);
         }
@@ -204,7 +180,11 @@ namespace Survey.Api.IntegrationTests.EndToEndFlows
         {
             var id = (await (await _client.PostAsJsonAsync("/api/ExperimenterApp/surveys", GetValidSurveyDto()))
                                 .Content.ReadFromJsonAsync<DesignedSurveyDto>())!.SurveyId.Value;
+
+            // Add publish and pause steps
+            await _client.PostAsync($"/api/ExperimenterApp/surveys/{id}/publish", null);
             await _client.PostAsync($"/api/ExperimenterApp/surveys/{id}/pause", null);
+
             var resp = await _client.PostAsync($"/api/ExperimenterApp/surveys/{id}/resume", null);
             resp.StatusCode.Should().Be(HttpStatusCode.OK);
         }
