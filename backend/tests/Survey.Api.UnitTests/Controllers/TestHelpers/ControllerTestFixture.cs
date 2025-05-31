@@ -22,7 +22,7 @@ namespace Survey.Api.UnitTests.Controllers.TestHelpers
         {
             return new JwtSettings
             {
-                Secret = "TestSecretKey1234567890",
+                Secret = "abcdefghijklmnopqrstuvwxyz123456",
                 Issuer = "TestIssuer",
                 Audience = "TestAudience",
                 ExpiryMinutes = 60

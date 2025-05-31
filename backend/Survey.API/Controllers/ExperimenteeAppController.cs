@@ -52,7 +52,7 @@ namespace Survey.API.Controllers
             var surveyIds = savedSurveys.Select(s => s.SurveyId).Distinct().ToList();
 
             var surveys = await _context.Surveys
-                .Where(s => !surveyIds.Contains(s.SurveyId) && s.SurveyTypeId != 2 && s.EndDate <= DateTime.Now)
+                .Where(s => !surveyIds.Contains(s.SurveyId) && s.SurveyTypeId != 2 && s.EndDate > DateTime.Now)
                 .ToListAsync();
 
             return Ok(surveys);

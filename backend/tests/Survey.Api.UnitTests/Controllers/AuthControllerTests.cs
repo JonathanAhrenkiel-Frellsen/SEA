@@ -38,9 +38,31 @@ namespace Survey.Api.UnitTests.Controllers
         [Fact]
         public async Task Login_WithValidCredentials_ReturnsUnauthorized()
         {
-            // The password is plain text, so login still fails
+            // The credentials are valid but the user type is missing
             var result = await _sut.Login(new LoginDto { UserEmail = "test@example.com", Password = "password" });
             result.Should().BeOfType<UnauthorizedObjectResult>();
+        }
+
+
+        [Fact]
+        public async Task Login_WithCorrectUserTypeAndPassword_ReturnsOk()
+        {
+            // ensure a UserType exists
+            _db.UserTypes.Add(new UserType { UserTypeId = 1, UserTypeName = "Superuser" });
+            _db.SaveChanges();
+
+            // add matching user
+            _db.Users.Add(new User
+            {
+                UserId = 2,
+                UserEmail = "ok@example.com",
+                UserPassword = "pw",
+                UserTypeId = 1
+            });
+            _db.SaveChanges();
+
+            var result = await _sut.Login(new LoginDto { UserEmail = "ok@example.com", Password = "pw" });
+            result.Should().BeOfType<OkObjectResult>();
         }
     }
 }

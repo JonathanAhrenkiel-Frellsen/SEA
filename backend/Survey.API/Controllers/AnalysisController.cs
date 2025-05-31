@@ -39,7 +39,7 @@ namespace Survey.API.Controllers
 
             return Ok(completions);
         }
-        
+
         [Authorize]
         [HttpGet("surveyCompletionRate/{surveyId}")]
         public async Task<ActionResult<SurveyCompletionRateDto>> GetSurveyCompletionRate(string surveyId)
@@ -62,7 +62,7 @@ namespace Survey.API.Controllers
                 .Select(g => new { UserId = g.Key, AnswerCount = g.Count() })
                 .ToList();
 
-            var histogram = answersPerUser
+            var rawHistogram = answersPerUser
                 .GroupBy(u => u.AnswerCount)
                 .Select(g => new
                 {
@@ -72,13 +72,23 @@ namespace Survey.API.Controllers
                 .OrderBy(h => h.AnsweredCount)
                 .ToList();
 
-            return Ok(new
+            // Build a strongly typed DTO instead of returning anonymous
+            var dto = new SurveyCompletionRateDto
             {
                 TotalQuestions = totalQuestions,
-                Histogram = histogram
-            });
+                Histogram = rawHistogram
+                    .Select(h => new CompletionHistogramBucketDto
+                    {
+                        AnsweredCount = h.AnsweredCount,
+                        UserCount = h.UserCount
+                    })
+                    .ToList()
+            };
+
+            return Ok(dto);
         }
-        
+
+
         [Authorize]
         [HttpGet("surveyAnswers/{surveyId}")]
         public async Task<ActionResult<List<Dictionary<string, object>>>> GetSurveyAnswers(string surveyId, [FromQuery(Name = "page")] string pageNr)
