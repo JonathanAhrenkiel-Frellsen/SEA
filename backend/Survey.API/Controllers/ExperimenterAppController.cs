@@ -52,7 +52,6 @@ namespace Survey.API.Controllers
         }
 
         // POST: api/ExperimenterApp/SaveSurvey
-        [Authorize]
         [HttpPost("surveys")]
         public async Task<ActionResult<DesignedSurvey>> SaveSurvey([FromBody] DesignedSurveyDto surveyDto)
         {
@@ -193,7 +192,6 @@ namespace Survey.API.Controllers
 
 
         // GET: api/ExperimenterApp/surveys/{id}
-        [Authorize]
         [HttpGet("surveys/{id}")]
         public async Task<IActionResult> GetSurvey(int id)
         {
@@ -236,7 +234,6 @@ namespace Survey.API.Controllers
         }
 
         // POST: api/ExperimenterApp/surveys/{id}/pause
-        [Authorize]
         [HttpPost("surveys/{id}/pause")]
         public async Task<IActionResult> PauseSurvey(int id)
         {
@@ -255,7 +252,6 @@ namespace Survey.API.Controllers
         }
 
         // POST: api/ExperimenterApp/surveys/{id}/resume
-        [Authorize]
         [HttpPost("surveys/{id}/resume")]
         public async Task<IActionResult> ResumeSurvey(int id)
         {
@@ -276,7 +272,6 @@ namespace Survey.API.Controllers
 
         // POST: api/ExperimenterApp/PublishSurvey
 
-        [Authorize]
         [HttpPost("surveys/{id}/publish")]
         public async Task<IActionResult> PublishSurvey(int id)
         {
@@ -297,7 +292,7 @@ namespace Survey.API.Controllers
 
         // POST: api/ExperimenterApp/LoadSurvey
         [Authorize]
-        [Pincode] // needs the surveyId form the HttpGET!
+        [Pincode]
         [HttpGet("LoadSurvey/{surveyId}")]
         public async Task<ActionResult<DesignedSurvey>> LoadSurvey(int id)
         {
@@ -377,7 +372,6 @@ namespace Survey.API.Controllers
         }
 
         // POST: api/ExperimenterApp/DeleteSurvey
-        [Authorize]
         [HttpDelete("surveys/{id}")]
         public async Task<ActionResult> DeleteSurvey(int id)
         {
@@ -409,6 +403,7 @@ namespace Survey.API.Controllers
 
             return Ok("Survey has been deleted.");
         }
+
 
         // POST: api/ExperimenterApp/ExportSurvey
         [Authorize]
@@ -463,7 +458,6 @@ namespace Survey.API.Controllers
         }
 
         // POST: api/ExperimenterApp/ImportSurvey
-        [Authorize]
         [HttpPost("ImportSurvey")]
         public async Task<IActionResult> ImportSurvey([FromForm] ImportSurveyDto model)
         {
@@ -504,7 +498,6 @@ namespace Survey.API.Controllers
         }
 
         // POST: api/ExperimenterApp/ExportSurveyResults
-        [Authorize]
         [HttpPost("ExportCompletedSurveyResults")]
         public async Task<ActionResult<ExportSurvey>> ExportCompletedSurveyResults(DesignedSurveyDto survey)
         {
@@ -552,7 +545,6 @@ namespace Survey.API.Controllers
         }
 
         // POST: api/ExperimenterApp/ExportSurveyResults
-        [Authorize]
         [HttpPost("ExportSavedSurveyResults")]
         public async Task<ActionResult<ExportSurvey>> ExportSavedSurveyResults(DesignedSurveyDto survey)
         {
@@ -607,11 +599,6 @@ namespace Survey.API.Controllers
 
 
 
-
-
-
-
-
         [Authorize]
         [HttpGet("surveys/{surveyId}/export")]
         public async Task<IActionResult> ExportSurveyResponsesToCsv(int surveyId, [FromQuery] string type = "completed")
@@ -661,6 +648,7 @@ namespace Survey.API.Controllers
             var fileName = $"survey_{surveyId}_{type}_results.csv";
             return File(Encoding.UTF8.GetBytes(csv.ToString()), "text/csv", fileName);
         }
+
         [Authorize]
         [HttpGet("surveys/{id}/structure-export")]
         public async Task<IActionResult> ExportSurveyStructure(int id)
