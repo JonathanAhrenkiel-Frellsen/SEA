@@ -19,6 +19,7 @@
         public string? Range { get; set; }
         public string? SurveyAnswer { get; set; }
         public virtual ICollection<MultipleChoicesDto>? MultipleChoices { get; set; }
+
     }
 
     public class MultipleChoicesDto

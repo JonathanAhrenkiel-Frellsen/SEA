@@ -39,7 +39,7 @@ const QuestionPage: React.FC = () => {
     // reset any previous errors
     setSurveyClosed(false);
     setErrorMessage("");
-
+    setPinError("");
     // PIN validation
     if (isPinRequired && !/^\d+$/.test(pin)) {
       setPinError("PIN must be numbers only.");
@@ -51,16 +51,25 @@ const QuestionPage: React.FC = () => {
     try {
       result = await loadParsedSurveyAnswers(id, pin);
     } catch (err: any) {
+      const status = err.response?.status;
+      // 403 Forbidden usually means “invalid or missing PIN”
+      if (status === 403) {                                   // ← CHANGED
+        setPinError("Invalid or missing PIN.");               // ← CHANGED
+        return;                                               // ← CHANGED
+      }
       // catch paused‐survey 400
-      if (err.response?.status === 400) {
+      if (status === 400) {                                   // ← CHANGED
         setErrorMessage(err.response.data || "Survey is closed.");
         setSurveyClosed(true);
         return;
       }
-      setErrorMessage("Temporarily, the survey is not accepting answers");
-      setSurveyClosed(true);
+
+      // ANY other error (404, 500, etc.)
+      setErrorMessage("Something went wrong. Please try again later."); // ← CHANGED
+      setSurveyClosed(true);                                             // ← CHANGED
       return;
     }
+
     if (!result) return;
 
     // populate state

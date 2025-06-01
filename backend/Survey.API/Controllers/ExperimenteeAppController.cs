@@ -121,7 +121,8 @@ namespace Survey.API.Controllers
                             MultipleChoiceName = mc.MultipleChoiceName
                         })]
                         : new List<MultipleChoicesDto>()
-                })]
+                })],
+                     IsPaused = survey.IsPaused
             };
 
             var savedAnswers = await _context.SurveyAnswer
