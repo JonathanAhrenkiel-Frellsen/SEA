@@ -57,6 +57,9 @@ const QuestionPage: React.FC = () => {
         setPinError("Invalid or missing PIN.");               // ← CHANGED
         return;                                               // ← CHANGED
       }
+
+     
+
       // catch paused‐survey 400
       if (status === 400) {                                   // ← CHANGED
         setErrorMessage(err.response.data || "Survey is closed.");
@@ -145,20 +148,24 @@ const QuestionPage: React.FC = () => {
     return (
         <div className="flex items-center justify-center h-full p-8">
           <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 max-w-md text-yellow-800">
-            <p className="font-bold">Survey Paused</p>
+            <p className="font-bold">Survey not available</p>
             <p className="mt-2">{errorMessage}</p>
           </div>
         </div>
     );
   }
 
-  if (!isPinRequired && isPaused) {
+
+
+
+  if (isPaused) {
     return (
         <div className="p-6 text-center text-lg">
-          This survey is temporarily closed and not accepting new responses.
+          This survey is paused
         </div>
     );
   }
+
 
   if (isPinRequired) {
     return (
