@@ -29,9 +29,9 @@ namespace Survey.API.Controllers
             var user = await _context.Users.Include(user => user.UserType)
                 .SingleOrDefaultAsync(u => u.UserEmail == model.UserEmail && u.UserPassword == model.Password);
 
-            if (user == null)
+            if (user == null || user.UserType == null)
             {
-                return Unauthorized(new { message = "Invalid credentials" });
+                return Unauthorized(new { message = "Invalid credentials or missing user type" });
             }
 
             var token = GenerateJwtToken(user);

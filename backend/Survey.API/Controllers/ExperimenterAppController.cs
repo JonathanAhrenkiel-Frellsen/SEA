@@ -292,7 +292,7 @@ namespace Survey.API.Controllers
 
         // POST: api/ExperimenterApp/LoadSurvey
         [Authorize]
-        [Pincode] // needs the surveyId form the HttpGET!
+        [Pincode]
         [HttpGet("LoadSurvey/{surveyId}")]
         public async Task<ActionResult<DesignedSurvey>> LoadSurvey(int id)
         {
@@ -403,6 +403,7 @@ namespace Survey.API.Controllers
 
             return Ok("Survey has been deleted.");
         }
+
 
         // POST: api/ExperimenterApp/ExportSurvey
         [Authorize]
@@ -598,11 +599,6 @@ namespace Survey.API.Controllers
 
 
 
-
-
-
-
-
         [Authorize]
         [HttpGet("surveys/{surveyId}/export")]
         public async Task<IActionResult> ExportSurveyResponsesToCsv(int surveyId, [FromQuery] string type = "completed")
@@ -652,6 +648,7 @@ namespace Survey.API.Controllers
             var fileName = $"survey_{surveyId}_{type}_results.csv";
             return File(Encoding.UTF8.GetBytes(csv.ToString()), "text/csv", fileName);
         }
+
         [Authorize]
         [HttpGet("surveys/{id}/structure-export")]
         public async Task<IActionResult> ExportSurveyStructure(int id)
