@@ -67,30 +67,11 @@ docker-compose.override.yml
 *.test.tsx
 *.spec.*
 
+# Visual Studio folders
+.vs/
+**/.vs/
+
+
 /tmp
 /out-tsc
-/.vs/SurveyPlatform/copilot-chat/3a7d28f4/sessions
-/.vs/SurveyPlatform/CopilotIndices/17.13.444.19527
-/.vs/SurveyPlatform/FileContentIndex
-.vs/ProjectEvaluation/surveyplatform.metadata.v9.bin
-.vs/ProjectEvaluation/surveyplatform.projects.v9.bin
-.vs/ProjectEvaluation/surveyplatform.strings.v9.bin
-.vs/SurveyPlatform/CopilotIndices/17.14.670.39694/CodeChunks.db
-.vs/SurveyPlatform/CopilotIndices/17.14.670.39694/CodeChunks.db-shm
-.vs/SurveyPlatform/CopilotIndices/17.14.670.39694/CodeChunks.db-wal
-.vs/SurveyPlatform/CopilotIndices/17.14.670.39694/SemanticSymbols.db
-.vs/SurveyPlatform/CopilotIndices/17.14.670.39694/SemanticSymbols.db-shm
-.vs/SurveyPlatform/CopilotIndices/17.14.670.39694/SemanticSymbols.db-wal
-.vs/SurveyPlatform/DesignTimeBuild/.dtbcache.v2
-.vs/SurveyPlatform/v17/.futdcache.v2
-.vs/SurveyPlatform/v17/DocumentLayout.backup.json
-.vs/SurveyPlatform/v17/DocumentLayout.json
-.vs/SurveyPlatform/v17/TestStore/0/000.testlog
-.vs/SurveyPlatform/v17/TestStore/0/testlog.manifest
-.vs/ProjectEvaluation/surveyplatform.metadata.v9.bin
-.vs/ProjectEvaluation/surveyplatform.projects.v9.bin
-.vs/ProjectEvaluation/surveyplatform.strings.v9.bin
-.vs/SurveyPlatform/DesignTimeBuild/.dtbcache.v2
-.vs/SurveyPlatform/v17/.futdcache.v2
-.vs/SurveyPlatform/v17/DocumentLayout.backup.json
-.vs/SurveyPlatform/v17/DocumentLayout.json
+
