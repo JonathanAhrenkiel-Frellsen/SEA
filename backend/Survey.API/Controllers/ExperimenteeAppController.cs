@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using Survey.API.Attributes;
 using Survey.Application;
 using Survey.Domain.Entities;
@@ -80,12 +81,33 @@ namespace Survey.API.Controllers
             return Ok(surveys);
         }
 
-        [Authorize]
         [Pincode]
         [HttpGet("LoadSurvey/{surveyId}")]
         public async Task<IActionResult> LoadSurvey(string surveyId)
         {
-            var userId = User.FindFirst("UserId")!.Value;
+            int userId;
+
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                userId = int.Parse(User.FindFirst("UserId")!.Value);
+            }
+            else if (Request.Headers.TryGetValue("X-Anonymous-User", out var anon) && int.TryParse(anon, out var anonId))
+            {
+                userId = anonId;
+            }
+            else
+            {
+                var anonUser = new User
+                {
+                    UserName = "Anonymous",
+                    UserEmail = $"anon-{Guid.NewGuid()}@example.com",
+                    UserPassword = string.Empty,
+                    UserTypeId = 3
+                };
+                _context.Users.Add(anonUser);
+                await _context.SaveChangesAsync();
+                userId = anonUser.UserId;
+            }
 
             var survey = await _context.Surveys
                 .Include(s => s.Questionnaires)
@@ -105,7 +127,7 @@ namespace Survey.API.Controllers
                 SurveyId = survey.SurveyId,
                 SurveyTitle = survey.SurveyTitle,
                 SurveyDescription = survey.SurveyDescription,
-                UserId = int.Parse(userId),
+                UserId = userId,
                 SurveyStoredAnwsers = [.. survey.Questionnaires.Select(q => new SurveyStoredAnwsersDto
                 {
                     QuestionnaireId = q.QuestionnaireId,
@@ -126,7 +148,7 @@ namespace Survey.API.Controllers
             };
 
             var savedAnswers = await _context.SurveyAnswer
-                .Where(sa => sa.SurveyCompletion != null && sa.SurveyCompletion.UserId.ToString() == userId
+                .Where(sa => sa.SurveyCompletion != null && sa.SurveyCompletion.UserId == userId
                 && sa.SurveyCompletion.SurveyId.ToString() == surveyId)
                 .ToListAsync();
 
@@ -143,11 +165,22 @@ namespace Survey.API.Controllers
         }
 
         // POST: api/ExperimenteeApp/SaveSurveyAnswer
-        [Authorize]
         [HttpPost("SaveSurveyAnswer")]
         public async Task<IActionResult> SaveSurveyAnswers([FromBody] SurveySaveAnswerDto dto)
         {
-            var userId = int.Parse(User.FindFirst("UserId")!.Value);
+            int userId;
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                userId = int.Parse(User.FindFirst("UserId")!.Value);
+            }
+            else if (Request.Headers.TryGetValue("X-Anonymous-User", out var anon) && int.TryParse(anon, out var anonId))
+            {
+                userId = anonId;
+            }
+            else
+            {
+                return BadRequest("Missing user identifier.");
+            }
 
             var completion = await _context.SurveyCompletion
                 .Include(sc => sc.SurveyAnswers)
@@ -196,14 +229,25 @@ namespace Survey.API.Controllers
         }
 
         // POST: api/ExperimenteeApp/CompleteSurvey
-        [Authorize]
         [HttpGet("CompleteSurvey/{surveyId}")]
         public async Task<IActionResult> CompleteSurvey(string surveyId)
         {
-            var userId = User.FindFirst("UserId")!.Value;
+            int userId;
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                userId = int.Parse(User.FindFirst("UserId")!.Value);
+            }
+            else if (Request.Headers.TryGetValue("X-Anonymous-User", out var anon) && int.TryParse(anon, out var anonId))
+            {
+                userId = anonId;
+            }
+            else
+            {
+                return BadRequest("Missing user identifier.");
+            }
 
             var existingData = await _context.SurveyCompletion
-                .FirstOrDefaultAsync(s => s.UserId.ToString() == userId
+                .FirstOrDefaultAsync(s => s.UserId == userId
                 && s.SurveyId.ToString() == surveyId);
 
             if (existingData == null)

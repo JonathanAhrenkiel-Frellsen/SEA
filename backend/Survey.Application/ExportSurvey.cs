@@ -28,7 +28,7 @@ namespace Survey.Application
     
     public class ImportSurveyDto
     {
-        public IFormFile File { get; set; }
+        public required IFormFile File { get; set; }
     }
 
     public class ExportMultipleChoice
