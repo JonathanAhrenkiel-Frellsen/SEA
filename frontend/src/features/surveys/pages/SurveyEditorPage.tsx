@@ -86,7 +86,14 @@ const SurveyEditorPage: React.FC = () => {
                     QuestionnaireTitle: row['Question'] || '',
                     InputType: (row['Answer Type'] || 'text').toLowerCase(),
                     Range: '',
-                    MultipleChoices: (row['Answer Options'] || '').split(';').map((s: string) => s.trim()).filter(Boolean),
+                    MultipleChoices: (row['Answer Options'] || '')
+                        .split(/[|;]/)
+                        .map((s: string) => s.trim())
+                        .filter(Boolean)
+                        .map((name: string) => ({
+                            MultipleChoiceId: 0,
+                            MultipleChoiceName: name,
+                        })),
                 }))
             });
             setOpenStates(new Array(importedSurvey.length).fill(false));

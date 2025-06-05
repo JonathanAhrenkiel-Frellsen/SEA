@@ -96,17 +96,20 @@ export const fetchSurveys = async (): Promise<DesignedSurveyDto[]> => {
 
 export const saveSurveyAnswer = async (surveyAnswer: SurveySaveAnswerDto): Promise<void> => {
   const jwt_token = selectToken(store.getState());
+  const anonId = localStorage.getItem('anonUser');
 
-  if (!jwt_token) {
-    throw new Error("JWT token not available");
+  const headers: any = { 'Content-Type': 'application/json' };
+  if (jwt_token) {
+    headers['Authorization'] = `Bearer ${jwt_token}`;
+  } else if (anonId) {
+    headers['X-Anonymous-User'] = anonId;
+  } else {
+    throw new Error('User not identified');
   }
 
   const response = await fetch(`${EXPERIMENTEE_API_URL}/SaveSurveyAnswer`, {
     method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${jwt_token}`,
-      'Content-Type': 'application/json',
-    },
+    headers,
     body: JSON.stringify(surveyAnswer),
   });
 
@@ -120,13 +123,18 @@ export const saveSurveyAnswer = async (surveyAnswer: SurveySaveAnswerDto): Promi
 
 export async function completeSurvey(surveyId: string) {
   const jwt_token = selectToken(store.getState());
+  const anonId = localStorage.getItem('anonUser');
+
+  const headers: any = { 'Content-Type': 'application/json' };
+  if (jwt_token) {
+    headers['Authorization'] = `Bearer ${jwt_token}`;
+  } else if (anonId) {
+    headers['X-Anonymous-User'] = anonId;
+  }
 
   const response = await fetch(`${EXPERIMENTEE_API_URL}/CompleteSurvey/${surveyId}`, {
     method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${jwt_token}`,
-      'Content-Type': 'application/json',
-    },
+    headers,
   });
 
   if (!response.ok) {
@@ -137,18 +145,18 @@ export async function completeSurvey(surveyId: string) {
 
 export const loadSurveyAnswers = async (surveyId: string, pin: string | undefined): Promise<ExperimenteeAppDto> => {
   const jwt_token = selectToken(store.getState());
+  const anonId = localStorage.getItem('anonUser');
 
-  if (!jwt_token) {
-    throw new Error("JWT token not available");
+  const headers: any = { 'Content-Type': 'application/json', 'X-Survey-Pin': pin || '' };
+  if (jwt_token) {
+    headers['Authorization'] = `Bearer ${jwt_token}`;
+  } else if (anonId) {
+    headers['X-Anonymous-User'] = anonId;
   }
 
   const response = await fetch(`${EXPERIMENTEE_API_URL}/LoadSurvey/${surveyId}`, {
     method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${jwt_token}`,
-      'Content-Type': 'application/json',
-      'X-Survey-Pin': pin || '',
-    },
+    headers,
   });
 
   if (!response.ok) {
@@ -156,7 +164,11 @@ export const loadSurveyAnswers = async (surveyId: string, pin: string | undefine
     throw new Error(`Failed to fetch surveys: ${response.status} ${errorText}`);
   }
 
-  return response.json();
+  const data = await response.json();
+  if (!jwt_token && !anonId && data.UserId) {
+    localStorage.setItem('anonUser', data.UserId.toString());
+  }
+  return data;
 }
 
 export const publishSurvey = async (

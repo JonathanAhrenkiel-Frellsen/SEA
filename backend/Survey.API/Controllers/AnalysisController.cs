@@ -117,7 +117,7 @@ namespace Survey.API.Controllers
 
             var questionLabels = allAnswers
                 .GroupBy(a => a.QuestionnaireId)
-                .ToDictionary(g => g.Key, g => g.First().Questionnaire.QuestionnaireTitle ?? $"Q{g.Key}");
+                .ToDictionary(g => g.Key, g => g.First().Questionnaire?.QuestionnaireTitle ?? $"Q{g.Key}");
 
             var groupedByUser = allAnswers
                 .GroupBy(a => a.UserId)

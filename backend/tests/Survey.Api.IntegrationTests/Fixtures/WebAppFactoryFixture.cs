@@ -41,6 +41,11 @@ namespace Survey.Api.IntegrationTests.Fixtures
             return client;
         }
 
+        public HttpClient CreateAnonymousClient()
+        {
+            return base.CreateClient();
+        }
+
         private static string GenerateJwt(JwtSettings settings, int userId, string userType)
         {
             var key = Encoding.UTF8.GetBytes(settings.Secret);

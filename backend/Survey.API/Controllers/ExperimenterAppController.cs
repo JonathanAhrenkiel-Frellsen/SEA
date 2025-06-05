@@ -222,11 +222,11 @@ namespace Survey.API.Controllers
                     InputType = q.InputType,
                     Range = q.Range,
                     SurveyId = q.SurveyId,
-                    MultipleChoices = q.MultipleChoices.Select(mc => new MultipleChoiceDto
+                    MultipleChoices = q.MultipleChoices?.Select(mc => new MultipleChoiceDto
                     {
                         MultipleChoiceId = mc.MultipleChoiceId,
                         MultipleChoiceName = mc.MultipleChoiceName
-                    }).ToList()
+                    }).ToList() ?? new List<MultipleChoiceDto>()
                 }).ToList()
             };
 
