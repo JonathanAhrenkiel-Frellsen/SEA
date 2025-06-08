@@ -33,7 +33,7 @@ dotnet ef database update
 
 # Running the Application (Frontend and Backend)
 1. **Start All Services with Docker Compose** <br>
-The recommended way to run the entire stack is with Docker Compose:
+The recommended way to run the entire stack is with Docker Compose (remember to run this in the root of the SEA folder):
 ```bash
 docker-compose up --build
 This will build and start the backend, frontend, and database containers.
