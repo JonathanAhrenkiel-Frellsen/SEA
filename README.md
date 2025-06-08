@@ -25,9 +25,9 @@ If using Docker Compose, the database container will be started automatically. O
 docker-compose up -d db
 ```
 2. **Run Database Migrations** <br>
-   After the database is running, apply the initial schema and any migrations. From the backend directory, run:
+   After the database is running, apply the initial schema and any migrations. From the backend directory, run from the root of the SEA project:
 ```bash
-# Example for .NET EF Core
+cd .\backend\Survey.Infrastructure\
 dotnet ef database update
 ```
 
