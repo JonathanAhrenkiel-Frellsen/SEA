@@ -22,7 +22,7 @@ The backend uses PostgreSQL as its database. Database migrations are handled via
 1. **Start the Database Container**<br>
 If using Docker Compose, the database container will be started automatically. Otherwise, you can start it manually: 
 ```bash
-docker-compose up -d db
+docker-compose -f .\docker-compose.db.yml up -d
 ```
 2. **Run Database Migrations** <br>
    After the database is running, apply the initial schema and any migrations. From the backend directory, run from the root of the SEA project:
