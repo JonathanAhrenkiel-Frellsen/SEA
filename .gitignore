@@ -49,9 +49,6 @@
 *.bak
 *.log
 
-# Migrations (optional if you want to re-gen from scratch)
-**/Migrations/
-
 # 🐳 Docker
 **/.docker/
 **/.dockerignore
