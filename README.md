@@ -22,18 +22,18 @@ The backend uses PostgreSQL as its database. Database migrations are handled via
 1. **Start the Database Container**<br>
 If using Docker Compose, the database container will be started automatically. Otherwise, you can start it manually: 
 ```bash
-docker-compose up -d db
+docker-compose -f .\docker-compose.db.yml up -d
 ```
 2. **Run Database Migrations** <br>
-   After the database is running, apply the initial schema and any migrations. From the backend directory, run:
+   After the database is running, apply the initial schema and any migrations. From the backend directory, run from the root of the SEA project:
 ```bash
-# Example for .NET EF Core
+cd .\backend\Survey.Infrastructure\
 dotnet ef database update
 ```
 
 # Running the Application (Frontend and Backend)
 1. **Start All Services with Docker Compose** <br>
-The recommended way to run the entire stack is with Docker Compose:
+The recommended way to run the entire stack is with Docker Compose (remember to run this in the root of the SEA folder):
 ```bash
 docker-compose up --build
 This will build and start the backend, frontend, and database containers.
